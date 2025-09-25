@@ -1,6 +1,7 @@
 """Build a reproducible JSON dataset while retaining every source handout."""
 
 import argparse
+from copy import deepcopy
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,7 @@ import tempfile
 
 from preprocessing.handout_batch import process_handouts
 from preprocessing.handout_record import build_handout_record
+from preprocessing.handout_record import normalize_handout
 
 
 def dataset_from_batch(batch):
@@ -29,6 +31,18 @@ def dataset_from_batch(batch):
         'records': records,
         'failures': sorted(failures, key=lambda f: (f['source_file'], f['stage'], f['error'])),
     }
+
+
+def revalidate_course_dataset(dataset):
+    """Apply current normalization to retained extractor output without PDF reads."""
+    records = []
+    for record in dataset.get('records', []):
+        original = record.get('original')
+        if not isinstance(original, dict):
+            raise ValueError('Course record lacks retained extractor output')
+        records.append(normalize_handout(original))
+    records.sort(key=lambda row: (row.get('source') or {}).get('source_file') or '')
+    return {'records': records, 'failures': deepcopy(dataset.get('failures', []))}
 
 
 def write_dataset(dataset, output_path):

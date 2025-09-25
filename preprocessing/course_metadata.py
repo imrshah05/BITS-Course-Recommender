@@ -39,7 +39,7 @@ _SECTION = re.compile(
     r"(?:^|\n)\s*(?:(?:\d+|[IVX]+)[.)]\s*)?(?:Course\s+Description|Scope\s+(?:and|&)\s+Objective|"
     r"Course\s+Learning|Text\s*Books?|Reference\s*Books?|Evaluation\s+Scheme)\b(?!\.)", re.I,
 )
-_CODE = r"[A-Z]{2,8}(?:\s*/\s*[A-Z]{2,8})*\s*[FUGCE]\s*\d{3}[A-Z]?"
+_CODE = r"[A-Z]{2,8}(?:\s*/\s*[A-Z]{2,8})*\s*[FUGKCE]\s*\d{3}[A-Z]?(?:-\d+)?"
 _CODES = re.compile(rf"{_CODE}(?:\s*(?:/|,|&|and)\s*(?:{_CODE}|[A-Z]\s*\d{{3}}[A-Z]?))*", re.I)
 _DIVISION = re.compile(
     r"\bAcademic\s*[-–—]?\s*(?:Under\s*Graduate\s+Studies|"

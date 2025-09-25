@@ -9,8 +9,8 @@ import math
 from pathlib import Path
 import re
 
+from preprocessing.course_codes import CODE, normalize_course_code
 from preprocessing.dataset import write_dataset
-from preprocessing.programme_requirements import CODE
 
 SCOPE = ('programme', 'programme_code', 'degree', 'branch', 'campus', 'cohort', 'semester', 'year')
 NUMERIC = ('units', 'required_count', 'required_units', 'min_units', 'max_units', 'min_count', 'max_count')
@@ -33,6 +33,34 @@ def issue(rule, code, severity='warning'):
     entry = dict(code=code, severity=severity)
     if entry not in rule['validation']['issues']:
         rule['validation']['issues'].append(entry)
+
+
+def normalize_category(label, programme, kind):
+    """Map only terminology whose meaning is explicit in the retained context."""
+    original = clean(label)
+    context = (programme or {}).get('context')
+    key = original.casefold() if isinstance(original, str) else None
+    normalized = None
+    basis = None
+    direct = {
+        'discipline core': 'discipline_core',
+        'discipline electives': 'discipline_elective',
+        'discipline elective courses': 'discipline_elective',
+        'humanities electives': 'humanities_elective',
+        'open electives': 'open_elective',
+    }
+    if key in direct:
+        normalized, basis = direct[key], 'explicit source category label'
+    elif key == 'core courses' and context == 'discipline course list':
+        normalized, basis = 'discipline_core', 'Bulletin discipline course-list context'
+    elif key == 'core courses' and context == 'minor':
+        normalized, basis = 'minor_core', 'Bulletin minor context'
+    elif key == 'electives' and context == 'minor':
+        normalized, basis = 'minor_elective', 'Bulletin minor context'
+    elif kind == 'quantity' and context == 'minor':
+        normalized, basis = 'minor_total', 'explicit Courses & Units requirement for named minor'
+    return {'original': original, 'normalized': normalized, 'source_supported': normalized is not None,
+            'basis': basis}
 
 
 def validate_rule(rule):
@@ -77,7 +105,10 @@ def validate_rule(rule):
     old_issues = previous.get('issues', [])
     if previous.get('is_valid') is not None and previous['is_valid'] != (not any(i.get('severity') == 'error' for i in old_issues)):
         issue(rule, 'inconsistent_source_validation')
+    waivers = set(rule.get('normalization', {}).get('waived_source_issues', []))
     for old in old_issues:
+        if old.get('code') in waivers:
+            continue
         issue(rule, 'source:' + old.get('code', 'unspecified'), old.get('severity', 'warning'))
     if original.get('machine_checkable') and original.get('needs_verification'):
         issue(rule, 'inconsistent_source_classification')
@@ -108,11 +139,14 @@ def normalize_record(record, document, pointer, programme=None):
     programme = programme or {}
     kind = record.get('rule_type') or record.get('kind')
     scope = {key: clean(record.get(key)) for key in SCOPE}
-    scope['programme'] = clean(record.get('programme_name', record.get('programme')))
+    scope['programme'] = clean(record.get('programme_name') or record.get('programme') or programme.get('name'))
     scope['programme_code'] = clean(record.get('programme_code', programme.get('programme_code')))
+    category_normalization = normalize_category(record.get('category'), programme, kind)
     rule = dict(rule_id=document.lower().replace(' ', '-') + ':' + pointer,
                 rule_type=kind, category=clean(record.get('category')),
                 category_key=clean(record.get('category')).casefold() if isinstance(record.get('category'), str) else None,
+                normalized_category=category_normalization['normalized'],
+                category_normalization=category_normalization,
                 scope=scope, course_code=clean(record.get('course_code')),
                 course_title=clean(record.get('course_title')), source_document=document,
                 sources=deepcopy(record.get('sources', [])), source_heading=deepcopy(record.get('section', programme.get('name'))),
@@ -123,10 +157,10 @@ def normalize_record(record, document, pointer, programme=None):
                 conditions=deepcopy(record.get('conditions')), exceptions=deepcopy(record.get('exceptions')),
                 scope_and_exceptions=deepcopy(record.get('scope_and_exceptions')),
                 observations=deepcopy(record.get('values', [])),
-                needs_verification=bool(record.get('needs_verification', False)))
+                needs_verification=bool(record.get('needs_verification', False)), normalization={})
     if isinstance(rule['course_code'], str):
-        candidate = rule['course_code'].upper()
-        if re.fullmatch(CODE, candidate):
+        candidate = normalize_course_code(rule['course_code'])
+        if candidate:
             rule['course_code'] = candidate
     for key in NUMERIC:
         rule[key] = number(record.get(key))
@@ -139,18 +173,57 @@ def normalize_record(record, document, pointer, programme=None):
             rule[comparator + '_count'] = rule['required_count']
             rule['required_units'] = rule['required_count'] = None
         rule['units'] = None
+    if (kind == 'quantity' and programme.get('context') == 'minor'
+            and scope['programme'] and record.get('comparator') in ('min', 'max')
+            and sum(rule.get(key) is not None for key in ('min_units', 'max_units', 'min_count', 'max_count')) == 1
+            and rule['sources']):
+        rule['needs_verification'] = False
+        rule['normalization']['explicit_numeric_scope'] = True
+        rule['normalization']['waived_source_issues'] = ['manual_verification']
+    if kind == 'choice' and rule.get('alternatives'):
+        rule['needs_verification'] = False
+        rule['normalization']['explicit_alternative_group'] = True
+        rule['normalization']['waived_source_issues'] = ['incomplete_choice_structure', 'manual_verification']
     validate_rule(rule)
     return rule
+
+
+def _explicit_choice(record, programme, used_groups):
+    """Recover a choice only when retained programme evidence prints A/or/B."""
+    if record.get('kind') != 'unresolved_choice' or not programme or record.get('sources', [{}])[0].get('text', '').strip().lower() != 'or':
+        return record
+    pairs = []
+    pattern = re.compile(rf'({CODE})\s*\n\s*(?:\n\s*)?or\s*\n\s*({CODE})', re.I)
+    for source in programme.get('sources', []):
+        for match in pattern.finditer(source.get('text', '')):
+            pair = tuple(normalize_course_code(value) for value in match.groups())
+            if all(pair):
+                pairs.append((pair, source))
+    unique = {(pair, source['page_number']): source for pair, source in pairs}
+    if len(unique) != 1:
+        return record
+    (pair, _), source = next(iter(unique.items()))
+    group = (programme['id'], pair, source['page_number'])
+    if group in used_groups:
+        return record
+    used_groups.add(group)
+    adapted = deepcopy(record)
+    adapted.update(kind='choice', alternatives={'select_count': 1, 'options': list(pair)},
+                   sources=[deepcopy(source)], needs_verification=False)
+    return adapted
 
 
 def normalize_academic_rules(regulations, bulletin):
     """Retain each source occurrence, including unresolved Bulletin sections."""
     programmes = {p['id']: p for p in bulletin.get('programmes', [])}
     rules = []
+    used_choice_groups = set()
     for i, record in enumerate(regulations.get('rules', [])):
         rules.append(normalize_record(record, 'Academic Regulations', f'/rules/{i}'))
     for i, record in enumerate(bulletin.get('requirements', [])):
-        rules.append(normalize_record(record, 'Bulletin', f'/requirements/{i}', programmes.get(record.get('programme_id'))))
+        programme = programmes.get(record.get('programme_id'))
+        adapted = _explicit_choice(record, programme, used_choice_groups)
+        rules.append(normalize_record(adapted, 'Bulletin', f'/requirements/{i}', programme))
     for i, record in enumerate(bulletin.get('unresolved_sections', [])):
         adapted = dict(record, kind='unresolved_section', sources=[record.get('source', {})])
         rule = normalize_record(adapted, 'Bulletin', f'/unresolved_sections/{i}')

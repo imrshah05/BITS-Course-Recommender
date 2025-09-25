@@ -3,7 +3,8 @@
 from copy import deepcopy
 import re
 
-from preprocessing.course_metadata import extract_course_metadata, _CODES
+from preprocessing.course_codes import normalize_course_code, parse_course_codes
+from preprocessing.course_metadata import extract_course_metadata
 from preprocessing.handout_content import extract_handout_content
 from preprocessing.evaluation import extract_evaluation_components
 from preprocessing.exams import extract_exam_details
@@ -52,9 +53,16 @@ def normalize_handout(extracted):
                 record['metadata'][field] = None
     code = record['metadata'].get('course_code') if isinstance(record['metadata'], dict) else None
     if isinstance(code, dict) and isinstance(code.get('value'), str):
-        match = re.fullmatch(r'([A-Za-z]{2,8})\s+([FUGCEfugce])\s*(\d{3}[A-Za-z]?)', code['value'])
-        if match:
-            code['value'] = f'{match[1]} {match[2]}{match[3]}'.upper()
+        normalized = normalize_course_code(code['value'])
+        if normalized:
+            code['value'] = normalized
+    identities, identity_resolved = parse_course_codes(code.get('value') if isinstance(code, dict) else None)
+    record['metadata']['course_codes'] = identities
+    record['metadata']['course_identity_type'] = (
+        'single' if identity_resolved and len(identities) == 1 else
+        'multiple' if identity_resolved and len(identities) > 1 else
+        'unresolved')
+    record['candidate_status'] = 'usable' if identity_resolved and identities else 'unusable_identity'
     for key in _LISTS:
         if record.get(key) is None:
             record[key] = []
@@ -120,10 +128,12 @@ def normalize_handout(extracted):
         if value is None and key != 'units':
             issue('missing_' + key, 'metadata.' + key, 'warning' if key == 'department_division' else 'error', 'Field is missing or unusable.')
         if key == 'course_code' and value:
-            if not _CODES.fullmatch(value):
+            identities, identity_resolved = parse_course_codes(value)
+            if not identities:
                 issue('malformed_course_code', 'metadata.course_code', 'error', 'Code does not match the existing parser grammar.')
-            elif not re.fullmatch(r'[A-Z]{2,8} [FUGCE]\d{3}[A-Z]?', value):
-                issue('complex_course_code', 'metadata.course_code', 'needs_verification', 'Shared or compact code retained without expansion.')
+            elif not identity_resolved:
+                issue('unresolved_course_identity', 'metadata.course_code', 'needs_verification',
+                      'Only explicit code components were retained; the complete expression is unresolved.')
 
     for key in _LISTS:
         if not isinstance(record[key], list):

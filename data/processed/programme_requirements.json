@@ -2463,6 +2463,19 @@
           "text": " \n \nIV-236 \nSemester-wise Pattern for Students Admitted to M. Phil. in Liberal Studies Programme in First Semester  \nYear   First Semester U   Second Semester U \nI \nHSS G511 Philosophical Foundations of \nLiberal Studies \n5 BITS G661 Research Methodology I 5 \nHSS G512 Theoretical Approaches to Liberal \nStudies \n5 BITS E583 Case studies I 5 \nBITS G518 Writing Seminar 5   Elective II * \n  Elective  I *  Elective III      OR      5 \n   18 BITS G565 Dissertation (5 Unit) 18 \nII BITS G561T Dissertation 16     \n   16    \n* Minimum 3 Units \nWhile the above semester-wise pattern shows a 3-semester structure, a meritorious student may be able to complete \nthe programme in 2 semesters and an additional summer term. In such a case, a partial dissertation of 5 units may be \ntaken in place of Elective 3. This will be followed by a Dissertation of 10 units during the summer term. \nSemester-wise Pattern for Students Admitted to M. E. Computer Science with Specialization in  \nInformation Security with B.Sc. input \nYear   First Semester U   Second Semester U \nI \nCS F111 Computer Programming 4 MGTS F211 Principles of Management 3 \nBITS F437 Technical Communication 3 MATH F212 Optimization 3 \nMATH F113 Probability and Statistics 3 BITS F463 Cryptography 3 \nCS F215 Digital Design 4 BITS F345 Information Law and   \nCS F222 Discrete Structures for     Cyber Law 3 \n  Computer Science 3 IS F242 Computer Organization 4 \nMATH F231 Number Theory 3 CS F211 Data Structures & Algorithms 4 \n    20    20 \nSummer CS F404 Computer Crime and Forensics 2 \nCS F213 Object Oriented Programming 4 \nCS F468 Information Security Project 3 \n   9 \nII \nCS F351 Theory of Computation 3 CS F303 Computer Networks 4 \nCS F372 Operating Systems 3 CS F212 Database Systems 4 \nIS F341 Software Engineering 4 CS G517 Network and System Security 4 \nCS G524 Advanced Computer  \nArchitecture \n \n5 \nCS F364 Design and Analysis of Algorithms 3 \nCS F301 Principles of Programming \nLanguages \n2 CS F406 Ethical Hacking 2 \n      Elective * \n  Elective *     \n   20 (min)    20 (min) \nSummer CS G566 Secure Software Engineering 5 \nCS F468 Information Security Project 3 \n  Elective * \n   11 (min) \nIII \nCS G623 Advanced Operating Systems 5 BITS G639 Practice School 20 \nCS G525 Advanced Computer      \n  Networks 5     \nCS G526 Advanced Algorithms and  Or   Or \n  Complexity 5     \nBITS G540 Research practice 4     \n    BITS G629T Dissertation 16 \n  Elective *     \n   20 (min)    16 (min) \n* Minimum 3 units \nNote: This is a currently operative pattern as approved by the Senate -appointed committee, subject to change if the \nsituation warrants. \n  "
         }
       ]
+    },
+    {
+      "context": "institutional course pool",
+      "id": "programme-0160",
+      "name": "Pool of Humanities courses for first degree programmes",
+      "programme_code": null,
+      "sources": [
+        {
+          "page_number": 333,
+          "source_file": "bulletin.pdf",
+          "text": "Pool of Humanities courses for first degree \nprogrammes:"
+        }
+      ]
     }
   ],
   "requirements": [
@@ -40246,15 +40259,15 @@
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F214",
       "course_count": null,
       "course_title": "Science, Technology and Modernity",
       "id": "requirement-01427",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40266,29 +40279,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F226",
       "course_count": null,
       "course_title": "Soft Skills for Professionals",
       "id": "requirement-01428",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40300,29 +40304,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F239",
       "course_count": null,
       "course_title": "Evolution of Architecture",
       "id": "requirement-01429",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40334,29 +40329,20 @@
       "units": 2,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F385",
       "course_count": null,
       "course_title": "Introduction to Gender Studies",
       "id": "requirement-01430",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40368,29 +40354,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F399",
       "course_count": null,
       "course_title": "Humanistic Theories of  Science and Technology",
       "id": "requirement-01431",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40402,29 +40379,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F419",
       "course_count": null,
       "course_title": "Management of Cross Cultural Engineering Teams",
       "id": "requirement-01432",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40436,29 +40404,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "BITS F458",
       "course_count": null,
       "course_title": "Professional Practice and Ethics",
       "id": "requirement-01433",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40470,29 +40429,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F211",
       "course_count": null,
       "course_title": "Modern Political Concepts",
       "id": "requirement-01434",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40504,29 +40454,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F212",
       "course_count": null,
       "course_title": "Environment, Development & Climate Change",
       "id": "requirement-01435",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40538,29 +40479,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F213",
       "course_count": null,
       "course_title": "Development Theories",
       "id": "requirement-01436",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40572,29 +40504,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F221",
       "course_count": null,
       "course_title": "Business Communication",
       "id": "requirement-01437",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40606,29 +40529,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F222",
       "course_count": null,
       "course_title": "Language Lab Practice",
       "id": "requirement-01438",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40640,29 +40554,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F223",
       "course_count": null,
       "course_title": "Introduction to Mass Communication",
       "id": "requirement-01439",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40674,29 +40579,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F224",
       "course_count": null,
       "course_title": "Print and Audio-Visual Advertisement",
       "id": "requirement-01440",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40708,29 +40604,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F231",
       "course_count": null,
       "course_title": "Dynamics of Social Change",
       "id": "requirement-01441",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40742,29 +40629,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F232",
       "course_count": null,
       "course_title": "Introductory Psychology",
       "id": "requirement-01442",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40776,29 +40654,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F233",
       "course_count": null,
       "course_title": "Public Policy",
       "id": "requirement-01443",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40810,29 +40679,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F234",
       "course_count": null,
       "course_title": "Development Economics",
       "id": "requirement-01444",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40844,29 +40704,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F242",
       "course_count": null,
       "course_title": "Cultural Studies",
       "id": "requirement-01445",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40878,29 +40729,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F243",
       "course_count": null,
       "course_title": "Current Affairs",
       "id": "requirement-01446",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40912,29 +40754,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F244",
       "course_count": null,
       "course_title": "Reporting and Writing for Media",
       "id": "requirement-01447",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40946,29 +40779,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F245",
       "course_count": null,
       "course_title": "Effective Public Speaking",
       "id": "requirement-01448",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -40980,29 +40804,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F311",
       "course_count": null,
       "course_title": "Introduction to Conflict Management",
       "id": "requirement-01449",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41014,29 +40829,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F312",
       "course_count": null,
       "course_title": "Applied Philosophy",
       "id": "requirement-01450",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41048,29 +40854,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F313",
       "course_count": null,
       "course_title": "Marxian Thoughts",
       "id": "requirement-01451",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41082,29 +40879,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F321",
       "course_count": null,
       "course_title": "Mass Media Content and Design",
       "id": "requirement-01452",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41116,29 +40904,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F322",
       "course_count": null,
       "course_title": "Critical Analysis of Literature and Cinema",
       "id": "requirement-01453",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41150,29 +40929,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F325",
       "course_count": null,
       "course_title": "Journalism",
       "id": "requirement-01454",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41184,29 +40954,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F326",
       "course_count": null,
       "course_title": "Creative Thinking",
       "id": "requirement-01455",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41218,29 +40979,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F327",
       "course_count": null,
       "course_title": "Selected Reading",
       "id": "requirement-01456",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41252,29 +41004,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F331",
       "course_count": null,
       "course_title": "Techniques in Social Research",
       "id": "requirement-01457",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41286,29 +41029,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F332",
       "course_count": null,
       "course_title": "Contemporary India",
       "id": "requirement-01458",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41320,29 +41054,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F333",
       "course_count": null,
       "course_title": "Public Administration",
       "id": "requirement-01459",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41354,29 +41079,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F334",
       "course_count": null,
       "course_title": "Global Business, Technology and Knowledge Sharing",
       "id": "requirement-01460",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41388,29 +41104,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F343",
       "course_count": null,
       "course_title": "Short Film and Video Production",
       "id": "requirement-01461",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41422,29 +41129,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "GS F344",
       "course_count": null,
       "course_title": "Copywriting",
       "id": "requirement-01462",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41456,29 +41154,20 @@
       "units": 2,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F211",
       "course_count": null,
       "course_title": "Introduction to Arabic",
       "id": "requirement-01463",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41490,29 +41179,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F221",
       "course_count": null,
       "course_title": "Readings from Drama",
       "id": "requirement-01464",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41524,29 +41204,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F222",
       "course_count": null,
       "course_title": "Linguistics",
       "id": "requirement-01465",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41558,29 +41229,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F223",
       "course_count": null,
       "course_title": "Appreciation of Indian Music",
       "id": "requirement-01466",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41592,29 +41254,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F224",
       "course_count": null,
       "course_title": "English Skills for Academic",
       "id": "requirement-01467",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41626,29 +41279,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F226",
       "course_count": null,
       "course_title": "Postmodernism",
       "id": "requirement-01468",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41660,29 +41304,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F227",
       "course_count": null,
       "course_title": "Cross Cultural Skills",
       "id": "requirement-01469",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41694,29 +41329,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F228",
       "course_count": null,
       "course_title": "Phonetics & Spoken English",
       "id": "requirement-01470",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41728,29 +41354,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F229",
       "course_count": null,
       "course_title": "Introduction to Western Music",
       "id": "requirement-01471",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41762,29 +41379,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F232",
       "course_count": null,
       "course_title": "Introduction to Development Studies",
       "id": "requirement-01472",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41796,29 +41404,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F233",
       "course_count": null,
       "course_title": "Main Trends in Indian History",
       "id": "requirement-01473",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41830,29 +41429,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F234",
       "course_count": null,
       "course_title": "Main Currents of Modern History",
       "id": "requirement-01474",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41864,29 +41454,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F235",
       "course_count": null,
       "course_title": "Introductory Philosophy",
       "id": "requirement-01475",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41898,29 +41479,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F236",
       "course_count": null,
       "course_title": "Symbolic Logic",
       "id": "requirement-01476",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41932,29 +41504,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F237",
       "course_count": null,
       "course_title": "Contemporary Indian English Fiction",
       "id": "requirement-01477",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -41966,29 +41529,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F238",
       "course_count": null,
       "course_title": "Sports and Society",
       "id": "requirement-01478",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42000,29 +41554,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F244",
       "course_count": null,
       "course_title": "Crime and New Media",
       "id": "requirement-01479",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42034,29 +41579,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F245",
       "course_count": null,
       "course_title": "Gender, Science and Technology",
       "id": "requirement-01480",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42068,29 +41604,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F246",
       "course_count": null,
       "course_title": "Philosophy of Nāgārjuna",
       "id": "requirement-01481",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42102,29 +41629,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F247",
       "course_count": null,
       "course_title": "Social Informatics",
       "id": "requirement-01482",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42136,29 +41654,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F248",
       "course_count": null,
       "course_title": "Introduction to Disability Studies",
       "id": "requirement-01483",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42170,29 +41679,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F249",
       "course_count": null,
       "course_title": "Politics in India",
       "id": "requirement-01484",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42204,29 +41704,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F250",
       "course_count": null,
       "course_title": "Comics and Visual Culture",
       "id": "requirement-01485",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42238,29 +41729,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F251",
       "course_count": null,
       "course_title": "Introduction to Discourse and Conversational Analysis",
       "id": "requirement-01486",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42272,29 +41754,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F252",
       "course_count": null,
       "course_title": "International Law",
       "id": "requirement-01487",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42306,29 +41779,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F253",
       "course_count": null,
       "course_title": "Upcycling Theory",
       "id": "requirement-01488",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42340,29 +41804,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F254",
       "course_count": null,
       "course_title": "Food and Society",
       "id": "requirement-01489",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42374,29 +41829,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F311",
       "course_count": null,
       "course_title": "Introduction to Videogame Studies",
       "id": "requirement-01490",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42408,29 +41854,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F313",
       "course_count": null,
       "course_title": "Introduction to Contemporary Arts",
       "id": "requirement-01491",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42442,29 +41879,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F314",
       "course_count": null,
       "course_title": "Maritime Studies and Blue Economy",
       "id": "requirement-01492",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42476,29 +41904,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F315",
       "course_count": null,
       "course_title": "Society, Business, and Politics",
       "id": "requirement-01493",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42510,29 +41929,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F316",
       "course_count": null,
       "course_title": "Popular Literature and Culture of South Asia",
       "id": "requirement-01494",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42544,29 +41954,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F317",
       "course_count": null,
       "course_title": "Introduction to Globalization",
       "id": "requirement-01495",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42578,29 +41979,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F318",
       "course_count": null,
       "course_title": "Introduction to Anthropology",
       "id": "requirement-01496",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42612,29 +42004,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F323",
       "course_count": null,
       "course_title": "Organizational Psychology",
       "id": "requirement-01497",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42646,29 +42029,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F325",
       "course_count": null,
       "course_title": "Cinematic Adaptation",
       "id": "requirement-01498",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42680,29 +42054,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F326",
       "course_count": null,
       "course_title": "Humanities and Design",
       "id": "requirement-01499",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42714,29 +42079,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F327",
       "course_count": null,
       "course_title": "Contemporary Drama",
       "id": "requirement-01500",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42748,29 +42104,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F328",
       "course_count": null,
       "course_title": "Human Resource Development",
       "id": "requirement-01501",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42782,29 +42129,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F329",
       "course_count": null,
       "course_title": "Musicology – An – Introduction",
       "id": "requirement-01502",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42816,29 +42154,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F330",
       "course_count": null,
       "course_title": "Appreciation of Art",
       "id": "requirement-01503",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42850,29 +42179,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F331",
       "course_count": null,
       "course_title": "Sankara’s Thoughts",
       "id": "requirement-01504",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42884,29 +42204,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F333",
       "course_count": null,
       "course_title": "Comparative Religion",
       "id": "requirement-01505",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42918,29 +42229,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F334",
       "course_count": null,
       "course_title": "Srimad Bhagavad Gita",
       "id": "requirement-01506",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42952,29 +42254,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F335",
       "course_count": null,
       "course_title": "Literary Criticism",
       "id": "requirement-01507",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -42986,29 +42279,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F336",
       "course_count": null,
       "course_title": "Modern Fiction",
       "id": "requirement-01508",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43020,29 +42304,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F337",
       "course_count": null,
       "course_title": "English Literary Forms and Movements",
       "id": "requirement-01509",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43054,29 +42329,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F338",
       "course_count": null,
       "course_title": "Comparative Indian Literature",
       "id": "requirement-01510",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43088,29 +42354,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F339",
       "course_count": null,
       "course_title": "Theatre Art Acting and Production",
       "id": "requirement-01511",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43122,29 +42379,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F340",
       "course_count": null,
       "course_title": "Post Colonial Literatures",
       "id": "requirement-01512",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43156,29 +42404,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F341",
       "course_count": null,
       "course_title": "Performance Design",
       "id": "requirement-01513",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43190,29 +42429,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F342",
       "course_count": null,
       "course_title": "Advanced Communicative English",
       "id": "requirement-01514",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43224,29 +42454,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F343",
       "course_count": null,
       "course_title": "Professional Ethics",
       "id": "requirement-01515",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43258,29 +42479,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F344",
       "course_count": null,
       "course_title": "Heritage of India",
       "id": "requirement-01516",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43292,29 +42504,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F345",
       "course_count": null,
       "course_title": "Gandhian Thoughts",
       "id": "requirement-01517",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43326,29 +42529,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F346",
       "course_count": null,
       "course_title": "International Relations",
       "id": "requirement-01518",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43360,29 +42554,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F347",
       "course_count": null,
       "course_title": "Introduction to Carnatic Music",
       "id": "requirement-01519",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43394,29 +42579,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F348",
       "course_count": null,
       "course_title": "Introduction to Hindustani Music",
       "id": "requirement-01520",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43428,29 +42604,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F349",
       "course_count": null,
       "course_title": "Ecocriticism",
       "id": "requirement-01521",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43462,29 +42629,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F350",
       "course_count": null,
       "course_title": "Human Rights: History, Theory & Practice",
       "id": "requirement-01522",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43496,29 +42654,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F351",
       "course_count": null,
       "course_title": "Social and Political Ecology",
       "id": "requirement-01523",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43530,29 +42679,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F352",
       "course_count": null,
       "course_title": "Technology, Work and Society",
       "id": "requirement-01524",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43564,29 +42704,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F353",
       "course_count": null,
       "course_title": "Philosophy of Aesthetics",
       "id": "requirement-01525",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43598,29 +42729,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F354",
       "course_count": null,
       "course_title": "Introduction to Islamic Economy",
       "id": "requirement-01526",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43632,29 +42754,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F355",
       "course_count": null,
       "course_title": "Dictatorship, Democracy & Development",
       "id": "requirement-01527",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43666,29 +42779,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F356",
       "course_count": null,
       "course_title": "Social Movements and Protest Politics",
       "id": "requirement-01528",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43700,29 +42804,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F364",
       "course_count": null,
       "course_title": "Political Economy of Gulf Cooperation Council States",
       "id": "requirement-01529",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43734,29 +42829,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F365",
       "course_count": null,
       "course_title": "Science of Sustainable Happiness",
       "id": "requirement-01530",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43768,29 +42854,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F368",
       "course_count": null,
       "course_title": "Asian Cinemas and Cultures",
       "id": "requirement-01531",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43802,29 +42879,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F369",
       "course_count": null,
       "course_title": "Caste and Gender in India",
       "id": "requirement-01532",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43836,29 +42904,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F371",
       "course_count": null,
       "course_title": "Cities-Life, Issues and Conflicts",
       "id": "requirement-01533",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43870,29 +42929,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F372",
       "course_count": null,
       "course_title": "Introduction to  Social Psychology",
       "id": "requirement-01534",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43904,29 +42954,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F373",
       "course_count": null,
       "course_title": "Shakespeare and Popular Culture",
       "id": "requirement-01535",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43938,29 +42979,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F374",
       "course_count": null,
       "course_title": "Urban Modernity and the Renewal of Paris",
       "id": "requirement-01536",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -43972,29 +43004,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F375",
       "course_count": null,
       "course_title": "Business and Politics in Colonial and Post Colonial India: a historical approach",
       "id": "requirement-01537",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44006,29 +43029,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F378",
       "course_count": null,
       "course_title": "Cinemas of India: From Past to Present",
       "id": "requirement-01538",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44040,29 +43054,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F380",
       "course_count": null,
       "course_title": "Performance Studies",
       "id": "requirement-01539",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44074,29 +43079,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F381",
       "course_count": null,
       "course_title": "Environmental Sustainability Ventures",
       "id": "requirement-01540",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44108,29 +43104,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F382",
       "course_count": null,
       "course_title": "Housing: programs, policies and practices",
       "id": "requirement-01541",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44142,29 +43129,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F383",
       "course_count": null,
       "course_title": "Introduction to Museum Studies",
       "id": "requirement-01542",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44176,29 +43154,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F384",
       "course_count": null,
       "course_title": "Indian National Movement",
       "id": "requirement-01543",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44210,29 +43179,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F385",
       "course_count": null,
       "course_title": "Mental Health Literacy for Youth",
       "id": "requirement-01544",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44244,29 +43204,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F386",
       "course_count": null,
       "course_title": "Ocean Humanities",
       "id": "requirement-01545",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44278,29 +43229,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F387",
       "course_count": null,
       "course_title": "History of Transport and Mobility in Modern Asia",
       "id": "requirement-01546",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44312,29 +43254,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F388",
       "course_count": null,
       "course_title": "Gandhi in Literature",
       "id": "requirement-01547",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44346,29 +43279,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F389",
       "course_count": null,
       "course_title": "Introduction to Data and Society",
       "id": "requirement-01548",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44380,29 +43304,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F390",
       "course_count": null,
       "course_title": "Science and the Humanities: the Two Culture Debate",
       "id": "requirement-01549",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44414,29 +43329,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F391",
       "course_count": null,
       "course_title": "Acoustic Humanities",
       "id": "requirement-01550",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44448,29 +43354,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F392",
       "course_count": null,
       "course_title": "Crisis Communication",
       "id": "requirement-01551",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44482,29 +43379,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F393",
       "course_count": null,
       "course_title": "Introduction to Metacognition",
       "id": "requirement-01552",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44516,29 +43404,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F394",
       "course_count": null,
       "course_title": "The Stud of Aging & Soc across cultures",
       "id": "requirement-01553",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44550,29 +43429,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F395",
       "course_count": null,
       "course_title": "Chinese Politics",
       "id": "requirement-01554",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44584,29 +43454,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F396",
       "course_count": null,
       "course_title": "Indian Psychology",
       "id": "requirement-01555",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44618,29 +43479,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "HSS F399",
       "course_count": null,
       "course_title": "Introduction to American Literature",
       "id": "requirement-01556",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44652,29 +43504,20 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },
     {
-      "category": "DISCIPLINE ELECTIVE COURSES",
+      "category": "Humanities Electives",
       "course_code": "SANS F111",
       "course_count": null,
       "course_title": "Sanskrit",
       "id": "requirement-01557",
       "kind": "elective_option",
-      "needs_verification": true,
-      "programme_id": "programme-0128",
-      "programme_name": null,
+      "needs_verification": false,
+      "programme_id": "programme-0160",
+      "programme_name": "Pool of Humanities courses for first degree programmes",
       "semester": null,
       "sources": [
         {
@@ -44686,16 +43529,7 @@
       "units": 3,
       "validation": {
         "is_valid": true,
-        "issues": [
-          {
-            "code": "missing_programme_scope",
-            "severity": "warning"
-          },
-          {
-            "code": "manual_verification",
-            "severity": "warning"
-          }
-        ]
+        "issues": []
       },
       "year": null
     },

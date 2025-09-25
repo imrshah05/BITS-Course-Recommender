@@ -4,13 +4,15 @@ import argparse
 import re
 from pathlib import Path
 
+from preprocessing.course_codes import CODE
 from preprocessing.dataset import write_dataset
 from preprocessing.pdf_extractor import extract_pdf_text
 
-CODE = r'[A-Z]{2,8}\*?\s+(?:[FGK]\d{3}[A-Z]?|Z[CG]\d{3}[A-Z]?)'
 ROW = re.compile(r'^(' + CODE + r')\s+(.+?)\s+(\d+|-)\s+(\d+|-)\s+(\d+)(\*?)$')
 CATEGORY = re.compile(r'^(CORE COURSES|DISCIPLINE ELECTIVE COURSES|Electives)(?:\s+L P U)?\s*$', re.I)
 PAGE = re.compile(r'^\s*(IV|V)-(\d+)\s*$', re.M)
+SCOPED_POOL = re.compile(r'\b(Pool of [A-Za-z ]+ courses for [A-Za-z ]+?\s+programmes):?', re.I)
+POOL_BOUNDARY = re.compile(r'^(Other Courses|List of Audit Type Courses|MINOR PROGRAMMES FOR FIRST)', re.I | re.M)
 
 
 def validate_requirement(record):
@@ -33,6 +35,61 @@ def validate_requirement(record):
     if record.get('needs_verification'):
         flag('manual_verification')
     return {'is_valid': not any(i['severity'] == 'error' for i in issues), 'issues': issues}
+
+
+def recover_scoped_course_pools(dataset):
+    """Split explicitly scoped institutional pools from an unnamed catalogue block."""
+    programmes = dataset.get('programmes', [])
+    requirements = dataset.get('requirements', [])
+    humanities_ids = {item['id'] for item in programmes
+                      if (item.get('name') or '').lower().startswith('pool of humanities courses')}
+    for requirement in requirements:
+        if requirement.get('programme_id') in humanities_ids:
+            requirement['category'] = 'Humanities Electives'
+            requirement['validation'] = validate_requirement(requirement)
+    for parent in list(programmes):
+        if parent.get('name') or parent.get('context') != 'discipline course list':
+            continue
+        pages = {source['page_number']: source for source in parent.get('sources', [])}
+        starts = []
+        for page_number, source_record in pages.items():
+            for match in SCOPED_POOL.finditer(source_record['text']):
+                name = ' '.join(match[1].split())
+                starts.append((page_number, match.start(), name, match[0]))
+        for start_page, start_offset, name, heading in starts:
+            end = None
+            for page_number in sorted(number for number in pages if number >= start_page):
+                text = pages[page_number]['text']
+                search_from = start_offset + len(heading) if page_number == start_page else 0
+                boundary = POOL_BOUNDARY.search(text[search_from:])
+                if boundary:
+                    end = (page_number, search_from + boundary.start())
+                    break
+            scoped = []
+            for requirement in requirements:
+                if requirement.get('programme_id') != parent['id'] or not requirement.get('course_code'):
+                    continue
+                source_record = requirement['sources'][0]
+                page_number = source_record['page_number']
+                page_text = pages.get(page_number, {}).get('text', '')
+                position = page_text.find(requirement['course_code'])
+                point = (page_number, position)
+                if position >= 0 and point > (start_page, start_offset) and (end is None or point < end):
+                    scoped.append(requirement)
+            if not scoped:
+                continue
+            programme_id = f'programme-{len(programmes)+1:04}'
+            evidence = dict(source_file=dataset['source_file'], page_number=start_page, text=heading)
+            programmes.append(dict(id=programme_id, name=name, programme_code=None,
+                                   context='institutional course pool', sources=[evidence]))
+            for requirement in scoped:
+                requirement['programme_id'] = programme_id
+                requirement['programme_name'] = name
+                if name.lower().startswith('pool of humanities courses'):
+                    requirement['category'] = 'Humanities Electives'
+                requirement['needs_verification'] = False
+                requirement['validation'] = validate_requirement(requirement)
+    return dataset
 
 
 def extract_programme_requirements(pages):
@@ -174,12 +231,13 @@ def extract_programme_requirements(pages):
             active = item
             category = None
             add('programme_evidence', item['sources'][0], sources=item['sources'])
-    return dict(source_file=pages[0]['source_file'], pages_processed=len(pages),
-                programmes=programmes, requirements=requirements, unresolved_sections=unresolved,
-                limitations=['Programme headings remain separate source occurrences; no inferred equivalence.',
-                             'Unparsed tables, footnotes and scope conditions remain in programme evidence.',
-                             'Semester columns and higher-degree/WILP structures require review.',
-                             'Elective options are not mandatory course requirements.'])
+    result = dict(source_file=pages[0]['source_file'], pages_processed=len(pages),
+                  programmes=programmes, requirements=requirements, unresolved_sections=unresolved,
+                  limitations=['Programme headings remain separate source occurrences; no inferred equivalence.',
+                               'Unparsed tables, footnotes and scope conditions remain in programme evidence.',
+                               'Semester columns and higher-degree/WILP structures require review.',
+                               'Elective options are not mandatory course requirements.'])
+    return recover_scoped_course_pools(result)
 
 
 def build_programme_requirements(source_path, output_path):

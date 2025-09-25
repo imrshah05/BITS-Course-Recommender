@@ -87,6 +87,23 @@ class ProgrammeRequirementsTests(unittest.TestCase):
         result = extract_programme_requirements(catalogue('CS F211 Algorithms 3 0 3\nCHEMISTRY\nCORE COURSES L P U\nCHEM F211 Chemistry 3 0 3'))
         self.assertEqual([p['name'] for p in result['programmes']], ['COMPUTER SCIENCE', 'CHEMISTRY'])
 
+    def test_explicit_institutional_pool_scope_and_boundary(self):
+        pages = [page('List of Courses for B.E.\nCORE COURSES L P U\nBBA F121 Business Ethics 3 0 3\n'
+                      'DISCIPLINE ELECTIVE COURSES L P U\n'
+                      'Pool of Humanities courses for first degree programmes:\n'
+                      'HSS F221 Readings from Drama 3 0 3', 10),
+                 page('HSS F222 Linguistics 3 0 3\nOther Courses\n'
+                      'BITS F211 Introduction to IPR 1 0 1', 11)]
+        result = extract_programme_requirements(pages)
+        rows = {row['course_code']: row for row in result['requirements'] if row['course_code']}
+        scope = 'Pool of Humanities courses for first degree programmes'
+        self.assertIsNone(rows['BBA F121']['programme_name'])
+        self.assertEqual(rows['HSS F221']['programme_name'], scope)
+        self.assertEqual(rows['HSS F222']['programme_name'], scope)
+        self.assertEqual(rows['HSS F221']['category'], 'Humanities Electives')
+        self.assertIsNone(rows['BITS F211']['programme_name'])
+        self.assertFalse(rows['HSS F221']['needs_verification'])
+
     def test_determinism_no_mutation(self):
         pages = catalogue(); original = copy.deepcopy(pages)
         self.assertEqual(extract_programme_requirements(pages), extract_programme_requirements(pages))

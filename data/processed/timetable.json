@@ -6102,15 +6102,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6176,15 +6172,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6244,15 +6236,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6271,7 +6259,7 @@
       "instructors": [],
       "meetings": [],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": null,
       "section": "P2",
       "section_label": null,
@@ -6287,13 +6275,8 @@
       "start_time": null,
       "status": "cancelled",
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -6351,15 +6334,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6419,15 +6398,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6487,15 +6462,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6555,15 +6526,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6623,15 +6590,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6691,15 +6654,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6759,15 +6718,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6827,15 +6782,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6895,15 +6846,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -6963,15 +6910,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7003,7 +6946,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "2206",
       "section": "P13",
       "section_label": null,
@@ -7019,13 +6962,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -7083,15 +7021,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7151,15 +7085,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7219,15 +7149,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7270,15 +7196,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7345,15 +7267,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7477,7 +7395,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -7490,10 +7408,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7530,15 +7444,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7575,15 +7485,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7620,15 +7526,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7665,15 +7567,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7710,15 +7608,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7737,7 +7631,7 @@
       "instructors": [],
       "meetings": [],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": null,
       "section": "L1",
       "section_label": null,
@@ -7753,13 +7647,8 @@
       "start_time": null,
       "status": "cancelled",
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -7794,15 +7683,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7821,7 +7706,7 @@
       "instructors": [],
       "meetings": [],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": null,
       "section": "L1",
       "section_label": null,
@@ -7837,13 +7722,8 @@
       "start_time": null,
       "status": "cancelled",
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -7878,15 +7758,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7923,15 +7799,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -7950,7 +7822,7 @@
       "instructors": [],
       "meetings": [],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": null,
       "section": "L1",
       "section_label": null,
@@ -7966,13 +7838,8 @@
       "start_time": null,
       "status": "cancelled",
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -7989,7 +7856,7 @@
       "instructors": [],
       "meetings": [],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": null,
       "section": "L1",
       "section_label": null,
@@ -8005,13 +7872,8 @@
       "start_time": null,
       "status": "cancelled",
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -8046,15 +7908,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -8091,15 +7949,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -8136,15 +7990,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -8181,15 +8031,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -8226,15 +8072,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -8283,7 +8125,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
@@ -8292,10 +8134,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13154,7 +12992,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -13163,10 +13001,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13201,7 +13035,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -13210,10 +13044,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13279,15 +13109,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13353,15 +13179,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13442,15 +13264,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13531,15 +13349,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13610,15 +13424,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13698,15 +13508,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13777,15 +13583,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13855,15 +13657,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -13934,15 +13732,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14008,10 +13802,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           },
           {
             "code": "malformed_hours",
@@ -14130,15 +13920,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14203,15 +13989,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14258,7 +14040,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14271,10 +14053,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14331,7 +14109,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14344,10 +14122,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14382,7 +14156,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14391,10 +14165,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14429,7 +14199,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14438,10 +14208,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14476,7 +14242,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14485,10 +14251,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14523,7 +14285,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14532,10 +14294,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14570,7 +14328,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14579,10 +14337,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14631,7 +14385,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
@@ -14640,10 +14394,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14700,7 +14450,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14713,10 +14463,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14763,7 +14509,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14776,10 +14522,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14826,7 +14568,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14839,10 +14581,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14889,7 +14627,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14902,10 +14640,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -14962,7 +14696,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -14975,10 +14709,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15025,7 +14755,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -15038,10 +14768,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15088,7 +14814,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -15101,10 +14827,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15151,7 +14873,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -15164,10 +14886,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15234,15 +14952,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15317,15 +15031,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15364,7 +15074,7 @@
         "date": "05/10",
         "session": "FN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1232",
       "section": "L1",
       "section_label": null,
@@ -15380,13 +15090,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -15427,15 +15132,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15478,15 +15179,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15529,15 +15226,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15580,15 +15273,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -15607,7 +15296,7 @@
       "instructors": [],
       "meetings": [],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": null,
       "section": "L1",
       "section_label": null,
@@ -15623,13 +15312,8 @@
       "start_time": null,
       "status": "cancelled",
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -19930,15 +19614,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -22479,15 +22159,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -22530,15 +22206,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -25240,7 +24912,7 @@
         "date": "05/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "5105",
       "section": "L1",
       "section_label": null,
@@ -25256,13 +24928,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25298,7 +24965,7 @@
         "date": "05/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "5102",
       "section": "L2",
       "section_label": null,
@@ -25314,13 +24981,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25349,7 +25011,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T1",
       "section_label": "Tutorial",
@@ -25365,13 +25027,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25400,7 +25057,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T2",
       "section_label": null,
@@ -25416,13 +25073,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25451,7 +25103,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6159",
       "section": "T3",
       "section_label": null,
@@ -25467,13 +25119,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25502,7 +25149,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "T4",
       "section_label": null,
@@ -25518,13 +25165,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25553,7 +25195,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6154",
       "section": "T5",
       "section_label": null,
@@ -25569,13 +25211,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25604,7 +25241,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T6",
       "section_label": null,
@@ -25620,13 +25257,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25655,7 +25287,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T7",
       "section_label": null,
@@ -25671,13 +25303,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25706,7 +25333,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "T8",
       "section_label": null,
@@ -25722,13 +25349,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25757,7 +25379,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6154",
       "section": "T9",
       "section_label": null,
@@ -25773,13 +25395,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25808,7 +25425,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T10",
       "section_label": null,
@@ -25824,13 +25441,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25859,7 +25471,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T11",
       "section_label": null,
@@ -25875,13 +25487,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25910,7 +25517,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6159",
       "section": "T12",
       "section_label": null,
@@ -25926,13 +25533,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -25961,7 +25563,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6164",
       "section": "T13",
       "section_label": null,
@@ -25977,13 +25579,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -26012,7 +25609,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6101",
       "section": "T14",
       "section_label": null,
@@ -26028,13 +25625,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -26063,7 +25655,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6102",
       "section": "T15",
       "section_label": null,
@@ -26079,13 +25671,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -26126,15 +25713,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26165,7 +25748,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6103",
       "section": "T1",
       "section_label": "Tutorial",
@@ -26181,13 +25764,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -26265,15 +25843,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26333,15 +25907,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26421,15 +25991,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26509,15 +26075,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26597,15 +26159,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26685,15 +26243,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26773,15 +26327,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26851,15 +26401,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -26939,15 +26485,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -27027,15 +26569,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -27115,15 +26653,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -27203,15 +26737,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -27291,15 +26821,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -27379,15 +26905,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -35523,7 +35045,7 @@
         "date": "06/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6107",
       "section": "L1",
       "section_label": null,
@@ -35539,13 +35061,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35586,15 +35103,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -35626,7 +35139,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6017",
       "section": "P1",
       "section_label": "Practical",
@@ -35642,13 +35155,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35678,7 +35186,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6019",
       "section": "P2",
       "section_label": null,
@@ -35694,13 +35202,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35737,7 +35240,7 @@
         "date": "05/10",
         "session": "FN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6101",
       "section": "L1",
       "section_label": null,
@@ -35753,13 +35256,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35796,7 +35294,7 @@
         "date": "09/10",
         "session": "AN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6101",
       "section": "L1",
       "section_label": null,
@@ -35812,13 +35310,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35848,7 +35341,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6019",
       "section": "P1",
       "section_label": "Practical",
@@ -35864,13 +35357,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35915,7 +35403,7 @@
         "date": "07/10",
         "session": "FN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6101",
       "section": "L1",
       "section_label": null,
@@ -35931,13 +35419,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -35967,7 +35450,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6117",
       "section": "P1",
       "section_label": "Practical",
@@ -35983,13 +35466,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -36037,10 +35515,6 @@
       "validation": {
         "is_valid": false,
         "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          },
           {
             "code": "malformed_hours",
             "severity": "error"
@@ -36090,7 +35564,7 @@
         "date": "05/10",
         "session": "AN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6102",
       "section": "L1",
       "section_label": null,
@@ -36106,13 +35580,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -36142,7 +35611,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6013",
       "section": "P1",
       "section_label": "Practical",
@@ -36158,13 +35627,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -36209,7 +35673,7 @@
         "date": "07/10",
         "session": "FN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6103",
       "section": "L1",
       "section_label": null,
@@ -36225,13 +35689,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -36268,7 +35727,7 @@
         "date": "06/10",
         "session": "AN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6105",
       "section": "L1",
       "section_label": null,
@@ -36284,13 +35743,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -36331,15 +35785,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -50778,7 +50228,7 @@
         "date": "09/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "5105",
       "section": "L1",
       "section_label": null,
@@ -50794,13 +50244,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -50836,7 +50281,7 @@
         "date": "09/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "5105",
       "section": "L2",
       "section_label": null,
@@ -50852,13 +50297,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -50916,15 +50356,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -50984,15 +50420,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51052,15 +50484,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51120,15 +50548,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51188,15 +50612,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51256,15 +50676,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51324,15 +50740,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51392,15 +50804,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51460,15 +50868,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51528,15 +50932,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51596,15 +50996,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -51635,7 +51031,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1233",
       "section": "T1",
       "section_label": "Tutorial",
@@ -51651,13 +51047,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51686,7 +51077,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1232",
       "section": "T2",
       "section_label": null,
@@ -51702,13 +51093,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51737,7 +51123,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T3",
       "section_label": null,
@@ -51753,13 +51139,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51788,7 +51169,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1202",
       "section": "T4",
       "section_label": null,
@@ -51804,13 +51185,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51839,7 +51215,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1204",
       "section": "T5",
       "section_label": null,
@@ -51855,13 +51231,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51890,7 +51261,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1226",
       "section": "T6",
       "section_label": null,
@@ -51906,13 +51277,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51941,7 +51307,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1201",
       "section": "T7",
       "section_label": null,
@@ -51957,13 +51323,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -51992,7 +51353,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "T8",
       "section_label": null,
@@ -52008,13 +51369,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -52043,7 +51399,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1232",
       "section": "T9",
       "section_label": null,
@@ -52059,13 +51415,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -52094,7 +51445,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1202",
       "section": "T10",
       "section_label": null,
@@ -52110,13 +51461,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -52145,7 +51491,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1203",
       "section": "T11",
       "section_label": null,
@@ -52161,13 +51507,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -52208,15 +51549,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -52263,7 +51600,7 @@
         "date": "07/10",
         "session": "FN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1232",
       "section": "L1",
       "section_label": null,
@@ -52279,13 +51616,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -52326,15 +51658,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -55787,7 +55115,7 @@
         "date": "05/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "L1",
       "section_label": null,
@@ -55803,13 +55131,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -67791,15 +67114,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -67866,15 +67185,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -67941,15 +67256,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -67980,7 +67291,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6154",
       "section": "T1",
       "section_label": "Tutorial",
@@ -67996,13 +67307,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68031,7 +67337,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T2",
       "section_label": null,
@@ -68047,13 +67353,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68082,7 +67383,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T3",
       "section_label": null,
@@ -68098,13 +67399,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68133,7 +67429,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6159",
       "section": "T4",
       "section_label": null,
@@ -68149,13 +67445,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68184,7 +67475,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6160",
       "section": "T5",
       "section_label": null,
@@ -68200,13 +67491,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68235,7 +67521,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6161",
       "section": "T6",
       "section_label": null,
@@ -68251,13 +67537,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68286,7 +67567,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6162",
       "section": "T7",
       "section_label": null,
@@ -68302,13 +67583,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68337,7 +67613,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6151",
       "section": "T8",
       "section_label": null,
@@ -68353,13 +67629,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68388,7 +67659,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "T9",
       "section_label": null,
@@ -68404,13 +67675,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68439,7 +67705,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6154",
       "section": "T10",
       "section_label": null,
@@ -68455,13 +67721,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68490,7 +67751,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T11",
       "section_label": null,
@@ -68506,13 +67767,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68541,7 +67797,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T12",
       "section_label": null,
@@ -68557,13 +67813,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68592,7 +67843,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6154",
       "section": "T13",
       "section_label": null,
@@ -68608,13 +67859,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68643,7 +67889,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T14",
       "section_label": null,
@@ -68659,13 +67905,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68694,7 +67935,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T15",
       "section_label": null,
@@ -68710,13 +67951,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68745,7 +67981,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6159",
       "section": "T16",
       "section_label": null,
@@ -68761,13 +67997,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68796,7 +68027,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "T17",
       "section_label": null,
@@ -68812,13 +68043,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68847,7 +68073,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6154",
       "section": "T18",
       "section_label": null,
@@ -68863,13 +68089,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68898,7 +68119,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6157",
       "section": "T19",
       "section_label": null,
@@ -68914,13 +68135,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -68949,7 +68165,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6158",
       "section": "T20",
       "section_label": null,
@@ -68965,13 +68181,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69000,7 +68211,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6161",
       "section": "T21",
       "section_label": null,
@@ -69016,13 +68227,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69051,7 +68257,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6162",
       "section": "T22",
       "section_label": null,
@@ -69067,13 +68273,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69102,7 +68303,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6155",
       "section": "T23",
       "section_label": null,
@@ -69118,13 +68319,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69153,7 +68349,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6156",
       "section": "T24",
       "section_label": null,
@@ -69169,13 +68365,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69204,7 +68395,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6163",
       "section": "T25",
       "section_label": null,
@@ -69220,13 +68411,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69255,7 +68441,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6164",
       "section": "T26",
       "section_label": null,
@@ -69271,13 +68457,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69314,7 +68495,7 @@
         "date": "06/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6155",
       "section": "L1",
       "section_label": null,
@@ -69330,13 +68511,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69365,7 +68541,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6156",
       "section": "T1",
       "section_label": "Tutorial",
@@ -69381,13 +68557,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -69428,15 +68599,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -69479,15 +68646,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -74041,15 +73204,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -74092,15 +73251,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -74139,7 +73294,7 @@
         "date": "08/10",
         "session": "AN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1205",
       "section": "L1",
       "section_label": null,
@@ -74155,13 +73310,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -77814,7 +76964,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
@@ -77823,10 +76973,6 @@
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -77873,15 +77019,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -77928,15 +77070,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -77983,15 +77121,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78038,15 +77172,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78093,15 +77223,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78148,15 +77274,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78265,7 +77387,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
@@ -78274,10 +77396,6 @@
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78324,15 +77442,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78379,15 +77493,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78434,15 +77544,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78489,15 +77595,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78544,15 +77646,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78599,15 +77697,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -78654,15 +77748,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "conflicting_section_occurrences",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -90370,15 +89460,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -90444,15 +89530,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -90483,7 +89565,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6152",
       "section": "T1",
       "section_label": "Tutorial",
@@ -90499,13 +89581,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90534,7 +89611,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6155",
       "section": "T2",
       "section_label": null,
@@ -90550,13 +89627,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90585,7 +89657,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6156",
       "section": "T3",
       "section_label": null,
@@ -90601,13 +89673,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90636,7 +89703,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6163",
       "section": "T4",
       "section_label": null,
@@ -90652,13 +89719,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90687,7 +89749,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6164",
       "section": "T5",
       "section_label": null,
@@ -90703,13 +89765,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90738,7 +89795,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6104",
       "section": "T6",
       "section_label": null,
@@ -90754,13 +89811,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90789,7 +89841,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6159",
       "section": "T7",
       "section_label": null,
@@ -90805,13 +89857,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90840,7 +89887,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6160",
       "section": "T8",
       "section_label": null,
@@ -90856,13 +89903,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90891,7 +89933,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6161",
       "section": "T9",
       "section_label": null,
@@ -90907,13 +89949,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90942,7 +89979,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6107",
       "section": "T10",
       "section_label": null,
@@ -90958,13 +89995,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -90993,7 +90025,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6161",
       "section": "T11",
       "section_label": null,
@@ -91009,13 +90041,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91044,7 +90071,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6162",
       "section": "T12",
       "section_label": null,
@@ -91060,13 +90087,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91095,7 +90117,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6160",
       "section": "T13",
       "section_label": null,
@@ -91111,13 +90133,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91146,7 +90163,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6161",
       "section": "T14",
       "section_label": null,
@@ -91162,13 +90179,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91197,7 +90209,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6160",
       "section": "T15",
       "section_label": null,
@@ -91213,13 +90225,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91256,7 +90263,7 @@
         "date": "07/10",
         "session": "AN2"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "1205",
       "section": "L1",
       "section_label": null,
@@ -91272,13 +90279,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91307,7 +90309,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "T5",
       "section_label": "Tutorial",
@@ -91323,13 +90325,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91359,7 +90356,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "2247A",
       "section": "P1",
       "section_label": null,
@@ -91375,13 +90372,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -91444,10 +90436,6 @@
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           },
           {
             "code": "malformed_hours",
@@ -91521,15 +90509,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -91589,15 +90573,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -91667,15 +90647,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -91735,15 +90711,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -91803,15 +90775,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -91871,15 +90839,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -91939,15 +90903,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92017,15 +90977,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92085,15 +91041,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92125,7 +91077,7 @@
         }
       ],
       "midsem_slot": null,
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "2247A",
       "section": "P12",
       "section_label": null,
@@ -92141,13 +91093,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -92205,15 +91152,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92283,15 +91226,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92351,15 +91290,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92419,15 +91354,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "unresolved_continuation",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92470,15 +91401,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92521,15 +91448,11 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -92568,7 +91491,7 @@
         "date": "05/10",
         "session": "FN1"
       },
-      "needs_verification": true,
+      "needs_verification": false,
       "room": "6153",
       "section": "L1",
       "section_label": null,
@@ -92584,13 +91507,8 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
-        "issues": [
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
-          }
-        ]
+        "is_valid": true,
+        "issues": []
       }
     },
     {
@@ -94148,7 +93066,7 @@
       "start_time": null,
       "status": null,
       "validation": {
-        "is_valid": false,
+        "is_valid": true,
         "issues": [
           {
             "code": "ambiguous_instructor_room_or_meeting",
@@ -94157,10 +93075,6 @@
           {
             "code": "missing_meeting_information",
             "severity": "warning"
-          },
-          {
-            "code": "malformed_course_code",
-            "severity": "error"
           }
         ]
       }
@@ -94170,12 +93084,12 @@
   "summary": {
     "compre_slots": 604,
     "duplicates": 0,
-    "errors": 298,
+    "errors": 52,
     "instructors": 1568,
     "meetings": 1476,
     "midsem_slots": 607,
     "missing_traceability": 0,
-    "needs_verification": 830,
+    "needs_verification": 728,
     "records": 1708,
     "rooms": 1325,
     "section_types": {

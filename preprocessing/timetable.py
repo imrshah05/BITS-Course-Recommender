@@ -8,8 +8,8 @@ from pathlib import Path
 import re
 
 from preprocessing.dataset import write_dataset
+from preprocessing.course_codes import CODE
 from preprocessing.pdf_extractor import extract_pdf_text
-from preprocessing.programme_requirements import CODE
 
 HEADING = 'II. COURSEWISE TIMETABLE'
 COURSE = re.compile(r'^(\d{3,})\s+([A-Z]+\s+\S+)\s+(.+?)\s+((?:(?:\d+(?:\.\d+)?|-)[ ]+){4}(?:\d+(?:\.\d+)?|-))\s+(.*)$')
@@ -49,6 +49,37 @@ def validate_record(record):
     record['needs_verification'] = bool(record['validation']['issues'])
     record['validation']['is_valid'] = not any(i['severity'] == 'error' for i in record['validation']['issues'])
     return record['validation']
+
+
+def _summary(records, unresolved_count, duplicate_count=None):
+    groups = {(record.get('computer_code'), record.get('course_code'), record.get('section'))
+              for record in records}
+    return dict(records=len(records), unique_course_codes=len({r['course_code'] for r in records if r['course_code']}),
+                unique_sections=len(groups), section_types=dict(Counter(r['section_type'] for r in records)),
+                meetings=sum(len(r['meetings']) for r in records),
+                instructors=sum(bool(r['instructors']) for r in records), rooms=sum(bool(r['room']) for r in records),
+                midsem_slots=sum(bool(r['midsem_slot']) for r in records), compre_slots=sum(bool(r['compre_slot']) for r in records),
+                needs_verification=sum(r['needs_verification'] for r in records),
+                duplicates=(duplicate_count if duplicate_count is not None else
+                            sum(any(i['code'] == 'duplicate_record' for i in r['validation']['issues']) for r in records) // 2),
+                warnings=sum(i['severity'] == 'warning' for r in records for i in r['validation']['issues']),
+                errors=sum(i['severity'] == 'error' for r in records for i in r['validation']['issues']),
+                missing_traceability=sum(any(i['code'] == 'missing_traceability' for i in r['validation']['issues']) for r in records),
+                unresolved_lines=unresolved_count)
+
+
+def revalidate_timetable_dataset(dataset):
+    """Reapply current code validation to existing records without reading the PDF."""
+    result = deepcopy(dataset)
+    for record in result.get('records', []):
+        retained = [issue for issue in (record.get('validation') or {}).get('issues', [])
+                    if issue.get('code') not in ('malformed_course_code', 'missing_course_code')]
+        record['validation'] = {'issues': retained}
+        record['needs_verification'] = bool(retained)
+        validate_record(record)
+    result['summary'] = _summary(result.get('records', []), len(result.get('unresolved_evidence', [])),
+                                 (result.get('summary') or {}).get('duplicates'))
+    return result
 
 
 def extract_timetable(pages):
@@ -163,16 +194,7 @@ def extract_timetable(pages):
         validate_record(record)
     records.sort(key=lambda r: (r['course_code'] or '', r['computer_code'] or '', r['section_type'], int(r['section'][1:]),
                                 r['sources'][0]['page_number'], r['sources'][0]['text']))
-    summary = dict(records=len(records), unique_course_codes=len({r['course_code'] for r in records if r['course_code']}),
-                   unique_sections=len(groups), section_types=dict(Counter(r['section_type'] for r in records)),
-                   meetings=sum(len(r['meetings']) for r in records),
-                   instructors=sum(bool(r['instructors']) for r in records), rooms=sum(bool(r['room']) for r in records),
-                   midsem_slots=sum(bool(r['midsem_slot']) for r in records), compre_slots=sum(bool(r['compre_slot']) for r in records),
-                   needs_verification=sum(r['needs_verification'] for r in records), duplicates=duplicates,
-                   warnings=sum(i['severity']=='warning' for r in records for i in r['validation']['issues']),
-                   errors=sum(i['severity']=='error' for r in records for i in r['validation']['issues']),
-                   missing_traceability=sum(any(i['code']=='missing_traceability' for i in r['validation']['issues']) for r in records),
-                   unresolved_lines=len(unresolved))
+    summary = _summary(records, len(unresolved), duplicates)
     return dict(source_file=pages[0]['source_file'], pages_processed=len(pages), records=records,
                 summary=summary, legend_sources=legends, notes=notes, unresolved_evidence=unresolved,
                 limitations=['Hours and day abbreviations are retained; clock times are not inferred.',

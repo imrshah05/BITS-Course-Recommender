@@ -42,6 +42,25 @@ class AcademicRulesTests(unittest.TestCase):
         row = normalized(category=' CORE   COURSES ')
         self.assertEqual(row['category_key'], 'core courses')
         self.assertEqual(row['original']['category'], ' CORE   COURSES ')
+        self.assertIsNone(row['normalized_category'])
+
+    def test_context_supported_categories(self):
+        base = record(category='CORE COURSES', programme_name=None)
+        programme = {'name': 'Computer Science', 'context': 'discipline course list'}
+        row = normalize_record(base, 'Bulletin', '/requirements/0', programme)
+        self.assertEqual(row['scope']['programme'], 'Computer Science')
+        self.assertEqual(row['normalized_category'], 'discipline_core')
+        self.assertTrue(row['category_normalization']['source_supported'])
+        minor = normalize_record(record(category='Electives'), 'Bulletin', '/requirements/0',
+                                 {'name': 'Minor in X', 'context': 'minor'})
+        self.assertEqual(minor['normalized_category'], 'minor_elective')
+
+    def test_ambiguous_scope_and_category_remain_unresolved(self):
+        row = normalize_record(record(programme_name=None, category='Special Pool'),
+                               'Bulletin', '/requirements/0', {'name': None, 'context': 'discipline course list'})
+        self.assertIsNone(row['scope']['programme'])
+        self.assertIsNone(row['normalized_category'])
+        self.assertTrue(row['needs_verification'])
 
     def test_no_category_equivalence(self):
         self.assertNotEqual(normalized(category='CDC')['category_key'], normalized(category='Core Courses')['category_key'])
@@ -71,6 +90,24 @@ class AcademicRulesTests(unittest.TestCase):
         self.assertIsNone(row['required_units'])
         self.assertFalse(normalized(min_units=20, max_units=10)['validation']['is_valid'])
 
+    def test_explicit_minor_quantity_is_executable(self):
+        row = record(kind='quantity', category=None, programme_name='Minor in X', units=15,
+                     course_count=None, comparator='min', needs_verification=True,
+                     validation={'is_valid': True, 'issues': [{'code': 'manual_verification', 'severity': 'warning'}]})
+        normalized_row = normalize_record(row, 'Bulletin', '/requirements/0',
+                                          {'name': 'Minor in X', 'context': 'minor'})
+        self.assertEqual(normalized_row['min_units'], 15)
+        self.assertEqual(normalized_row['normalized_category'], 'minor_total')
+        self.assertEqual(normalized_row['classification'], 'deterministic')
+        self.assertFalse(normalized_row['needs_verification'])
+
+    def test_numeric_requirement_without_scope_stays_descriptive(self):
+        row = normalize_record(record(kind='quantity', programme_name=None, units=15,
+                                      course_count=None, comparator='min', needs_verification=True),
+                               'Bulletin', '/requirements/0', {'name': None, 'context': 'minor'})
+        self.assertEqual(row['classification'], 'descriptive')
+        self.assertTrue(row['needs_verification'])
+
     def test_choices(self):
         choice = dict(select_count=1, options=['CS F211', 'CS F212'])
         row = normalized(kind='choice', alternatives=choice)
@@ -81,6 +118,30 @@ class AcademicRulesTests(unittest.TestCase):
         for choice in [[], {'select_count': 3, 'options': ['CS F211', 'CS F212']}, {'options': []}]:
             self.assertFalse(normalized(kind='choice', alternatives=choice)['validation']['is_valid'])
         self.assertTrue(normalized(kind='unresolved_choice')['needs_verification'])
+
+    def test_explicit_choice_recovered_from_programme_evidence(self):
+        evidence = {'source_file': 'bulletin.pdf', 'page_number': 8,
+                    'text': 'CS F211\n\nor\nBITS F232\nData Structures\nor\nFoundations'}
+        programme = {'id': 'p1', 'name': 'Mathematics', 'programme_code': None,
+                     'context': 'discipline course list', 'sources': [evidence]}
+        choice = record(id='choice', kind='unresolved_choice', category='DISCIPLINE ELECTIVE COURSES',
+                        programme_id='p1', programme_name='Mathematics', course_count=None, units=None,
+                        needs_verification=True, sources=[{'source_file': 'bulletin.pdf', 'page_number': 8, 'text': 'or'}],
+                        validation={'is_valid': True, 'issues': [
+                            {'code': 'incomplete_choice_structure', 'severity': 'warning'},
+                            {'code': 'manual_verification', 'severity': 'warning'}]})
+        data = normalize_academic_rules({}, {'programmes': [programme], 'requirements': [choice]})
+        row = data['records'][0]
+        self.assertEqual(row['rule_type'], 'choice')
+        self.assertEqual(row['alternatives'], {'select_count': 1, 'options': ['CS F211', 'BITS F232']})
+        self.assertEqual(row['classification'], 'deterministic')
+
+    def test_ambiguous_choice_remains_descriptive(self):
+        choice = record(kind='unresolved_choice', needs_verification=True,
+                        sources=[{'source_file': 'bulletin.pdf', 'page_number': 8, 'text': 'or'}])
+        row = normalize_academic_rules({}, {'requirements': [choice]})['records'][0]
+        self.assertEqual(row['rule_type'], 'unresolved_choice')
+        self.assertEqual(row['classification'], 'descriptive')
 
     def test_traceability_original(self):
         row = normalized()

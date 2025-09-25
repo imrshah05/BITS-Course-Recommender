@@ -31,7 +31,26 @@ class HandoutRecordTests(unittest.TestCase):
         r = normalize_handout(self.fixture())
         self.assertTrue(r['validation']['is_valid'])
         self.assertEqual(r['validation']['issues'], [])
+        self.assertEqual(r['metadata']['course_codes'], ['CS F111'])
+        self.assertEqual(r['metadata']['course_identity_type'], 'single')
+        self.assertEqual(r['candidate_status'], 'usable')
         self.assertIn('evaluation', r)
+
+    def test_structured_composite_identity(self):
+        data = self.fixture(); data['metadata']['course_code'] = self.field('CE F434/BITS F494')
+        r = normalize_handout(data)
+        self.assertEqual(r['metadata']['course_code']['value'], 'CE F434/BITS F494')
+        self.assertEqual(r['metadata']['course_codes'], ['CE F434', 'BITS F494'])
+        self.assertEqual(r['metadata']['course_identity_type'], 'multiple')
+        self.assertEqual(r['original']['metadata']['course_code']['value'], 'CE F434/BITS F494')
+        self.assertEqual(r['candidate_status'], 'usable')
+
+    def test_unidentified_record_is_not_candidate(self):
+        data = self.fixture(); data['metadata']['course_code'] = None
+        r = normalize_handout(data)
+        self.assertEqual(r['metadata']['course_codes'], [])
+        self.assertEqual(r['metadata']['course_identity_type'], 'unresolved')
+        self.assertEqual(r['candidate_status'], 'unusable_identity')
 
     def test_whitespace(self):
         data = self.fixture()
