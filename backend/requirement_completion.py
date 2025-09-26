@@ -39,9 +39,9 @@ def evaluate_requirement_completion(academic_history, requirement_resolution):
 
     descriptive = requirement_resolution.get("applicable_descriptive_rules", [])
     unresolved = requirement_resolution.get("excluded_unresolved_rules", [])
-    excluded = ([{"rule_id": rule.get("rule_id"), "reason": "descriptive_or_non_executable"}
+    excluded = ([_excluded_rule(rule, "descriptive_or_non_executable")
                  for rule in descriptive] +
-                [{"rule_id": rule.get("rule_id"), "reason": "unscoped_or_unresolved"}
+                [_excluded_rule(rule, "unscoped_or_unresolved")
                  for rule in unresolved])
     if descriptive:
         _issue(issues, "descriptive_rules_not_evaluated", "warning", "requirements",
@@ -256,9 +256,12 @@ def _result(rule, status, completed, ongoing, measurements, reason=None):
         "rule_id": rule.get("rule_id"),
         "requested_programme_role": rule.get("requested_programme_role"),
         "scope": deepcopy(rule.get("scope")),
+        "scope_kind": rule.get("scope_kind"),
         "rule_type": rule.get("rule_type"),
+        "category": rule.get("category"),
         "normalized_category": rule.get("normalized_category"),
         "course_code": rule.get("course_code"),
+        "course_title": rule.get("course_title"),
         "alternatives": deepcopy(rule.get("alternatives")),
         "completion_status": status,
         "completed_matching_courses": completed,
@@ -271,6 +274,12 @@ def _result(rule, status, completed, ongoing, measurements, reason=None):
         "source_heading": rule.get("source_heading"),
         "sources": deepcopy(rule.get("sources") or []),
     }
+
+
+def _excluded_rule(rule, reason):
+    preserved = deepcopy(rule)
+    preserved["reason"] = reason
+    return preserved
 
 
 def _unevaluable(rule, code, issues, path, message, completed=None, ongoing=None):
