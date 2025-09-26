@@ -9,6 +9,7 @@ from preprocessing.handout_content import extract_handout_content
 from preprocessing.evaluation import extract_evaluation_components
 from preprocessing.exams import extract_exam_details
 from preprocessing.policies import extract_handout_policies
+from preprocessing.prerequisites import extract_prerequisites
 
 _METADATA = ('course_code', 'course_title', 'department_division', 'units')
 _LISTS = ('instructors', 'syllabus', 'evaluation', 'attendance', 'makeup')
@@ -44,6 +45,7 @@ def normalize_handout(extracted):
     record.setdefault('metadata', {})
     record.setdefault('exams', {'midsemester': None, 'comprehensive': None})
     record.setdefault('observations', [])
+    record.setdefault('prerequisites', None)
     if not isinstance(record['metadata'], dict):
         issue('invalid_structure', 'metadata', 'error', 'Expected metadata object.')
     else:
@@ -159,6 +161,21 @@ def normalize_handout(extracted):
             if key != 'evaluation' and (not isinstance(item.get('text'), str) or not item['text'].strip()):
                 issue('invalid_structure', path, 'error', 'Missing extracted text.')
 
+    prerequisites = record['prerequisites']
+    if prerequisites is not None:
+        if not isinstance(prerequisites, dict):
+            issue('invalid_structure', 'prerequisites', 'error',
+                  'Expected a structured prerequisite object.')
+        else:
+            trace(prerequisites, 'prerequisites')
+            if prerequisites.get('kind') not in ('none', 'courses', 'unresolved'):
+                issue('invalid_prerequisite_kind', 'prerequisites.kind', 'error',
+                      'Unsupported prerequisite structure.')
+            if prerequisites.get('needs_verification'):
+                issue('prerequisite_needs_verification', 'prerequisites',
+                      'needs_verification',
+                      'Prerequisite text could not be evaluated deterministically.')
+
     exams = record['exams']
     if not isinstance(exams, dict):
         issue('invalid_structure', 'exams', 'error', 'Expected exam object.')
@@ -215,12 +232,15 @@ def build_handout_record(pages):
     content = extract_handout_content(pages)
     policies = extract_handout_policies(pages)
     metadata = extract_course_metadata(pages)
+    target_codes, _ = parse_course_codes(
+        metadata['course_code'].get('value') if isinstance(metadata['course_code'], dict) else None)
     return normalize_handout({
         'source': {'source_file': metadata['source_file'], 'page_numbers': [p['page_number'] for p in pages]},
         'metadata': {k: metadata[k] for k in _METADATA},
         'instructors': content['instructors'], 'syllabus': content['syllabus'],
         'evaluation': extract_evaluation_components(pages), 'exams': extract_exam_details(pages),
         'attendance': policies['attendance'], 'makeup': policies['makeup'],
+        'prerequisites': extract_prerequisites(pages, target_codes),
         'observations': [{'page_number': p['page_number'], 'metadata': extract_course_metadata([p]),
                           'exams': extract_exam_details([p])} for p in pages],
     })

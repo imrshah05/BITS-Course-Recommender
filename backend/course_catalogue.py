@@ -225,6 +225,7 @@ def _source_record(record, index, normalized):
         "course_title": deepcopy(metadata.get("course_title")),
         "department_division": deepcopy(metadata.get("department_division")),
         "units": deepcopy(metadata.get("units")),
+        "prerequisites": deepcopy(record.get("prerequisites")),
         "instructors": deepcopy(record.get("instructors")),
         "syllabus": deepcopy(record.get("syllabus")),
         "evaluation": deepcopy(record.get("evaluation")),
