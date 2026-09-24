@@ -75,14 +75,15 @@ class PDFExtractorTests(unittest.TestCase):
             extract_pdf_text(self.path)
 
     def test_supplied_pdf(self):
-        raw_dir = Path(__file__).resolve().parents[1] / "data" / "raw"
+        raw_dir = Path(__file__).resolve().parents[1] / "data" / "raw" / "handouts"
         pdf_path = next((path for path in sorted(raw_dir.rglob("*"))
                          if path.is_file() and path.suffix.lower() == ".pdf"), None)
         if pdf_path is None:
-            self.skipTest("No supplied PDF in data/raw/ yet")
+            self.skipTest("No supplied PDF in data/raw/handouts/ yet")
 
         records = extract_pdf_text(pdf_path)
         self.assertTrue(records)
+        self.assertTrue(any(record["text"].strip() for record in records))
         with pdf_path.open("rb") as stream:
             self.assertEqual(len(records), len(PdfReader(stream).pages))
         self.assertEqual([r["page_number"] for r in records],
