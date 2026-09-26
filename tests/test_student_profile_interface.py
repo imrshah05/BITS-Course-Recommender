@@ -109,7 +109,7 @@ class StudentProfileInterfaceTests(unittest.TestCase):
         self.assertEqual(status, "400 Bad Request")
         self.assertEqual(result["error"], "empty_request_body")
 
-    def test_dashboard_contains_profile_inputs_only(self):
+    def test_dashboard_contains_profile_inputs(self):
         captured = {}
 
         def start_response(status, headers):

@@ -90,6 +90,27 @@
           </div>
         </form>
       </section>
+
+      <section class="profile-panel" aria-labelledby="preference-title">
+        <div class="section-heading">
+          <p class="eyebrow">Course preferences</p>
+          <h2 id="preference-title">What would you like to study?</h2>
+          <p>Describe your interests and preferences in your own words. This step interprets
+            preferences only; it does not decide academic eligibility.</p>
+        </div>
+        <form id="preference-query-form" novalidate>
+          <label>
+            Natural-language preferences <span aria-hidden="true">*</span>
+            <textarea id="preference-query" name="preference_query" rows="5" required
+              placeholder="Suggest an AI-related DEL with projects and no midsemester exam."></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit">Understand preferences</button>
+            <p id="preference-status" role="status">No preferences submitted yet.</p>
+          </div>
+          <div id="preference-result" class="preference-result" aria-live="polite" hidden></div>
+        </form>
+      </section>
     </main>
 
     <script src="/assets/app.js" defer></script>

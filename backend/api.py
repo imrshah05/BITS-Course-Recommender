@@ -8,6 +8,7 @@ from pathlib import Path
 from wsgiref.simple_server import make_server
 
 from backend.course_catalogue import CourseCatalogue
+from backend.gemini import configured_intent_parser, gemini_configuration
 from backend.student_profile import normalize_student_profile
 
 
@@ -41,6 +42,22 @@ def application(environ, start_response):
         status = HTTPStatus.OK if profile["validation"]["is_valid"] \
             else HTTPStatus.UNPROCESSABLE_ENTITY
         return _json_response(start_response, status, {"profile": profile})
+    if path == "/api/intent" and method == "POST":
+        try:
+            payload = _read_json_body(environ)
+        except RequestError as error:
+            return _json_response(start_response, error.status, {
+                "error": error.code, "message": error.message,
+            })
+        if not isinstance(payload, dict) or set(payload) != {"query"}:
+            return _json_response(start_response, HTTPStatus.BAD_REQUEST, {
+                "error": "invalid_intent_payload",
+                "message": "Request body must contain only a query field.",
+            })
+        intent = _intent_parser().parse(payload["query"])
+        status = HTTPStatus.OK if intent["validation"]["is_valid"] \
+            else HTTPStatus.UNPROCESSABLE_ENTITY
+        return _json_response(start_response, status, {"intent": intent})
     if method != "GET":
         return _json_response(start_response, HTTPStatus.METHOD_NOT_ALLOWED, {
             "error": "method_not_allowed",
@@ -57,6 +74,8 @@ def application(environ, start_response):
             "api_base_path": "/api",
             "features": {
                 "student_profile": True,
+                "preference_query": True,
+                "gemini": gemini_configuration()["configured"],
                 "recommendations": False,
                 "timetable": False,
             },
@@ -119,6 +138,11 @@ def _read_json_body(environ):
 @lru_cache(maxsize=1)
 def _known_course_codes():
     return tuple(CourseCatalogue.load().course_codes())
+
+
+@lru_cache(maxsize=1)
+def _intent_parser():
+    return configured_intent_parser()
 
 
 def _json_response(start_response, status, payload, extra_headers=None):

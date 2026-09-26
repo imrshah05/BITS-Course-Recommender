@@ -3,6 +3,9 @@ const detailElement = document.querySelector("#connection-detail");
 const profileForm = document.querySelector("#student-profile-form");
 const formSummary = document.querySelector("#form-summary");
 const profileStatus = document.querySelector("#profile-status");
+const preferenceForm = document.querySelector("#preference-query-form");
+const preferenceStatus = document.querySelector("#preference-status");
+const preferenceResult = document.querySelector("#preference-result");
 
 async function checkApiConnection() {
   try {
@@ -86,5 +89,41 @@ profileForm.addEventListener("submit", async (event) => {
   } catch (error) {
     profileStatus.textContent = "The profile could not be validated. Try again.";
     showIssues([{ message: error.message }]);
+  }
+});
+
+preferenceForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!preferenceForm.checkValidity()) {
+    preferenceForm.reportValidity();
+    preferenceStatus.textContent = "Enter your course preferences.";
+    return;
+  }
+  preferenceStatus.textContent = "Understanding preferences…";
+  preferenceResult.hidden = true;
+  try {
+    const query = document.querySelector("#preference-query").value;
+    const response = await fetch("/api/intent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ query }),
+    });
+    const result = await response.json();
+    if (!result.intent) throw new Error(result.message || "Preference parsing failed");
+    const preferences = result.intent.preferences;
+    const labels = ["interests", "preferred_topics", "avoided_topics", "career_goals"];
+    const items = labels.flatMap((label) => (preferences[label] || [])
+      .map((item) => `${label.replaceAll("_", " ")}: ${item.original_value}`));
+    preferenceResult.textContent = items.length
+      ? items.join(" · ")
+      : "No supported preference could be identified reliably.";
+    preferenceResult.hidden = false;
+    preferenceStatus.textContent = response.ok
+      ? "Preferences are structured and ready for the recommendation pipeline."
+      : "Some preferences need review.";
+  } catch (error) {
+    preferenceStatus.textContent = "Preferences could not be interpreted. Try again.";
+    preferenceResult.textContent = error.message;
+    preferenceResult.hidden = false;
   }
 });

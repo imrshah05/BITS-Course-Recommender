@@ -19,4 +19,19 @@ Run the dashboard foundation locally with:
 python3 -m backend.api
 ```
 
-Then open `http://127.0.0.1:8000`. The current dashboard exposes only the static shell and foundational `/api/health` and `/api/config` endpoints.
+Then open `http://127.0.0.1:8000`.
+
+Gemini is optional and is used only to understand natural-language preferences and
+match interests to source-backed course text. Configure it server-side before starting
+the dashboard:
+
+```bash
+export GEMINI_API_KEY="your-api-key"
+export GEMINI_MODEL="gemini-2.5-flash"  # optional
+python3 -m backend.api
+```
+
+If `GEMINI_API_KEY` is absent, unreachable, or returns invalid structured output, the
+existing deterministic intent parser and lexical matcher are used. Academic rules,
+requirements, prerequisites, eligibility, and recommendation safety never use Gemini.
+Environment files and keys are excluded by `.gitignore`.
