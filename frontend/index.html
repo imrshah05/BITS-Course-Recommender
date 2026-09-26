@@ -33,6 +33,63 @@
         </div>
         <p id="connection-detail">Checking the local service…</p>
       </section>
+
+      <section class="profile-panel" aria-labelledby="profile-title">
+        <div class="section-heading">
+          <p class="eyebrow">Student profile</p>
+          <h2 id="profile-title">Academic details</h2>
+          <p>Enter the information used to calculate academic requirements.</p>
+        </div>
+
+        <form id="student-profile-form" novalidate>
+          <div id="form-summary" class="form-summary" role="alert" hidden></div>
+          <div class="field-grid">
+            <label>
+              Primary programme <span aria-hidden="true">*</span>
+              <input id="programme" name="programme" required autocomplete="organization-title"
+                     placeholder="B.E. Computer Science">
+            </label>
+            <label>
+              Second programme
+              <input id="second-programme" name="second_programme"
+                     placeholder="M.Sc. Mathematics">
+            </label>
+            <label>
+              Current academic year <span aria-hidden="true">*</span>
+              <input id="academic-year" name="current_academic_year" type="number"
+                     min="1" step="1" required inputmode="numeric">
+            </label>
+            <label>
+              Current semester <span aria-hidden="true">*</span>
+              <select id="semester" name="current_semester" required>
+                <option value="">Select semester</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="course-grid">
+            <label>
+              Completed courses
+              <span class="field-help">One course code per line or separated by commas.</span>
+              <textarea id="completed-courses" name="completed_courses" rows="7"
+                        placeholder="CS F211&#10;MATH F101"></textarea>
+            </label>
+            <label>
+              Ongoing courses
+              <span class="field-help">Do not repeat a completed course.</span>
+              <textarea id="ongoing-courses" name="ongoing_courses" rows="7"
+                        placeholder="CS F212"></textarea>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit">Validate profile</button>
+            <p id="profile-status" role="status">No profile submitted yet.</p>
+          </div>
+        </form>
+      </section>
     </main>
 
     <script src="/assets/app.js" defer></script>

@@ -1,9 +1,14 @@
 """Minimal WSGI API and static dashboard server."""
 
 from http import HTTPStatus
+from functools import lru_cache
+from io import BytesIO
 import json
 from pathlib import Path
 from wsgiref.simple_server import make_server
+
+from backend.course_catalogue import CourseCatalogue
+from backend.student_profile import normalize_student_profile
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -13,12 +18,29 @@ STATIC_ROUTES = {
     "/assets/styles.css": (FRONTEND_ROOT / "styles.css", "text/css; charset=utf-8"),
     "/assets/app.js": (FRONTEND_ROOT / "app.js", "text/javascript; charset=utf-8"),
 }
+MAX_JSON_BODY_BYTES = 1_000_000
 
 
 def application(environ, start_response):
     """Serve foundational API endpoints and explicit dashboard assets."""
     method = environ.get("REQUEST_METHOD", "GET").upper()
     path = environ.get("PATH_INFO", "/")
+    if path == "/api/student-profile" and method == "POST":
+        try:
+            payload = _read_json_body(environ)
+        except RequestError as error:
+            return _json_response(start_response, error.status, {
+                "error": error.code, "message": error.message,
+            })
+        try:
+            profile = normalize_student_profile(payload, _known_course_codes())
+        except (TypeError, ValueError) as error:
+            return _json_response(start_response, HTTPStatus.BAD_REQUEST, {
+                "error": "invalid_profile_payload", "message": str(error),
+            })
+        status = HTTPStatus.OK if profile["validation"]["is_valid"] \
+            else HTTPStatus.UNPROCESSABLE_ENTITY
+        return _json_response(start_response, status, {"profile": profile})
     if method != "GET":
         return _json_response(start_response, HTTPStatus.METHOD_NOT_ALLOWED, {
             "error": "method_not_allowed",
@@ -34,7 +56,7 @@ def application(environ, start_response):
         return _json_response(start_response, HTTPStatus.OK, {
             "api_base_path": "/api",
             "features": {
-                "student_profile": False,
+                "student_profile": True,
                 "recommendations": False,
                 "timetable": False,
             },
@@ -63,6 +85,40 @@ def run(host="127.0.0.1", port=8000):
     with make_server(host, port, application) as server:
         print(f"Dashboard available at http://{host}:{port}")
         server.serve_forever()
+
+
+class RequestError(Exception):
+    def __init__(self, status, code, message):
+        super().__init__(message)
+        self.status = status
+        self.code = code
+        self.message = message
+
+
+def _read_json_body(environ):
+    raw_length = environ.get("CONTENT_LENGTH", "")
+    try:
+        length = int(raw_length) if raw_length else 0
+    except (TypeError, ValueError) as error:
+        raise RequestError(HTTPStatus.BAD_REQUEST, "invalid_content_length",
+                           "Content-Length must be a whole number.") from error
+    if length <= 0:
+        raise RequestError(HTTPStatus.BAD_REQUEST, "empty_request_body",
+                           "A JSON student profile is required.")
+    if length > MAX_JSON_BODY_BYTES:
+        raise RequestError(HTTPStatus.REQUEST_ENTITY_TOO_LARGE, "request_too_large",
+                           "Student profile payload is too large.")
+    body = environ.get("wsgi.input", BytesIO()).read(length)
+    try:
+        return json.loads(body.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RequestError(HTTPStatus.BAD_REQUEST, "invalid_json",
+                           "Request body must be valid UTF-8 JSON.") from error
+
+
+@lru_cache(maxsize=1)
+def _known_course_codes():
+    return tuple(CourseCatalogue.load().course_codes())
 
 
 def _json_response(start_response, status, payload, extra_headers=None):

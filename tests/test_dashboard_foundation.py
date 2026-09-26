@@ -25,12 +25,14 @@ class DashboardFoundationTests(unittest.TestCase):
         self.assertEqual(payload["api_version"], "v1")
         self.assertEqual(headers["Cache-Control"], "no-store")
 
-    def test_config_exposes_only_foundational_features(self):
+    def test_config_exposes_available_features(self):
         status, _, body = request("/api/config")
         payload = json.loads(body)
         self.assertEqual(status, "200 OK")
         self.assertEqual(payload["api_base_path"], "/api")
-        self.assertTrue(all(value is False for value in payload["features"].values()))
+        self.assertTrue(payload["features"]["student_profile"])
+        self.assertFalse(payload["features"]["recommendations"])
+        self.assertFalse(payload["features"]["timetable"])
 
     def test_dashboard_shell_is_served(self):
         status, headers, body = request("/")
