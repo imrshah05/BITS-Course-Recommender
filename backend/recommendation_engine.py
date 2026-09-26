@@ -147,8 +147,19 @@ class RecommendationEngine:
                    "requirement_filter", "Filtered candidate identities are not unique")
         if len(ranked_codes) != len(ranking.get("confirmed_recommendations", [])) + len(
                 ranking.get("verification_required", [])):
-            _issue(issues, "duplicate_ranked_identity", "ranking",
+            _issue(issues, "duplicate_ranked_identity", "error", "ranking",
                    "Ranked identities are not unique")
+        if profile_codes != match_codes:
+            _issue(issues, "semantic_match_identity_mismatch", "error",
+                   "preference_matches", "Semantic profile and preference-match identities differ")
+        expected_ranked = profile_codes | filtered_codes
+        if ranked_codes != expected_ranked:
+            _issue(issues, "ranked_identity_set_mismatch", "error", "ranking",
+                   "Ranked identities do not equal the combined match and policy identities")
+        confirmed_codes = _codes(ranking.get("confirmed_recommendations", []), "course_code")
+        if not confirmed_codes.issubset(filtered_codes):
+            _issue(issues, "confirmed_identity_missing_from_policy", "error", "ranking",
+                   "A confirmed recommendation has no filtered Phase 4 identity")
 
 
 def run_recommendation(query, **kwargs):
@@ -181,14 +192,20 @@ def _candidate_count(pool):
 
 def _validation(result, issues):
     stage_validations = []
-    for key in ("intent", "semantic_profiles", "preference_matches", "candidate_pool",
-                "requirement_filter", "ranking"):
+    stage_keys = ("intent", "semantic_profiles", "preference_matches", "candidate_pool",
+                  "requirement_filter", "ranking")
+    for key in stage_keys:
         value = result.get(key) or {}
         validation = value.get("validation") if isinstance(value, dict) else None
         if isinstance(validation, dict):
-            stage_validations.append(validation)
+            stage_validations.append((key, validation))
     all_issues = [asdict(issue) for issue in issues]
-    for validation in stage_validations:
+    for key, validation in stage_validations:
+        if validation.get("is_valid") is False:
+            item = {"code": "invalid_upstream_stage", "severity": "error",
+                    "path": key, "message": f"{key} validation failed"}
+            if item not in all_issues:
+                all_issues.append(item)
         for item in validation.get("issues", []):
             if item not in all_issues:
                 all_issues.append(deepcopy(item))

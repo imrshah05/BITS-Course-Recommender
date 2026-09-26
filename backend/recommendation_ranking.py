@@ -21,6 +21,8 @@ class RecommendationRanker:
 
     def rank(self, preference_matches, requirement_filter):
         issues = []
+        matches_valid = _upstream_valid(preference_matches, "preference_matches", issues)
+        policy_valid = _upstream_valid(requirement_filter, "requirement_filter", issues)
         matches = _match_collection(preference_matches, issues)
         candidates = _candidate_collection(requirement_filter, issues)
         candidate_index = {}
@@ -46,12 +48,16 @@ class RecommendationRanker:
                        f"matches[{index}]", f"Duplicate match identity {code}")
             match_index[code] = match
 
+        inputs_valid = not any(issue.severity == "error" for issue in issues)
+
         confirmed = []
         verification = []
         for code in sorted(set(candidate_index) | set(match_index)):
             candidate = candidate_index.get(code)
             match = match_index.get(code)
-            item = _combine(code, candidate, match, issues)
+            item = _combine(code, candidate, match, issues,
+                            matches_valid=matches_valid and inputs_valid,
+                            policy_valid=policy_valid and inputs_valid)
             if item["ranking_group"] == "confirmed":
                 confirmed.append(item)
             elif item["ranking_group"] == "verification_required":
@@ -111,12 +117,24 @@ def validate_ranking_result(result):
                 _issue(issues, "inconsistent_ranking_group", "error", path,
                        "Item is in the wrong ranking collection")
             policy = item.get("policy") or {}
-            if expected == "confirmed" and not policy.get("recommendation_safe"):
-                _issue(issues, "unsafe_confirmed_recommendation", "error", path,
-                       "Only recommendation-safe courses may be confirmed")
-            if not isinstance(item.get("source_references"), list):
+            if expected == "confirmed":
+                preference = item.get("preference_match") or {}
+                if not _policy_is_consistently_safe(policy, True):
+                    _issue(issues, "unsafe_confirmed_recommendation", "error", path,
+                           "Confirmed course fails independent Phase 4 safety checks")
+                if (preference.get("match_state") not in RANKABLE_STATES or
+                        not preference.get("matched_preferences") or
+                        preference.get("conflicting_preferences") or
+                        preference.get("validation_is_valid") is not True or
+                        (preference.get("uncertainty") or {}).get("needs_verification")):
+                    _issue(issues, "invalid_confirmed_preference_match", "error", path,
+                           "Confirmed course fails independent preference checks")
+                if not _preference_sources_valid(preference):
+                    _issue(issues, "confirmed_preference_traceability_missing", "error", path,
+                           "Confirmed preference evidence lacks source traceability")
+            if not _sources_valid(item.get("source_references")):
                 _issue(issues, "missing_source_references", "error", path,
-                       "Ranking item must preserve source references")
+                       "Ranking item must preserve nonempty source references")
     errors = [asdict(issue) for issue in issues if issue.severity == "error"]
     warnings = [asdict(issue) for issue in issues if issue.severity == "warning"]
     return {"is_valid": not errors, "issues": errors + warnings,
@@ -130,7 +148,14 @@ def _match_collection(value, issues):
         _issue(issues, "malformed_preference_matches", "error", "matches",
                "Preference matches must be a list or match collection")
         return []
-    return [deepcopy(item) for item in value if isinstance(item, dict)]
+    result = []
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            _issue(issues, "malformed_preference_match_entry", "error",
+                   f"matches[{index}]", "Preference match entry must be a mapping")
+            continue
+        result.append(deepcopy(item))
+    return result
 
 
 def _candidate_collection(value, issues):
@@ -145,26 +170,40 @@ def _candidate_collection(value, issues):
         _issue(issues, "malformed_requirement_filter", "error", "candidates",
                "Requirement-filter output must contain candidate entries")
         return []
-    return [deepcopy(item) for item in value if isinstance(item, dict)]
+    result = []
+    for index, item in enumerate(value):
+        if not isinstance(item, dict):
+            _issue(issues, "malformed_candidate_entry", "error",
+                   f"candidates[{index}]", "Candidate entry must be a mapping")
+            continue
+        result.append(deepcopy(item))
+    return result
 
 
-def _combine(code, candidate, match, issues):
+def _combine(code, candidate, match, issues, matches_valid=True, policy_valid=True):
     policy = _policy(candidate)
     preference = _preference(match)
-    safe = policy["recommendation_safe"] is True
+    safe = _policy_is_consistently_safe(policy, policy_valid)
     state = preference["match_state"]
     hard_conflict = any(item.get("constraint") == "hard"
                         for item in preference["conflicting_preferences"])
     has_positive = bool(preference["matched_preferences"])
     has_conflict = bool(preference["conflicting_preferences"])
-    rankable = safe and state in RANKABLE_STATES and has_positive \
-        and not has_conflict and not hard_conflict
+    needs_verification = bool((preference.get("uncertainty") or {}).get(
+        "needs_verification"))
+    preference_valid = matches_valid and preference.get("validation_is_valid", True)
+    rankable = safe and preference_valid and state in RANKABLE_STATES and has_positive \
+        and not has_conflict and not hard_conflict and not needs_verification
     group = "confirmed" if rankable else "verification_required"
     if not candidate:
         _issue(issues, "match_without_policy_record", "warning", f"courses[{code}]",
                "Preference match has no Phase 4 policy record")
     if state in UNSAFE_STATES or not safe:
         reason = "policy_safety_not_confirmed"
+    elif not preference_valid:
+        reason = "preference_match_validation_failed"
+    elif needs_verification:
+        reason = "semantic_evidence_needs_verification"
     elif has_conflict:
         reason = "hard_preference_conflict" if hard_conflict else "preference_conflict"
     elif not has_positive:
@@ -214,7 +253,27 @@ def _policy(candidate):
         "reason_codes": deepcopy(candidate.get("reason_codes") or []),
         "validation": deepcopy(candidate.get("validation") or {}),
         "eligibility_result": deepcopy(candidate.get("eligibility_result") or {}),
+        "source_references": deepcopy(candidate.get("source_references") or []),
     }
+
+
+def _policy_is_consistently_safe(policy, upstream_valid):
+    eligibility = policy.get("eligibility_result") or {}
+    validation = policy.get("validation") or {}
+    return (
+        upstream_valid and
+        policy.get("recommendation_safe") is True and
+        policy.get("candidate_pool_state") == "confirmed" and
+        policy.get("eligibility_state") == "eligible" and
+        eligibility.get("eligibility_state") == "eligible" and
+        not eligibility.get("already_completed") and
+        not eligibility.get("already_ongoing") and
+        policy.get("requirement_filter_state") == "matches_remaining_requirement" and
+        bool(policy.get("requirement_matches")) and
+        _requirement_matches_valid(policy.get("requirement_matches")) and
+        _sources_valid(policy.get("source_references")) and
+        validation.get("is_valid") is True
+    )
 
 
 def _preference(match):
@@ -241,7 +300,56 @@ def _preference(match):
         "data_availability": deepcopy(match.get("data_availability") or {}),
         "uncertainty": deepcopy(match.get("uncertainty") or {}),
         "diagnostics": deepcopy(match.get("diagnostics") or []),
+        "validation_is_valid": (match.get("validation") or {}).get("is_valid") is True,
     }
+
+
+def _upstream_valid(value, path, issues):
+    if not isinstance(value, dict):
+        _issue(issues, "missing_upstream_validation", "error", path,
+               f"{path} must be a validated stage result")
+        return False
+    validation = value.get("validation")
+    if not isinstance(validation, dict) or validation.get("is_valid") is not True:
+        _issue(issues, "invalid_upstream_validation", "error", path,
+               f"{path} validation is missing or failed")
+        return False
+    return True
+
+
+def _requirement_matches_valid(matches):
+    if not isinstance(matches, list) or not matches:
+        return False
+    has_remaining = False
+    for match in matches:
+        if not isinstance(match, dict):
+            return False
+        if not all(isinstance(match.get(key), str) and match.get(key).strip()
+                   for key in ("rule_id", "programme_scope", "normalized_category")):
+            return False
+        if not _sources_valid(match.get("sources")):
+            return False
+        state = match.get("requirement_state")
+        if state in ("remaining", "partially_satisfied"):
+            has_remaining = True
+        elif state not in ("satisfied", "unevaluable"):
+            return False
+    return has_remaining
+
+
+def _preference_sources_valid(preference):
+    evidence = preference.get("positive_evidence") or []
+    return bool(evidence) and all(
+        isinstance(item, dict) and _sources_valid(item.get("source_references"))
+        for item in evidence)
+
+
+def _sources_valid(sources):
+    return (isinstance(sources, list) and bool(sources) and
+            all(isinstance(source, dict) and
+                isinstance(source.get("source_file"), str) and
+                bool(source.get("source_file").strip())
+                for source in sources))
 
 
 def _source_references(candidate, preference):

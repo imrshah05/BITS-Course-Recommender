@@ -29,7 +29,9 @@ def candidate(code, safe=True):
         "candidate_pool_state": "confirmed" if safe else "verification_required",
         "requirement_filter_state": "matches_remaining_requirement" if safe else "ambiguous",
         "requirement_matches": [{"rule_id": "R1", "programme_scope": "Programme A",
-                                  "normalized_category": "DEL", "sources": source(code)}],
+                                  "normalized_category": "DEL",
+                                  "requirement_state": "remaining",
+                                  "sources": source(code)}],
         "source_references": source(code), "reason_codes": [],
         "eligibility_result": {"eligibility_state": "eligible" if safe else "unknown"},
         "validation": {"is_valid": True},
@@ -48,6 +50,21 @@ class FakePoolBuilder:
                 "verification_required_candidates": [candidate("CS F212", False)],
                 "excluded_candidates": [], "candidates": [],
                 "validation": {"is_valid": True}}
+
+
+class DuplicateRanker:
+    def rank(self, matches, filtered):
+        item = {"course_code": "CS F211"}
+        return {"confirmed_recommendations": [item, item],
+                "verification_required": [],
+                "validation": {"is_valid": False, "issues": []}}
+
+
+class MismatchedRanker:
+    def rank(self, matches, filtered):
+        return {"confirmed_recommendations": [],
+                "verification_required": [{"course_code": "CS F999"}],
+                "validation": {"is_valid": True, "issues": []}}
 
 
 class RecommendationEngineTests(unittest.TestCase):
@@ -154,8 +171,41 @@ class RecommendationEngineTests(unittest.TestCase):
         result = run_recommendation(
             "I want to study machine learning.",
             semantic_profiles={"profiles": [profile("CS F211")]},
-            requirement_filter_result={"candidates": [candidate("CS F211")]})
+            requirement_filter_result={
+                "candidates": [candidate("CS F211")],
+                "validation": {"is_valid": True, "issues": []},
+            })
         self.assertEqual(len(result["ranking"]["confirmed_recommendations"]), 1)
+
+    def test_invalid_stage_without_issues_makes_engine_invalid(self):
+        profiles = {"profiles": [profile("CS F211")],
+                    "validation": {"is_valid": False, "issues": []}}
+        result = self.engine().recommend(
+            "I want to study machine learning.", semantic_profiles=profiles,
+            requirement_filter_result={"candidates": [candidate("CS F211")]})
+        self.assertFalse(result["validation"]["is_valid"])
+        self.assertIn("invalid_upstream_stage",
+                      {item["code"] for item in result["validation"]["issues"]})
+
+    def test_duplicate_ranked_identity_is_reported_without_crashing(self):
+        engine = RecommendationEngine(semantic_builder=FakeBuilder(),
+                                      ranker=DuplicateRanker())
+        result = engine.recommend(
+            "I want to study machine learning.",
+            requirement_filter_result={"candidates": [candidate("CS F211")]})
+        self.assertFalse(result["validation"]["is_valid"])
+        self.assertIn("duplicate_ranked_identity",
+                      {item["code"] for item in result["validation"]["issues"]})
+
+    def test_ranked_identity_count_mismatch_is_invalid(self):
+        engine = RecommendationEngine(semantic_builder=FakeBuilder(),
+                                      ranker=MismatchedRanker())
+        result = engine.recommend(
+            "I want to study machine learning.",
+            semantic_profiles=[profile("CS F211")],
+            requirement_filter_result={"candidates": []})
+        self.assertIn("ranked_identity_set_mismatch",
+                      {item["code"] for item in result["validation"]["issues"]})
 
 
 if __name__ == "__main__":

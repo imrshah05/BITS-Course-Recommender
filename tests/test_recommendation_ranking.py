@@ -1,7 +1,12 @@
 import json
 import unittest
+from copy import deepcopy
 
-from backend.recommendation_ranking import RecommendationRanker, rank_recommendations
+from backend.recommendation_ranking import (
+    RecommendationRanker,
+    rank_recommendations as _rank_recommendations,
+    validate_ranking_result,
+)
 
 
 def source(code):
@@ -17,13 +22,26 @@ def candidate(code, safe=True, eligibility="eligible", pool="confirmed",
         "candidate_pool_state": pool,
         "requirement_filter_state": filter_state,
         "requirement_matches": [{"rule_id": "R1", "programme_scope": scope,
-                                  "normalized_category": "DEL", "sources": source(code)}
+                                  "normalized_category": "DEL",
+                                  "requirement_state": "remaining",
+                                  "sources": source(code)}
                                  for scope in (scopes or ["MSc Computer Science"])],
         "source_references": source(code),
         "reason_codes": ["matches_remaining_requirement"],
         "validation": {"is_valid": True},
         "eligibility_result": {"eligibility_state": eligibility},
     }
+
+
+def rank_recommendations(preference_matches, requirement_filter):
+    """Supply the validated stage wrappers produced by Tasks 5.4 and Phase 4."""
+    if isinstance(preference_matches, list):
+        preference_matches = {"matches": preference_matches,
+                              "validation": {"is_valid": True, "issues": []}}
+    if isinstance(requirement_filter, dict) and "validation" not in requirement_filter:
+        requirement_filter = deepcopy(requirement_filter)
+        requirement_filter["validation"] = {"is_valid": True, "issues": []}
+    return _rank_recommendations(preference_matches, requirement_filter)
 
 
 def match(code, state="strong_match", matched=None, conflicts=None,
@@ -42,6 +60,7 @@ def match(code, state="strong_match", matched=None, conflicts=None,
                                 "matched_text": "machine learning"}] if matched else [],
         "negative_evidence": [], "data_availability": {"content": True},
         "uncertainty": {"needs_verification": False}, "diagnostics": [],
+        "validation": {"is_valid": True, "issues": []},
     }
 
 
@@ -148,9 +167,50 @@ class RecommendationRankingTests(unittest.TestCase):
         item = match("CS F211")
         item["uncertainty"] = {"needs_verification": True}
         result = rank_recommendations([item], {"candidates": [candidate("CS F211")]})
-        ranked = result["confirmed_recommendations"][0]
+        self.assertEqual(result["confirmed_recommendations"], [])
+        ranked = result["verification_required"][0]
         self.assertTrue(ranked["source_references"])
         self.assertEqual(ranked["uncertainty"]["needs_verification"], True)
+
+    def test_recommendation_safe_flag_does_not_override_inconsistent_policy(self):
+        entry = candidate("CS F211", safe=True, eligibility="unknown",
+                          pool="verification_required", filter_state="ambiguous")
+        result = rank_recommendations([match("CS F211")], {"candidates": [entry]})
+        self.assertEqual(result["confirmed_recommendations"], [])
+
+    def test_completed_or_ongoing_course_cannot_be_confirmed(self):
+        for field in ("already_completed", "already_ongoing"):
+            entry = candidate("CS F211")
+            entry["eligibility_result"][field] = True
+            result = rank_recommendations([match("CS F211")], {"candidates": [entry]})
+            self.assertEqual(result["confirmed_recommendations"], [])
+
+    def test_invalid_candidate_validation_cannot_be_confirmed(self):
+        entry = candidate("CS F211")
+        entry["validation"] = {"is_valid": False, "issues": []}
+        result = rank_recommendations([match("CS F211")], {"candidates": [entry]})
+        self.assertEqual(result["confirmed_recommendations"], [])
+
+    def test_invalid_filter_validation_without_issues_propagates(self):
+        result = rank_recommendations(
+            [match("CS F211")],
+            {"candidates": [candidate("CS F211")],
+             "validation": {"is_valid": False, "issues": []}})
+        self.assertEqual(result["confirmed_recommendations"], [])
+        self.assertFalse(result["validation"]["is_valid"])
+
+    def test_missing_upstream_validation_prevents_confirmation(self):
+        result = _rank_recommendations(
+            {"matches": [match("CS F211")]},
+            {"candidates": [candidate("CS F211")]})
+        self.assertEqual(result["confirmed_recommendations"], [])
+        self.assertFalse(result["validation"]["is_valid"])
+
+    def test_invalid_preference_match_validation_cannot_be_confirmed(self):
+        item = match("CS F211")
+        item["validation"] = {"is_valid": False, "issues": []}
+        result = rank_recommendations([item], {"candidates": [candidate("CS F211")]})
+        self.assertEqual(result["confirmed_recommendations"], [])
 
     def test_zero_safe_candidates_returns_empty_confirmed(self):
         result = rank_recommendations([match("CS F211")], {
@@ -185,11 +245,58 @@ class RecommendationRankingTests(unittest.TestCase):
         self.assertEqual(len(result["verification_required"]), 1)
 
     def test_requirement_filter_collection_is_supported(self):
-        result = RecommendationRanker().rank([match("CS F211")], {
+        result = RecommendationRanker().rank({
+            "matches": [match("CS F211")],
+            "validation": {"is_valid": True, "issues": []},
+        }, {
             "recommendation_safe_candidates": [candidate("CS F211")],
             "verification_required_candidates": [], "excluded_candidates": [],
+            "validation": {"is_valid": True, "issues": []},
         })
         self.assertEqual(len(result["confirmed_recommendations"]), 1)
+
+    def test_empty_sources_and_malformed_requirement_never_confirm(self):
+        entry = candidate("CS F211")
+        entry["source_references"] = []
+        entry["requirement_matches"] = [{}]
+        item = match("CS F211")
+        item["positive_evidence"] = [{"source_references": []}]
+        result = rank_recommendations([item], {"candidates": [entry]})
+        self.assertEqual(result["confirmed_recommendations"], [])
+
+    def test_duplicate_candidate_identity_never_confirms(self):
+        result = rank_recommendations(
+            [match("CS F211")],
+            {"candidates": [candidate("CS F211"), candidate("CS F211")]})
+        self.assertEqual(result["confirmed_recommendations"], [])
+        self.assertFalse(result["validation"]["is_valid"])
+
+    def test_duplicate_preference_identity_never_confirms(self):
+        result = rank_recommendations(
+            [match("CS F211"), match("CS F211")],
+            {"candidates": [candidate("CS F211")]})
+        self.assertEqual(result["confirmed_recommendations"], [])
+        self.assertFalse(result["validation"]["is_valid"])
+
+    def test_malformed_collection_entries_are_reported(self):
+        result = _rank_recommendations(
+            {"matches": [match("CS F211"), "bad"],
+             "validation": {"is_valid": True, "issues": []}},
+            {"candidates": [candidate("CS F211"), None],
+             "validation": {"is_valid": True, "issues": []}})
+        self.assertEqual(result["confirmed_recommendations"], [])
+        codes = {item["code"] for item in result["validation"]["issues"]}
+        self.assertIn("malformed_preference_match_entry", codes)
+        self.assertIn("malformed_candidate_entry", codes)
+
+    def test_final_validation_independently_rechecks_safety(self):
+        result = rank_recommendations([match("CS F211")],
+                                      {"candidates": [candidate("CS F211")]})
+        result["confirmed_recommendations"][0]["policy"]["eligibility_state"] = "unknown"
+        validation = validate_ranking_result(result)
+        self.assertFalse(validation["is_valid"])
+        self.assertIn("unsafe_confirmed_recommendation",
+                      {item["code"] for item in validation["issues"]})
 
 
 if __name__ == "__main__":
