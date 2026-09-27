@@ -3,6 +3,7 @@
 from copy import deepcopy
 import json
 import os
+import socket
 import urllib.error
 import urllib.request
 
@@ -67,7 +68,7 @@ class GeminiClient:
             text = response["candidates"][0]["content"]["parts"][0]["text"]
             result = json.loads(text)
         except (KeyError, IndexError, TypeError, ValueError, UnicodeDecodeError,
-                urllib.error.URLError, TimeoutError) as error:
+                urllib.error.URLError, TimeoutError, socket.timeout) as error:
             raise GeminiError("Gemini returned an unusable response") from error
         if not isinstance(result, dict):
             raise GeminiError("Gemini structured output must be an object")
@@ -105,16 +106,24 @@ class GeminiSemanticMatchingStrategy(MatchingStrategy):
     def __init__(self, client=None, fallback=None):
         self.client = client or GeminiClient()
         self.fallback = fallback or LexicalMatchingStrategy()
+        self._batch_failed = False
+
+    def begin_batch(self):
+        """Reset request-local provider availability before matching a collection."""
+        self._batch_failed = False
 
     def find_matches(self, phrase, fields):
         usable = [field for field in fields if _valid_course_field(field)]
         if not usable:
             return []
+        if self._batch_failed:
+            return self.fallback.find_matches(phrase, usable)
         try:
             raw = self.client.generate_structured(
                 _matching_prompt(phrase, usable), MATCH_SCHEMA)
             indexes = _validated_match_indexes(raw, len(usable))
         except (GeminiError, ValueError, TypeError):
+            self._batch_failed = True
             return self.fallback.find_matches(phrase, usable)
         return [{
             "course_field": usable[index]["course_field"],

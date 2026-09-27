@@ -1,42 +1,340 @@
 const statusElement = document.querySelector("#api-status");
-const detailElement = document.querySelector("#connection-detail");
-const profileForm = document.querySelector("#student-profile-form");
+const recommendationForm = document.querySelector("#recommendation-form");
 const formSummary = document.querySelector("#form-summary");
-const profileStatus = document.querySelector("#profile-status");
-const preferenceForm = document.querySelector("#preference-query-form");
-const preferenceStatus = document.querySelector("#preference-status");
-const preferenceResult = document.querySelector("#preference-result");
+const recommendationStatus = document.querySelector("#recommendation-status");
+const recommendButton = document.querySelector("#recommend-button");
 const resultsPanel = document.querySelector("#recommendation-results");
 const resultsSummary = document.querySelector("#results-summary");
+const resultNotice = document.querySelector("#result-notice");
 const academicProgress = document.querySelector("#academic-progress");
+const categoryProgress = document.querySelector("#category-progress");
 const confirmedResults = document.querySelector("#confirmed-results");
 const verificationResults = document.querySelector("#verification-results");
-const DISPLAY_LIMIT = 12;
+const confirmedCount = document.querySelector("#confirmed-count");
+const verificationCount = document.querySelector("#verification-count");
+const VERIFICATION_DISPLAY_LIMIT = 8;
+const SEARCH_DISPLAY_LIMIT = 8;
 
-async function checkApiConnection() {
+const dashboardState = {
+  programmes: new Set(),
+  courses: [],
+  completed: new Map(),
+  ongoing: new Map(),
+  suggested: new Map(),
+  dismissedSuggestions: new Set(),
+  suggestionRequestId: 0,
+};
+
+function setServiceState(label, state) {
+  statusElement.textContent = label;
+  statusElement.className = `status ${state || ""}`.trim();
+}
+
+async function loadDashboardOptions() {
   try {
-    const response = await fetch("/api/health", {
-      headers: { Accept: "application/json" },
-    });
-    if (!response.ok) throw new Error(`Health check failed: ${response.status}`);
-    const health = await response.json();
-    if (health.status !== "ok") throw new Error("API reported an unhealthy state");
-    statusElement.textContent = "API connected";
-    statusElement.classList.add("connected");
-    detailElement.textContent = `Connected to ${health.service} (${health.api_version}).`;
+    const response = await fetch("/api/options", { headers: { Accept: "application/json" } });
+    if (!response.ok) throw new Error(`Options request failed: ${response.status}`);
+    const payload = await response.json();
+    const options = payload.options;
+    if (!options || !Array.isArray(options.programmes) || !Array.isArray(options.courses)) {
+      throw new Error("The academic options response is invalid.");
+    }
+    dashboardState.programmes = new Set(options.programmes);
+    dashboardState.courses = options.courses;
+    populateOptions(options);
+    configureProgrammePicker("programme");
+    configureProgrammePicker("second-programme");
+    configureCoursePicker("completed");
+    configureCoursePicker("ongoing");
+    recommendButton.disabled = false;
+    recommendationStatus.textContent = "Ready when you are.";
+    setServiceState("Planner ready", "connected");
   } catch (error) {
-    statusElement.textContent = "API unavailable";
-    statusElement.classList.add("unavailable");
-    detailElement.textContent = "Start the local API service and refresh this page.";
-    console.error(error);
+    setServiceState("Planner unavailable", "unavailable");
+    recommendationStatus.textContent = "Academic options could not be loaded. Refresh after starting the service.";
+    showIssues([{ message: error.message }], "We could not prepare the planner:");
   }
 }
 
-checkApiConnection();
+function populateOptions(options) {
+  const yearSelect = document.querySelector("#academic-year");
+  options.academic_years.forEach((year) => {
+    const option = document.createElement("option");
+    option.value = String(year);
+    option.textContent = `Year ${year}`;
+    yearSelect.append(option);
+  });
+  const semesterSelect = document.querySelector("#semester");
+  options.semesters.forEach((semester) => {
+    const option = document.createElement("option");
+    option.value = String(semester);
+    option.textContent = `Semester ${semester}`;
+    semesterSelect.append(option);
+  });
+}
 
-function courseEntries(value) {
-  return value.split(/[\n,]+/).map((code) => code.trim()).filter(Boolean)
-    .map((courseCode) => ({ course_code: courseCode }));
+function normalizeProgrammeSearch(value) {
+  return String(value || "").toLocaleLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+function configureProgrammePicker(inputId) {
+  const input = document.querySelector(`#${inputId}`);
+  const suggestions = document.querySelector(`#${inputId}-suggestions`);
+  const render = () => {
+    const query = normalizeProgrammeSearch(input.value);
+    suggestions.replaceChildren();
+    if (!query) {
+      suggestions.hidden = true;
+      return;
+    }
+    const matches = [...dashboardState.programmes].filter((programme) =>
+      normalizeProgrammeSearch(programme).includes(query)).slice(0, SEARCH_DISPLAY_LIMIT);
+    if (!matches.length) {
+      const empty = document.createElement("p");
+      empty.className = "suggestion-empty";
+      empty.textContent = "No matching processed programme found.";
+      suggestions.append(empty);
+    }
+    matches.forEach((programme) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "suggestion-option";
+      button.setAttribute("role", "option");
+      button.textContent = programme;
+      button.addEventListener("click", () => {
+        input.value = programme;
+        suggestions.hidden = true;
+        refreshCourseSuggestions();
+      });
+      suggestions.append(button);
+    });
+    suggestions.hidden = false;
+  };
+  input.addEventListener("input", render);
+  input.addEventListener("focus", render);
+  input.addEventListener("change", refreshCourseSuggestions);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") suggestions.hidden = true;
+  });
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(`[data-programme-picker="${inputId}"]`)) {
+      suggestions.hidden = true;
+    }
+  });
+}
+
+function configureCoursePicker(kind) {
+  const search = document.querySelector(`#${kind}-course-search`);
+  const suggestions = document.querySelector(`#${kind}-suggestions`);
+  search.addEventListener("input", () => renderSuggestions(kind));
+  search.addEventListener("focus", () => renderSuggestions(kind));
+  search.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") suggestions.hidden = true;
+  });
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(`[data-picker="${kind}"]`)) suggestions.hidden = true;
+  });
+}
+
+function renderSuggestions(kind) {
+  const search = document.querySelector(`#${kind}-course-search`);
+  const suggestions = document.querySelector(`#${kind}-suggestions`);
+  const query = search.value.trim().toLocaleLowerCase();
+  suggestions.replaceChildren();
+  if (!query) {
+    suggestions.hidden = true;
+    return;
+  }
+  const current = dashboardState[kind];
+  const opposite = dashboardState[kind === "completed" ? "ongoing" : "completed"];
+  const matches = dashboardState.courses.filter((course) =>
+    course.label.toLocaleLowerCase().includes(query) && !current.has(course.course_code)
+  ).slice(0, SEARCH_DISPLAY_LIMIT);
+  if (!matches.length) {
+    const empty = document.createElement("p");
+    empty.className = "suggestion-empty";
+    empty.textContent = "No matching course found.";
+    suggestions.append(empty);
+  }
+  matches.forEach((course) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "suggestion-option";
+    button.setAttribute("role", "option");
+    button.disabled = opposite.has(course.course_code);
+    button.textContent = opposite.has(course.course_code)
+      ? `${course.label} · already ${kind === "completed" ? "ongoing" : "completed"}`
+      : course.label;
+    button.addEventListener("click", () => addCourse(kind, course));
+    suggestions.append(button);
+  });
+  suggestions.hidden = false;
+}
+
+function addCourse(kind, course) {
+  const opposite = dashboardState[kind === "completed" ? "ongoing" : "completed"];
+  if (opposite.has(course.course_code)) {
+    showIssues([{ message: `${course.course_code} is already selected as ${kind === "completed" ? "ongoing" : "completed"}.` }]);
+    return;
+  }
+  dashboardState[kind].set(course.course_code, course);
+  document.querySelector(`#${kind}-course-search`).value = "";
+  document.querySelector(`#${kind}-suggestions`).hidden = true;
+  renderSelectedCourses(kind);
+}
+
+function removeCourse(kind, code) {
+  dashboardState[kind].delete(code);
+  renderSelectedCourses(kind);
+  if (kind === "completed") renderCourseSuggestions();
+}
+
+function renderSelectedCourses(kind) {
+  const container = document.querySelector(`#${kind}-selected`);
+  const count = document.querySelector(`#${kind}-count`);
+  const courses = [...dashboardState[kind].values()];
+  container.replaceChildren();
+  count.textContent = `${courses.length} selected`;
+  courses.forEach((course) => {
+    const chip = document.createElement("span");
+    chip.className = "course-chip";
+    chip.title = course.course_title || course.course_code;
+    const label = document.createElement("span");
+    label.textContent = course.course_code;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "chip-remove";
+    remove.setAttribute("aria-label", `Remove ${course.course_code} from ${kind} courses`);
+    remove.textContent = "×";
+    remove.addEventListener("click", () => removeCourse(kind, course.course_code));
+    chip.append(label, remove);
+    container.append(chip);
+  });
+}
+
+function suggestionProfile() {
+  const primary = document.querySelector("#programme").value.trim();
+  const second = document.querySelector("#second-programme").value.trim();
+  const year = Number(document.querySelector("#academic-year").value);
+  const semester = Number(document.querySelector("#semester").value);
+  const programmes = [primary, second].filter((value) => dashboardState.programmes.has(value));
+  return { programmes, current_academic_year: year, current_semester: semester };
+}
+
+async function refreshCourseSuggestions() {
+  const profile = suggestionProfile();
+  const status = document.querySelector("#suggestion-status");
+  const list = document.querySelector("#suggested-course-list");
+  const confirmAll = document.querySelector("#confirm-all-suggestions");
+  const requestId = ++dashboardState.suggestionRequestId;
+  dashboardState.suggested.clear();
+  dashboardState.dismissedSuggestions.clear();
+  list.replaceChildren();
+  confirmAll.hidden = true;
+  if (!profile.programmes.length || !profile.current_academic_year || !profile.current_semester) {
+    status.textContent = "Select a programme, year, and semester to check for source-backed suggestions.";
+    return;
+  }
+  status.textContent = "Checking processed programme charts…";
+  try {
+    const response = await fetch("/api/course-suggestions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(profile),
+    });
+    const payload = await response.json();
+    if (requestId !== dashboardState.suggestionRequestId) return;
+    if (!response.ok || !payload.course_suggestions) {
+      throw new Error(payload.message || "Course suggestions could not be loaded.");
+    }
+    const result = payload.course_suggestions;
+    (result.suggestions || []).forEach((item) =>
+      dashboardState.suggested.set(item.course_code, item));
+    renderCourseSuggestions();
+    if (result.suggestions?.length) {
+      status.textContent = `${result.suggestions.length} source-backed courses are normally scheduled before this semester. Confirm only the ones you completed.`;
+      confirmAll.hidden = false;
+    } else if (result.limitations?.length) {
+      status.textContent = result.limitations.map((item) => item.message).join(" ");
+    } else {
+      status.textContent = "No source-backed required courses are scheduled before this semester for the selected programme.";
+    }
+  } catch (error) {
+    if (requestId !== dashboardState.suggestionRequestId) return;
+    status.textContent = `Suggestions unavailable: ${error.message}`;
+  }
+}
+
+function renderCourseSuggestions() {
+  const list = document.querySelector("#suggested-course-list");
+  list.replaceChildren();
+  [...dashboardState.suggested.values()].filter((item) =>
+    !dashboardState.dismissedSuggestions.has(item.course_code) &&
+    !dashboardState.completed.has(item.course_code)
+  ).forEach((item) => {
+    const row = document.createElement("div");
+    row.className = "suggested-course";
+    const identity = document.createElement("div");
+    const title = document.createElement("strong");
+    title.textContent = [item.course_code, item.course_title].filter(Boolean).join(" — ");
+    const detail = document.createElement("span");
+    detail.textContent = `Expected in year ${item.expected_year}, semester ${item.expected_semester} · ${item.programme_scopes.join(", ")}`;
+    identity.append(title, detail);
+    const actions = document.createElement("div");
+    actions.className = "suggestion-actions";
+    const confirm = document.createElement("button");
+    confirm.type = "button";
+    confirm.textContent = "Confirm completed";
+    confirm.addEventListener("click", () => confirmSuggestion(item));
+    const dismiss = document.createElement("button");
+    dismiss.type = "button";
+    dismiss.className = "dismiss-suggestion";
+    dismiss.textContent = "Remove";
+    dismiss.addEventListener("click", () => {
+      dashboardState.dismissedSuggestions.add(item.course_code);
+      renderCourseSuggestions();
+    });
+    actions.append(confirm, dismiss);
+    row.append(identity, actions);
+    list.append(row);
+  });
+}
+
+function confirmSuggestion(item) {
+  if (dashboardState.ongoing.has(item.course_code)) {
+    showIssues([{ message: `${item.course_code} is selected as ongoing. Remove it there before confirming completion.` }]);
+    return;
+  }
+  dashboardState.completed.set(item.course_code, {
+    course_code: item.course_code,
+    course_title: item.course_title,
+    label: [item.course_code, item.course_title].filter(Boolean).join(" — "),
+  });
+  renderSelectedCourses("completed");
+  renderCourseSuggestions();
+}
+
+function confirmAllSuggestions() {
+  [...dashboardState.suggested.values()].forEach((item) => {
+    if (!dashboardState.dismissedSuggestions.has(item.course_code) &&
+        !dashboardState.ongoing.has(item.course_code)) {
+      dashboardState.completed.set(item.course_code, {
+        course_code: item.course_code,
+        course_title: item.course_title,
+        label: [item.course_code, item.course_title].filter(Boolean).join(" — "),
+      });
+    }
+  });
+  renderSelectedCourses("completed");
+  renderCourseSuggestions();
+}
+
+document.querySelector("#academic-year").addEventListener("change", refreshCourseSuggestions);
+document.querySelector("#semester").addEventListener("change", refreshCourseSuggestions);
+document.querySelector("#confirm-all-suggestions").addEventListener("click", confirmAllSuggestions);
+
+function courseEntries(kind) {
+  return [...dashboardState[kind].keys()].map((courseCode) => ({ course_code: courseCode }));
 }
 
 function profilePayload() {
@@ -45,38 +343,86 @@ function profilePayload() {
     second_programme: document.querySelector("#second-programme").value.trim() || null,
     current_academic_year: Number(document.querySelector("#academic-year").value),
     current_semester: Number(document.querySelector("#semester").value),
-    completed_courses: courseEntries(document.querySelector("#completed-courses").value),
-    ongoing_courses: courseEntries(document.querySelector("#ongoing-courses").value),
+    completed_courses: courseEntries("completed"),
+    ongoing_courses: courseEntries("ongoing"),
   };
 }
 
-function showIssues(issues) {
+function localValidationIssues() {
+  const issues = [];
+  const primary = document.querySelector("#programme").value.trim();
+  const second = document.querySelector("#second-programme").value.trim();
+  if (primary && !dashboardState.programmes.has(primary)) {
+    issues.push({ message: "Choose the primary programme from the available programme list." });
+  }
+  if (second && !dashboardState.programmes.has(second)) {
+    issues.push({ message: "Choose the second programme from the available programme list." });
+  }
+  if (primary && second && primary === second) {
+    issues.push({ message: "Primary and second programme must be different." });
+  }
+  const overlap = [...dashboardState.completed.keys()].filter((code) => dashboardState.ongoing.has(code));
+  if (overlap.length) issues.push({ message: `${overlap.join(", ")} cannot be both completed and ongoing.` });
+  return issues;
+}
+
+function showIssues(issues, headingText = "Please review these details:") {
   formSummary.replaceChildren();
   if (!issues.length) {
     formSummary.hidden = true;
     return;
   }
   const heading = document.createElement("strong");
-  heading.textContent = "Please review the profile:";
+  heading.textContent = headingText;
   const list = document.createElement("ul");
   issues.forEach((issue) => {
     const item = document.createElement("li");
-    item.textContent = issue.message;
+    item.textContent = issue.message || "A value needs your attention.";
     list.append(item);
   });
   formSummary.append(heading, list);
   formSummary.hidden = false;
+  formSummary.focus();
 }
 
-function addProgressMetric(label, value) {
+function addProgressMetric(label, value, tone = "") {
   const card = document.createElement("div");
-  card.className = "progress-card";
+  card.className = `progress-card ${tone}`.trim();
   const number = document.createElement("strong");
   number.textContent = String(value ?? 0);
   const caption = document.createElement("span");
   caption.textContent = label;
   card.append(number, caption);
   academicProgress.append(card);
+}
+
+function renderCategoryProgress(requirements) {
+  categoryProgress.replaceChildren();
+  const programmes = requirements?.requirement_progress?.programme_progress || [];
+  programmes.forEach((programme) => {
+    const categories = programme.categories || [];
+    if (!categories.length) return;
+    const group = document.createElement("div");
+    group.className = "category-group";
+    const title = document.createElement("h4");
+    title.textContent = programme.programme || programme.requested_programme || "Programme requirements";
+    group.append(title);
+    categories.slice(0, 8).forEach((category) => {
+      const satisfied = (category.satisfied_requirements || []).length;
+      const partial = (category.partially_satisfied_requirements || []).length;
+      const remaining = (category.remaining_requirements || []).length;
+      const unknown = (category.unevaluable_requirements || []).length;
+      const row = document.createElement("div");
+      row.className = "category-row";
+      const name = document.createElement("span");
+      name.textContent = category.category || category.normalized_category || "Other requirements";
+      const value = document.createElement("span");
+      value.textContent = `${satisfied} met · ${partial + remaining} remaining${unknown ? ` · ${unknown} unclear` : ""}`;
+      row.append(name, value);
+      group.append(row);
+    });
+    categoryProgress.append(group);
+  });
 }
 
 function reasonLabel(reason) {
@@ -86,25 +432,35 @@ function reasonLabel(reason) {
 function resultCard(item, verification = false) {
   const card = document.createElement("article");
   card.className = `course-card ${verification ? "needs-verification" : "confirmed"}`;
+  const top = document.createElement("div");
+  top.className = "course-card-top";
   const heading = document.createElement("h4");
-  heading.textContent = [item.course_code, item.course_title].filter(Boolean).join(" — ");
-  const status = document.createElement("p");
+  heading.textContent = [item.course_code, item.course_title].filter(Boolean).join(" — ") || "Course identity unavailable";
+  const status = document.createElement("span");
   status.className = "course-status";
-  status.textContent = verification ? "Verification required" : "Confirmed";
+  status.textContent = verification ? "Verify first" : "Confirmed";
+  top.append(heading, status);
   const explanation = document.createElement("p");
-  explanation.textContent = item.explanation?.text || "No explanation is available.";
-  card.append(heading, status, explanation);
+  explanation.className = "course-explanation";
+  explanation.textContent = item.explanation?.text || "The available structured evidence does not include an explanation.";
+  card.append(top, explanation);
 
-  const details = [
-    item.eligibility_state && `Eligibility: ${reasonLabel(item.eligibility_state)}`,
-    item.requirement_filter_state &&
-      `Requirement status: ${reasonLabel(item.requirement_filter_state)}`,
-  ].filter(Boolean);
-  if (verification) {
-    details.push(...(item.reasons || []).map((reason) => `Reason: ${reasonLabel(reason)}`));
-  }
+  const details = [];
+  if (item.eligibility_state) details.push(`Eligibility: ${reasonLabel(item.eligibility_state)}`);
+  if (item.requirement_filter_state) details.push(`Requirement fit: ${reasonLabel(item.requirement_filter_state)}`);
+  if (verification) (item.reasons || []).slice(0, 4).forEach((reason) => details.push(`Why: ${reasonLabel(reason)}`));
   const evidence = item.preference_match?.matched_preferences || [];
-  evidence.forEach((match) => details.push(`Preference match: ${match.original_value || match.value}`));
+  evidence.slice(0, 3).forEach((match) => {
+    const value = match.original_value || match.value;
+    if (value) details.push(`Matched preference: ${value}`);
+  });
+  const sourceEvidence = [
+    ...(item.preference_match?.positive_evidence || []),
+    ...evidence.flatMap((match) => match.evidence || []),
+  ];
+  sourceEvidence.slice(0, 2).forEach((entry) => {
+    if (entry?.matched_text) details.push(`Course evidence: ${entry.matched_text}`);
+  });
   if (details.length) {
     const list = document.createElement("ul");
     list.className = "course-evidence";
@@ -120,112 +476,115 @@ function resultCard(item, verification = false) {
 
 function renderCourseGroup(container, items, verification = false) {
   container.replaceChildren();
-  const visible = items.slice(0, DISPLAY_LIMIT);
+  const limit = verification ? VERIFICATION_DISPLAY_LIMIT : items.length;
+  const visible = items.slice(0, limit);
   if (!visible.length) {
-    const empty = document.createElement("p");
+    const empty = document.createElement("div");
     empty.className = "empty-state";
-    empty.textContent = verification
-      ? "No courses currently require verification."
-      : "No courses are confirmed under the available academic evidence.";
+    const title = document.createElement("strong");
+    title.textContent = verification ? "No courses need verification." : "No confirmed courses yet.";
+    const copy = document.createElement("p");
+    copy.textContent = verification
+      ? "Every displayed result has sufficient academic evidence."
+      : "The recommender kept its academic safety checks in place. Try broadening your interests or review the courses requiring verification.";
+    empty.append(title, copy);
     container.append(empty);
     return;
   }
   visible.forEach((item) => container.append(resultCard(item, verification)));
-  if (items.length > DISPLAY_LIMIT) {
+  if (items.length > limit) {
     const remaining = document.createElement("p");
     remaining.className = "result-note";
-    remaining.textContent = `${items.length - DISPLAY_LIMIT} additional courses are retained in the API response.`;
+    remaining.textContent = `Showing ${limit} of ${items.length} courses that need verification. The full set remains available in the API result.`;
     container.append(remaining);
   }
 }
 
+function usedFallback(result) {
+  const uninterpreted = result.intent?.uninterpreted || [];
+  const deterministicExplanations = [
+    ...(result.confirmed_recommendations || []),
+    ...(result.verification_required || []),
+  ].some((item) => item.explanation?.method === "deterministic");
+  return uninterpreted.some((item) => item?.reason === "gemini_unavailable_or_invalid") || deterministicExplanations;
+}
+
 function renderRecommendations(result) {
-  const summary = result.summary;
+  const summary = result.summary || {};
   const academic = result.academic_requirements?.summary || {};
-  resultsSummary.textContent = [
-    `${summary.confirmed_recommendation_count} confirmed`,
-    `${summary.verification_required_count} requiring verification`,
-    `${summary.excluded_course_count} excluded`,
-  ].join(" · ");
+  resultsSummary.textContent = `${summary.confirmed_recommendation_count || 0} confirmed · ${summary.verification_required_count || 0} query-relevant to verify`;
+  confirmedCount.textContent = `${summary.confirmed_recommendation_count || 0}`;
+  verificationCount.textContent = `${summary.verification_required_count || 0}`;
   academicProgress.replaceChildren();
-  addProgressMetric("Completed courses", academic.completed_course_count);
-  addProgressMetric("Remaining requirements", academic.remaining_requirement_count);
-  addProgressMetric("Satisfied requirements", academic.satisfied_requirement_count);
-  addProgressMetric("Unevaluable requirements", academic.unevaluable_requirement_count);
+  addProgressMetric("Courses completed", academic.completed_course_count);
+  addProgressMetric("Requirements met", academic.satisfied_requirement_count, "positive");
+  addProgressMetric("Requirements remaining", academic.remaining_requirement_count);
+  addProgressMetric("Requirements unclear", academic.unevaluable_requirement_count, academic.unevaluable_requirement_count ? "caution" : "");
+  renderCategoryProgress(result.academic_requirements);
   renderCourseGroup(confirmedResults, result.confirmed_recommendations || []);
   renderCourseGroup(verificationResults, result.verification_required || [], true);
+  if (usedFallback(result)) {
+    resultNotice.textContent = "AI assistance was unavailable for part of this result, so deterministic matching or grounded explanations were used. Academic safety checks were unchanged.";
+    resultNotice.hidden = false;
+  } else {
+    resultNotice.hidden = true;
+  }
   resultsPanel.hidden = false;
   resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-profileForm.addEventListener("submit", async (event) => {
+function setLoading(loading) {
+  recommendButton.disabled = loading;
+  recommendButton.classList.toggle("loading", loading);
+  recommendationForm.setAttribute("aria-busy", String(loading));
+  if (loading) {
+    recommendationStatus.textContent = "Checking academic requirements and matching your preferences…";
+  }
+}
+
+recommendationForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   showIssues([]);
-  if (!profileForm.checkValidity()) {
-    profileForm.reportValidity();
-    profileStatus.textContent = "Complete the required fields.";
+  if (!recommendationForm.checkValidity()) {
+    recommendationForm.reportValidity();
+    recommendationStatus.textContent = "Complete the required details to continue.";
     return;
   }
-  profileStatus.textContent = "Validating profile…";
-  try {
-    const response = await fetch("/api/student-profile", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify(profilePayload()),
-    });
-    const result = await response.json();
-    if (!result.profile) throw new Error(result.message || "Profile validation failed");
-    const issues = result.profile.validation.issues || [];
-    showIssues(issues);
-    if (result.profile.validation.is_valid) {
-      profileStatus.textContent = "Profile is valid and ready for academic analysis.";
-    } else {
-      profileStatus.textContent = "Profile contains validation errors.";
-    }
-  } catch (error) {
-    profileStatus.textContent = "The profile could not be validated. Try again.";
-    showIssues([{ message: error.message }]);
-  }
-});
-
-preferenceForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!preferenceForm.checkValidity()) {
-    preferenceForm.reportValidity();
-    preferenceStatus.textContent = "Enter your course preferences.";
+  const localIssues = localValidationIssues();
+  if (localIssues.length) {
+    showIssues(localIssues);
+    recommendationStatus.textContent = "Review the highlighted details.";
     return;
   }
-  preferenceStatus.textContent = "Understanding preferences…";
-  preferenceResult.hidden = true;
+  setLoading(true);
   try {
-    const query = document.querySelector("#preference-query").value;
-    if (!profileForm.checkValidity()) {
-      profileForm.reportValidity();
-      throw new Error("Complete the student profile before requesting recommendations.");
-    }
     const response = await fetch("/api/recommendations", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ profile: profilePayload(), query }),
+      body: JSON.stringify({
+        profile: profilePayload(),
+        query: document.querySelector("#preference-query").value.trim(),
+      }),
     });
-    const result = await response.json();
-    if (!result.recommendations) {
-      throw new Error(result.message || "Recommendation pipeline failed");
+    const payload = await response.json().catch(() => ({}));
+    if (!payload.recommendations) {
+      throw new Error(payload.message || "The recommendation service returned an unexpected response.");
     }
-    const summary = result.recommendations.summary;
-    preferenceResult.textContent = [
-      `${summary.confirmed_recommendation_count} confirmed`,
-      `${summary.verification_required_count} requiring verification`,
-      `${summary.excluded_course_count} excluded`,
-    ].join(" · ");
-    preferenceResult.hidden = false;
-    renderRecommendations(result.recommendations);
-    preferenceStatus.textContent = response.ok
-      ? "Recommendation analysis is complete."
-      : "The recommendation pipeline needs review.";
+    const result = payload.recommendations;
+    if (!response.ok || result.validation?.is_valid !== true) {
+      const issues = result.validation?.issues || [];
+      showIssues(issues.length ? issues : [{ message: "The academic profile could not be validated." }]);
+      recommendationStatus.textContent = "Review your profile before requesting recommendations.";
+      return;
+    }
+    renderRecommendations(result);
+    recommendationStatus.textContent = "Recommendation analysis is complete.";
   } catch (error) {
-    preferenceStatus.textContent = "Preferences could not be interpreted. Try again.";
-    preferenceResult.textContent = error.message;
-    preferenceResult.hidden = false;
+    showIssues([{ message: error.message }], "Recommendations could not be loaded:");
+    recommendationStatus.textContent = "Something went wrong. Your selections are still here; please try again.";
+  } finally {
+    setLoading(false);
   }
 });
+
+loadDashboardOptions();

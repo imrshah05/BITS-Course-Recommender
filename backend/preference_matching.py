@@ -100,6 +100,9 @@ class CoursePreferenceMatcher:
 
     def match_all(self, preferences, semantic_profiles):
         issues = []
+        begin_batch = getattr(self.strategy, "begin_batch", None)
+        if callable(begin_batch):
+            begin_batch()
         if isinstance(semantic_profiles, dict):
             profiles = semantic_profiles.get("profiles")
         else:

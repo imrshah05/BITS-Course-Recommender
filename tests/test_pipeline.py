@@ -109,6 +109,8 @@ class PipelineTests(unittest.TestCase):
                 "academic_regulations.json": {"rules": [{"id": "one"}]},
                 "programme_requirements.json": {"requirements": [{"id": "one"}],
                                                  "unresolved_sections": []},
+                "course_catalogue.json": {"records": [{"course_code": "CS F111"}],
+                                           "summary": {"distinct_course_count": 1}},
                 "academic_rules.json": {"records": [rule()]},
                 "timetable.json": {"records": [section()]},
             }
@@ -117,6 +119,7 @@ class PipelineTests(unittest.TestCase):
             paths = PipelinePaths(
                 courses=root / "courses.json", regulations=root / "academic_regulations.json",
                 programme_requirements=root / "programme_requirements.json",
+                course_catalogue=root / "course_catalogue.json",
                 academic_rules=root / "academic_rules.json", timetable=root / "timetable.json",
                 report=root / "preprocessing_report.json")
             first = validate_existing(paths)
@@ -136,11 +139,13 @@ class PipelineTests(unittest.TestCase):
     @patch("preprocessing.pipeline.validate_existing", return_value={"status": "valid"})
     @patch("preprocessing.pipeline.build_timetable")
     @patch("preprocessing.pipeline.build_academic_rules")
+    @patch("preprocessing.pipeline.revalidate_programme_requirements_file")
+    @patch("preprocessing.pipeline.build_source_course_catalogue")
     @patch("preprocessing.pipeline.build_programme_requirements")
     @patch("preprocessing.pipeline.build_academic_regulations")
     @patch("preprocessing.pipeline.build_course_dataset")
-    def test_orchestration_order_and_paths(self, courses, regulations, requirements, rules,
-                                           timetable, validate):
+    def test_orchestration_order_and_paths(self, courses, regulations, requirements,
+                                           catalogue, revalidate, rules, timetable, validate):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             handouts = root / "handouts"; handouts.mkdir()
@@ -151,11 +156,17 @@ class PipelineTests(unittest.TestCase):
                 bulletin_pdf=root / "bulletin.pdf", timetable_pdf=root / "timetable.pdf",
                 courses=root / "courses.json", regulations=root / "regulations.json",
                 programme_requirements=root / "requirements.json", academic_rules=root / "rules.json",
+                course_catalogue=root / "course_catalogue.json",
                 timetable=root / "timetable.json", report=root / "report.json")
             self.assertEqual(run_preprocessing(paths, rebuild=True), {"status": "valid"})
             courses.assert_called_once_with(paths.handouts, paths.courses)
             regulations.assert_called_once_with(paths.regulations_pdf, paths.regulations)
             requirements.assert_called_once_with(paths.bulletin_pdf, paths.programme_requirements)
+            self.assertEqual(catalogue.call_count, 2)
+            catalogue.assert_any_call(
+                paths.courses, paths.programme_requirements, paths.course_catalogue)
+            revalidate.assert_called_once_with(
+                paths.programme_requirements, paths.course_catalogue)
             rules.assert_called_once_with(paths.regulations, paths.programme_requirements,
                                           paths.academic_rules)
             timetable.assert_called_once_with(paths.timetable_pdf, paths.timetable)

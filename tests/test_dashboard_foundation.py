@@ -49,11 +49,11 @@ class DashboardFoundationTests(unittest.TestCase):
         self.assertIn("text/css", headers["Content-Type"])
         self.assertIn(b".dashboard-shell", body)
 
-    def test_javascript_connects_to_health_endpoint(self):
+    def test_javascript_loads_dashboard_options(self):
         status, headers, body = request("/assets/app.js")
         self.assertEqual(status, "200 OK")
         self.assertIn("text/javascript", headers["Content-Type"])
-        self.assertIn(b'fetch("/api/health"', body)
+        self.assertIn(b'fetch("/api/options"', body)
 
     def test_unknown_api_route_is_json_404(self):
         status, headers, body = request("/api/missing")

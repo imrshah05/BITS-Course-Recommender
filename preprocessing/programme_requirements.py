@@ -1,12 +1,14 @@
 """Extract explicit Bulletin lists; retain uncertain layouts for review."""
 
 import argparse
+from copy import deepcopy
+import json
 import re
 from pathlib import Path
 
-from preprocessing.course_codes import CODE
+from preprocessing.course_codes import CODE, normalize_course_code
 from preprocessing.dataset import write_dataset
-from preprocessing.pdf_extractor import extract_pdf_text
+from preprocessing.pdf_extractor import extract_pdf_layout_pages, extract_pdf_text
 
 ROW = re.compile(r'^(' + CODE + r')\s+(.+?)\s+(\d+|-)\s+(\d+|-)\s+(\d+)(\*?)$')
 CATEGORY = re.compile(r'^(CORE COURSES|DISCIPLINE ELECTIVE COURSES|Electives)(?:\s+L P U)?\s*$', re.I)
@@ -27,6 +29,8 @@ def validate_requirement(record):
         flag('incomplete_source', 'error')
     if record.get('course_code') and not re.fullmatch(CODE, record['course_code']):
         flag('malformed_course_code', 'error')
+    if record.get('course_code') and record.get('catalogue_status') in ('unknown', 'not_checked'):
+        flag('course_not_validated_against_catalogue')
     for key in ('units', 'course_count'):
         if record.get(key) is not None and (type(record[key]) is not int or record[key] < 0):
             flag('malformed_numeric_value', 'error')
@@ -92,7 +96,238 @@ def recover_scoped_course_pools(dataset):
     return dataset
 
 
-def extract_programme_requirements(pages):
+def _chart_name(text):
+    chart = re.search(
+        r'Semester\s*-?wise\s+Pattern for Students Admitted to\s+(.+?)\s+Programme\b',
+        text, re.I | re.S)
+    dual = re.search(
+        r'Semester\s*-?wise\s+pattern for composite Dual Degree Programme\s*s?\s+'
+        r'(.+?)\s+Year\b', text, re.I | re.S)
+    match = dual or chart
+    return ' '.join(match[1].split()).strip('() ') if match else None
+
+
+def _name_key(value):
+    return re.sub(r'[^a-z0-9]+', '', value.casefold()) if isinstance(value, str) else ''
+
+
+def _semester_chart_references(layout_text, programme_name, programme_names):
+    """Retain explicit composite-chart references without expanding their courses."""
+    parts = re.split(r'\s+with\s+', programme_name, maxsplit=1, flags=re.I)
+    if len(parts) != 2:
+        return []
+    candidates = [name for name in programme_names
+                  if _name_key(name) == _name_key(parts[0])]
+    referenced = candidates[0] if len(candidates) == 1 else None
+    lines = layout_text.splitlines()
+    headers = [line for line in lines
+               if 'First Semester' in line and 'Second Semester' in line]
+    if not headers:
+        return []
+    header = headers[0]
+    boundary = (header.find('First Semester') + header.find('Second Semester')) // 2
+    if boundary <= 0:
+        return []
+    references = []
+    for line in lines:
+        marker = re.match(r'^\s*(I|II|III|IV|V)\s+', line[:boundary])
+        if not marker:
+            continue
+        first, second = line[:boundary], line[boundary:]
+        phrase = r'\bSame as First degree Programme\b'
+        covered = []
+        if re.search(phrase, first, re.I):
+            covered.append(1)
+        if re.search(phrase, second, re.I):
+            covered.append(2)
+        if not covered:
+            continue
+        year = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5}[marker[1]]
+        references.append({
+            'reference_type': 'same_as_first_degree_programme',
+            'referenced_programme_role': 'first_degree',
+            'referenced_programme_name': referenced,
+            'covered_periods': [
+                {'year': year, 'semester': semester} for semester in covered],
+            'needs_verification': referenced is None,
+            'evidence': line.strip(),
+        })
+    return references
+
+
+def _semester_chart_courses(layout_text, programme_name, known_course_codes):
+    """Return only course identities whose year and table column are explicit."""
+    lines = layout_text.splitlines()
+    headers = [line for line in lines
+               if 'First Semester' in line and 'Second Semester' in line]
+    if not headers:
+        return []
+    header = headers[0]
+    first_start = header.find('First Semester')
+    second_start = header.find('Second Semester')
+    if first_start < 0 or second_start <= first_start:
+        return []
+    boundary = (first_start + second_start) // 2
+
+    def is_total(line):
+        if re.search(CODE, line):
+            return False
+        totals = re.findall(r'\b\d+(?:\s*/\s*\d+)?(?:\s*\(min\))?\b', line, re.I)
+        return len(totals) >= 2
+
+    blocks, pending = [], []
+    chart_started = False
+    for line in lines:
+        if 'First Semester' in line and 'Second Semester' in line:
+            if pending:
+                blocks.append(pending)
+                pending = []
+            chart_started = True
+            continue
+        if not chart_started:
+            continue
+        if re.match(r'^\s*Summer\b', line, re.I):
+            if pending:
+                blocks.append(pending)
+                pending = []
+            continue
+        if re.match(r'^\s*(?:Discipline Core|\*?Discipline Electives)', line, re.I):
+            if pending:
+                blocks.append(pending)
+                pending = []
+            break
+        pending.append(line)
+        if is_total(line):
+            blocks.append(pending)
+            pending = []
+    if pending:
+        blocks.append(pending)
+
+    rows = []
+    for block in blocks:
+        markers = []
+        for line in block:
+            match = re.match(r'^\s*(I|II|III|IV|V)\s+(?:\S|$)', line[:boundary])
+            if match:
+                markers.append(match[1])
+        if len(set(markers)) != 1:
+            continue
+        year = {'I': 1, 'II': 2, 'III': 3, 'IV': 4, 'V': 5}[markers[0]]
+        block_rows = []
+        alternative_lines = {1: set(), 2: set()}
+        for index, line in enumerate(block):
+            for semester, segment in ((1, line[:boundary]), (2, line[boundary:])):
+                if re.search(r'\bor\b', segment, re.I):
+                    alternative_lines[semester].add(index)
+                for match in re.finditer(
+                        r'\b([A-Z]{2,8}\*?)\s+'
+                        r'((?:[FUGKCE]\d{3}[A-Z]?|Z[CG]\d{3}[A-Z]?)(?:-\d+)?)\b',
+                        segment):
+                    code = normalize_course_code(f'{match[1]} {match[2]}')
+                    if code:
+                        block_rows.append(dict(
+                            course_code=code, year=year, semester=semester,
+                            line_index=index, evidence=line.strip()))
+        by_semester = {(year, semester): [] for semester in (1, 2)}
+        for row in block_rows:
+            by_semester[(year, row['semester'])].append(row)
+        for group in by_semester.values():
+            group.sort(key=lambda item: item['line_index'])
+            for position, row in enumerate(group):
+                previous = group[position - 1]['line_index'] if position else -1
+                following = (group[position + 1]['line_index']
+                             if position + 1 < len(group) else len(block))
+                row['alternative_context'] = any(
+                    previous < line_index < following
+                    for line_index in alternative_lines[row['semester']])
+        rows.extend(block_rows)
+
+    output, seen = [], set()
+    for row in rows:
+        key = (row['course_code'], row['year'], row['semester'])
+        if key in seen:
+            continue
+        seen.add(key)
+        code = row['course_code']
+        catalogue_status = ('not_checked' if known_course_codes is None else
+                            'matched' if code in known_course_codes else 'unknown')
+        uncertainty_reasons = []
+        if row['alternative_context']:
+            uncertainty_reasons.append('alternative_context')
+        if catalogue_status != 'matched':
+            uncertainty_reasons.append('catalogue_identity_unknown')
+        if code.endswith('T') or re.search(
+                r'\b(?:Thesis|Practice School)\b', row['evidence'], re.I):
+            uncertainty_reasons.append('thesis_or_practice_school')
+        output.append(dict(
+            course_code=code, course_title=None,
+            year=row['year'], semester=row['semester'],
+            category='Semester-wise curriculum',
+            catalogue_status=catalogue_status,
+            chart_uncertainty_reasons=uncertainty_reasons,
+            needs_verification=bool(uncertainty_reasons),
+            evidence=row['evidence']))
+    return sorted(output, key=lambda item: (
+        item['year'], item['semester'], item['course_code']))
+
+
+def _load_catalogue_codes(path):
+    if not path.is_file():
+        raise FileNotFoundError(f'Course catalogue is required for chart validation: {path}')
+    with path.open(encoding='utf-8') as stream:
+        dataset = __import__('json').load(stream)
+    codes = set()
+    for record in dataset.get('records', []):
+        direct = normalize_course_code(record.get('course_code')) \
+            if isinstance(record, dict) else None
+        identity = record.get('identity') if isinstance(record, dict) else None
+        if direct and (not isinstance(identity, dict) or
+                       identity.get('needs_verification') is not True):
+            codes.add(direct)
+        metadata = record.get('metadata') if isinstance(record, dict) else None
+        if not isinstance(metadata, dict):
+            continue
+        for value in metadata.get('course_codes') or []:
+            code = normalize_course_code(value)
+            if code:
+                codes.add(code)
+    if not codes:
+        raise ValueError('Course catalogue contains no usable course identities')
+    return codes
+
+
+def revalidate_programme_requirement_identities(dataset, known_course_codes):
+    """Revalidate chart identities after the unified source catalogue exists."""
+    result = deepcopy(dataset)
+    known = set(known_course_codes)
+    for record in result.get('requirements', []):
+        if (record.get('kind') != 'required_course' or
+                record.get('category') != 'Semester-wise curriculum' or
+                not record.get('course_code')):
+            continue
+        matched = record['course_code'] in known
+        record['catalogue_status'] = 'matched' if matched else 'unknown'
+        reasons = [reason for reason in record.get('chart_uncertainty_reasons', [])
+                   if reason != 'catalogue_identity_unknown']
+        if not matched:
+            reasons.append('catalogue_identity_unknown')
+        record['chart_uncertainty_reasons'] = reasons
+        record['needs_verification'] = bool(reasons)
+        record['validation'] = validate_requirement(record)
+    return result
+
+
+def revalidate_programme_requirements_file(requirements_path, catalogue_path):
+    requirements_path = Path(requirements_path)
+    with requirements_path.open(encoding='utf-8') as stream:
+        dataset = json.load(stream)
+    result = revalidate_programme_requirement_identities(
+        dataset, _load_catalogue_codes(Path(catalogue_path)))
+    write_dataset(result, requirements_path)
+    return result
+
+
+def extract_programme_requirements(pages, layout_pages=None, known_course_codes=None):
     """Parse clear L/P/U course lists and retain complete programme context.
 
     Semester chart columns are not reconstructed. Programme names are source
@@ -104,6 +339,8 @@ def extract_programme_requirements(pages):
     if any(type(n) is not int or n < 1 for n in numbers) or len(numbers) != len(set(numbers)):
         raise ValueError('Expected unique positive PDF page numbers')
     programmes, requirements, unresolved = [], [], []
+    layout_pages = {page["page_number"]: page for page in (layout_pages or [])}
+    known_course_codes = set(known_course_codes) if known_course_codes is not None else None
     active = None
     catalogue = False
     category = None
@@ -166,6 +403,16 @@ def extract_programme_requirements(pages):
                 add('category_total', source(page, m[0]), category=m[1], units=int(m[2]), course_count=int(m[3]), needs_verification=False)
             if re.search(r'\bor\b', text, re.I):
                 add('unresolved_choice', whole)
+            layout_page = layout_pages.get(page['page_number'])
+            if layout_page:
+                for reference in _semester_chart_references(
+                        layout_page['text'], active['name'],
+                        [item['name'] for item in programmes[:-1]]):
+                    add('curriculum_reference',
+                        source(page, reference.pop('evidence')), **reference)
+                for row in _semester_chart_courses(
+                        layout_page['text'], active['name'], known_course_codes):
+                    add('required_course', source(page, row.pop('evidence')), **row)
             active, category = None, None
             continue
         # A fresh uppercase heading immediately before CORE COURSES is a scope boundary.
@@ -235,16 +482,22 @@ def extract_programme_requirements(pages):
                   programmes=programmes, requirements=requirements, unresolved_sections=unresolved,
                   limitations=['Programme headings remain separate source occurrences; no inferred equivalence.',
                                'Unparsed tables, footnotes and scope conditions remain in programme evidence.',
-                               'Semester columns and higher-degree/WILP structures require review.',
+                               'Only chart rows with explicit layout-supported year and semester columns are structured; ambiguous rows remain for review.',
                                'Elective options are not mandatory course requirements.'])
     return recover_scoped_course_pools(result)
 
 
-def build_programme_requirements(source_path, output_path):
+def build_programme_requirements(source_path, output_path, catalogue_path=None):
     source, output = Path(source_path).resolve(), Path(output_path).resolve()
     if output.suffix != '.json' or source.parent in output.parents:
         raise ValueError('Output must be JSON outside the raw source directory')
-    result = extract_programme_requirements(extract_pdf_text(source))
+    pages = extract_pdf_text(source)
+    chart_pages = [page['page_number'] for page in pages if _chart_name(page['text'])]
+    layout_pages = extract_pdf_layout_pages(source, chart_pages)
+    catalogue = Path(catalogue_path).resolve() if catalogue_path else output.parent / 'courses.json'
+    known_codes = _load_catalogue_codes(catalogue)
+    result = extract_programme_requirements(
+        pages, layout_pages=layout_pages, known_course_codes=known_codes)
     write_dataset(result, output)
     return result
 

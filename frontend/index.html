@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="BITS Academic Course Recommender dashboard">
+    <meta name="description" content="Plan academically valid BITS courses around your progress and interests.">
     <title>BITS Academic Course Recommender</title>
     <link rel="stylesheet" href="/assets/styles.css">
   </head>
@@ -11,124 +11,158 @@
     <header class="site-header">
       <a class="brand" href="/" aria-label="BITS Academic Course Recommender home">
         <span class="brand-mark" aria-hidden="true">B</span>
-        <span>BITS Academic Course Recommender</span>
+        <span>BITS Course Recommender</span>
       </a>
-      <span id="api-status" class="status" role="status">Connecting…</span>
+      <span id="api-status" class="status" role="status">Preparing planner…</span>
     </header>
 
     <main class="dashboard-shell">
       <section class="hero" aria-labelledby="dashboard-title">
-        <p class="eyebrow">Dashboard foundation</p>
-        <h1 id="dashboard-title">Plan courses with academic rules in view.</h1>
-        <p class="hero-copy">
-          The dashboard connection is ready. Student planning and recommendation
-          workflows will be added in later tasks.
-        </p>
+        <p class="eyebrow">Academic course planning</p>
+        <h1 id="dashboard-title">Find courses that fit your degree and your interests.</h1>
+        <p class="hero-copy">Tell us where you are in your programme and what you want to study. Your academic rules remain the final authority for every recommendation.</p>
       </section>
 
-      <section class="foundation-card" aria-labelledby="connection-title">
-        <div>
-          <p class="card-label">Backend connection</p>
-          <h2 id="connection-title">API service</h2>
-        </div>
-        <p id="connection-detail">Checking the local service…</p>
-      </section>
+      <form id="recommendation-form" novalidate>
+        <section class="profile-panel" aria-labelledby="preference-title">
+          <div class="section-heading query-heading">
+            <div>
+              <p class="eyebrow">Start with your interests</p>
+              <h2 id="preference-title">What would you like to study?</h2>
+            </div>
+            <p>Describe topics, course style, workload, or assessment preferences in your own words.</p>
+          </div>
+          <label class="query-field">
+            Course preferences <span aria-hidden="true">*</span>
+            <textarea id="preference-query" name="preference_query" rows="4" required
+              placeholder="I am interested in artificial intelligence, robotics and autonomous systems."></textarea>
+          </label>
+        </section>
 
-      <section class="profile-panel" aria-labelledby="profile-title">
-        <div class="section-heading">
-          <p class="eyebrow">Student profile</p>
-          <h2 id="profile-title">Academic details</h2>
-          <p>Enter the information used to calculate academic requirements.</p>
-        </div>
+        <section class="profile-panel" aria-labelledby="profile-title">
+          <div class="section-heading">
+            <p class="eyebrow">Your academic profile</p>
+            <h2 id="profile-title">Tell us what you are studying</h2>
+            <p>We use only the courses you select. Your year or programme never marks courses completed automatically.</p>
+          </div>
 
-        <form id="student-profile-form" novalidate>
-          <div id="form-summary" class="form-summary" role="alert" hidden></div>
+          <div id="form-summary" class="form-summary" role="alert" tabindex="-1" hidden></div>
           <div class="field-grid">
-            <label>
-              Primary programme <span aria-hidden="true">*</span>
-              <input id="programme" name="programme" required autocomplete="organization-title"
-                     placeholder="B.E. Computer Science">
-            </label>
-            <label>
-              Second programme
-              <input id="second-programme" name="second_programme"
-                     placeholder="M.Sc. Mathematics">
-            </label>
+            <div class="programme-picker" data-programme-picker="programme">
+              <label for="programme">Primary programme <span aria-hidden="true">*</span></label>
+              <input id="programme" name="programme" required autocomplete="off"
+                     placeholder="Search B.E., M.Sc., B.Pharm. or another programme"
+                     aria-controls="programme-suggestions">
+              <div id="programme-suggestions" class="suggestions programme-suggestions"
+                   role="listbox" hidden></div>
+            </div>
+            <div class="programme-picker" data-programme-picker="second-programme">
+              <label for="second-programme">Second programme</label>
+              <input id="second-programme" name="second_programme" autocomplete="off"
+                     placeholder="Search for a dual-degree programme"
+                     aria-controls="second-programme-suggestions">
+              <div id="second-programme-suggestions" class="suggestions programme-suggestions"
+                   role="listbox" hidden></div>
+            </div>
             <label>
               Current academic year <span aria-hidden="true">*</span>
-              <input id="academic-year" name="current_academic_year" type="number"
-                     min="1" step="1" required inputmode="numeric">
+              <select id="academic-year" name="current_academic_year" required>
+                <option value="">Select year</option>
+              </select>
             </label>
             <label>
               Current semester <span aria-hidden="true">*</span>
               <select id="semester" name="current_semester" required>
                 <option value="">Select semester</option>
-                <option value="1">Semester 1</option>
-                <option value="2">Semester 2</option>
               </select>
             </label>
           </div>
 
+          <section id="suggested-courses-panel" class="suggested-courses" aria-labelledby="suggested-title">
+            <div class="picker-heading">
+              <div>
+                <h3 id="suggested-title">Suggested completed courses</h3>
+                <p class="field-help">Suggestions come only from explicit semester assignments in the processed Bulletin. Confirm each course before it is treated as completed.</p>
+              </div>
+              <button id="confirm-all-suggestions" class="secondary-button" type="button" hidden>Confirm all</button>
+            </div>
+            <p id="suggestion-status" class="suggestion-status">Select a programme, year, and semester to check for source-backed suggestions.</p>
+            <div id="suggested-course-list" class="suggested-course-list" aria-live="polite"></div>
+          </section>
+
           <div class="course-grid">
-            <label>
-              Completed courses
-              <span class="field-help">One course code per line or separated by commas.</span>
-              <textarea id="completed-courses" name="completed_courses" rows="7"
-                        placeholder="CS F211&#10;MATH F101"></textarea>
-            </label>
-            <label>
-              Ongoing courses
-              <span class="field-help">Do not repeat a completed course.</span>
-              <textarea id="ongoing-courses" name="ongoing_courses" rows="7"
-                        placeholder="CS F212"></textarea>
-            </label>
+            <div class="course-picker" data-picker="completed">
+              <div class="picker-heading">
+                <label for="completed-course-search">Completed courses</label>
+                <span id="completed-count" class="selection-count">0 selected</span>
+              </div>
+              <p class="field-help">Search by course code or title. Add only courses you have completed.</p>
+              <input id="completed-course-search" type="search" autocomplete="off"
+                     placeholder="Search CS F211 or Data Structures" aria-controls="completed-suggestions">
+              <div id="completed-suggestions" class="suggestions" role="listbox" hidden></div>
+              <div id="completed-selected" class="selected-courses" aria-live="polite"></div>
+            </div>
+            <div class="course-picker" data-picker="ongoing">
+              <div class="picker-heading">
+                <label for="ongoing-course-search">Ongoing courses</label>
+                <span id="ongoing-count" class="selection-count">0 selected</span>
+              </div>
+              <p class="field-help">Courses selected as completed cannot also be ongoing.</p>
+              <input id="ongoing-course-search" type="search" autocomplete="off"
+                     placeholder="Search current courses" aria-controls="ongoing-suggestions">
+              <div id="ongoing-suggestions" class="suggestions" role="listbox" hidden></div>
+              <div id="ongoing-selected" class="selected-courses" aria-live="polite"></div>
+            </div>
           </div>
+        </section>
 
-          <div class="form-actions">
-            <button type="submit">Validate profile</button>
-            <p id="profile-status" role="status">No profile submitted yet.</p>
-          </div>
-        </form>
-      </section>
-
-      <section class="profile-panel" aria-labelledby="preference-title">
-        <div class="section-heading">
-          <p class="eyebrow">Course preferences</p>
-          <h2 id="preference-title">What would you like to study?</h2>
-          <p>Describe your interests and preferences in your own words. This step interprets
-            preferences only; it does not decide academic eligibility.</p>
+        <div class="recommend-action">
+          <button id="recommend-button" type="submit" disabled>
+            <span class="button-label">Find my courses</span>
+            <span class="button-spinner" aria-hidden="true"></span>
+          </button>
+          <p id="recommendation-status" role="status">Loading academic options…</p>
         </div>
-        <form id="preference-query-form" novalidate>
-          <label>
-            Natural-language preferences <span aria-hidden="true">*</span>
-            <textarea id="preference-query" name="preference_query" rows="5" required
-              placeholder="Suggest an AI-related DEL with projects and no midsemester exam."></textarea>
-          </label>
-          <div class="form-actions">
-            <button type="submit">Find recommendations</button>
-            <p id="preference-status" role="status">No preferences submitted yet.</p>
-          </div>
-          <div id="preference-result" class="preference-result" aria-live="polite" hidden></div>
-        </form>
-      </section>
+      </form>
 
-      <section id="recommendation-results" class="results-panel" aria-labelledby="results-title"
-               hidden>
-        <div class="section-heading">
-          <p class="eyebrow">Academic plan</p>
-          <h2 id="results-title">Recommendation results</h2>
+      <section id="recommendation-results" class="results-panel" aria-labelledby="results-title" hidden>
+        <div class="section-heading results-heading">
+          <div>
+            <p class="eyebrow">Your academic plan</p>
+            <h2 id="results-title">Recommendation results</h2>
+          </div>
           <p id="results-summary"></p>
         </div>
-        <div id="academic-progress" class="progress-grid" aria-label="Academic progress"></div>
-        <div class="result-group" aria-labelledby="confirmed-title">
-          <h3 id="confirmed-title">Confirmed recommendations</h3>
+        <div id="result-notice" class="result-notice" hidden></div>
+
+        <section class="progress-section" aria-labelledby="progress-title">
+          <h3 id="progress-title">Academic progress</h3>
+          <div id="academic-progress" class="progress-grid" aria-label="Academic progress summary"></div>
+          <div id="category-progress" class="category-progress"></div>
+        </section>
+
+        <section class="result-group confirmed-group" aria-labelledby="confirmed-title">
+          <div class="group-heading">
+            <div>
+              <span class="group-kicker safe">Academically confirmed</span>
+              <h3 id="confirmed-title">Courses you can consider</h3>
+            </div>
+            <span id="confirmed-count" class="group-count"></span>
+          </div>
           <div id="confirmed-results" class="result-list"></div>
-        </div>
-        <div class="result-group" aria-labelledby="verification-title">
-          <h3 id="verification-title">Requires verification</h3>
-          <p>These courses are not confirmed recommendations. Review the stated uncertainty first.</p>
+        </section>
+
+        <section class="result-group verification-group" aria-labelledby="verification-title">
+          <div class="group-heading">
+            <div>
+              <span class="group-kicker caution">Needs a closer look</span>
+              <h3 id="verification-title">Courses requiring verification</h3>
+            </div>
+            <span id="verification-count" class="group-count"></span>
+          </div>
+          <p class="group-copy">These are never treated as confirmed recommendations. We show a concise sample and preserve the complete set in the result.</p>
           <div id="verification-results" class="result-list"></div>
-        </div>
+        </section>
       </section>
     </main>
 

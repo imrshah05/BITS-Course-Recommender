@@ -5,8 +5,10 @@ from copy import deepcopy
 from backend.course_catalogue import CourseCatalogue
 from backend.course_semantics import (
     CourseSemanticProfileBuilder,
+    UnifiedCourseSemanticProfileBuilder,
     validate_semantic_profiles,
 )
+from backend.source_course_catalogue import SourceCourseCatalogue
 
 
 def source(text="Evidence", page=1, filename="course.pdf"):
@@ -217,6 +219,26 @@ class CourseSemanticProfileTests(unittest.TestCase):
     def test_unknown_identity_returns_none(self):
         builder = CourseSemanticProfileBuilder(CourseCatalogue([record()]))
         self.assertIsNone(builder.build_one("BIO F999"))
+
+    def test_real_bulletin_only_profile_uses_title_without_inventing_metadata(self):
+        builder = UnifiedCourseSemanticProfileBuilder()
+        profile = builder.build_one("CS F437")
+        self.assertEqual(profile["title"]["display_value"],
+                         "Generative Artificial Intelligence")
+        self.assertEqual(profile["content"], [])
+        self.assertEqual(profile["topics"], [])
+        self.assertEqual(profile["evaluation"], [])
+        self.assertFalse(profile["catalogue_identity"]["handout_available"])
+        self.assertTrue(profile["catalogue_identity"]["bulletin_available"])
+        self.assertTrue(profile["source_evidence"]["course_identity"])
+
+    def test_unified_builder_preserves_rich_handout_profile(self):
+        handout_builder = CourseSemanticProfileBuilder(CourseCatalogue([record()]))
+        builder = UnifiedCourseSemanticProfileBuilder(
+            SourceCourseCatalogue({"records": [], "summary": {}}), handout_builder)
+        profile = builder.build_one("CS F211")
+        self.assertEqual(profile["title"]["display_value"], "Data Structures")
+        self.assertTrue(profile["catalogue_identity"]["source_record_count"])
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
 
 import argparse
 from collections import Counter
+from copy import deepcopy
 from dataclasses import dataclass
 import json
 from pathlib import Path
@@ -11,7 +12,9 @@ from preprocessing.academic_regulations import build_academic_regulations
 from preprocessing.academic_rules import build_academic_rules
 from preprocessing.course_codes import CODE
 from preprocessing.dataset import build_course_dataset, write_dataset
-from preprocessing.programme_requirements import build_programme_requirements
+from preprocessing.programme_requirements import (
+    build_programme_requirements, revalidate_programme_requirements_file)
+from preprocessing.source_course_catalogue import build_source_course_catalogue
 from preprocessing.timetable import build_timetable
 
 
@@ -26,6 +29,7 @@ class PipelinePaths:
     courses: Path = Path("data/processed/courses.json")
     regulations: Path = Path("data/processed/academic_regulations.json")
     programme_requirements: Path = Path("data/processed/programme_requirements.json")
+    course_catalogue: Path = Path("data/processed/course_catalogue.json")
     academic_rules: Path = Path("data/processed/academic_rules.json")
     timetable: Path = Path("data/processed/timetable.json")
     report: Path = Path("data/processed/preprocessing_report.json")
@@ -35,6 +39,7 @@ class PipelinePaths:
 
     def processed_inputs(self):
         return (self.courses, self.regulations, self.programme_requirements,
+                self.course_catalogue,
                 self.academic_rules, self.timetable)
 
 
@@ -189,13 +194,15 @@ def validate_existing(paths=PipelinePaths()):
     missing = [str(path) for path in paths.processed_inputs() if not Path(path).is_file()]
     if missing:
         raise FileNotFoundError("Missing processed inputs: " + ", ".join(missing))
-    courses, regulations, requirements, rules, timetable = map(_load, paths.processed_inputs())
+    courses, regulations, requirements, catalogue, rules, timetable = map(
+        _load, paths.processed_inputs())
     report = validate_processed_datasets(courses, rules, timetable)
     report["datasets_validated"] = [Path(path).name for path in paths.processed_inputs()]
     report["supporting_source_counts"] = {
         "academic_regulations": len(regulations.get("rules", [])),
         "programme_requirements": len(requirements.get("requirements", [])),
         "programme_unresolved_sections": len(requirements.get("unresolved_sections", [])),
+        "source_course_catalogue": deepcopy(catalogue.get("summary") or {}),
     }
     write_dataset(report, paths.report)
     return report
@@ -210,6 +217,12 @@ def run_preprocessing(paths=PipelinePaths(), rebuild=False):
         build_course_dataset(paths.handouts, paths.courses)
         build_academic_regulations(paths.regulations_pdf, paths.regulations)
         build_programme_requirements(paths.bulletin_pdf, paths.programme_requirements)
+        build_source_course_catalogue(
+            paths.courses, paths.programme_requirements, paths.course_catalogue)
+        revalidate_programme_requirements_file(
+            paths.programme_requirements, paths.course_catalogue)
+        build_source_course_catalogue(
+            paths.courses, paths.programme_requirements, paths.course_catalogue)
         build_academic_rules(paths.regulations, paths.programme_requirements, paths.academic_rules)
         build_timetable(paths.timetable_pdf, paths.timetable)
     return validate_existing(paths)
@@ -232,6 +245,7 @@ def main(argv=None):
         bulletin_pdf=raw / "bulletin.pdf", timetable_pdf=raw / "timetable.pdf",
         courses=processed / "courses.json", regulations=processed / "academic_regulations.json",
         programme_requirements=processed / "programme_requirements.json",
+        course_catalogue=processed / "course_catalogue.json",
         academic_rules=processed / "academic_rules.json", timetable=processed / "timetable.json",
         report=processed / "preprocessing_report.json")
     report = run_preprocessing(paths, rebuild=args.rebuild)

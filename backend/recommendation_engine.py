@@ -33,9 +33,11 @@ class RecommendationEngine:
 
     def recommend(self, query, academic_history=None, academic_requirements=None,
                   restrictions_by_course=None, semantic_profiles=None,
-                  candidate_pool=None, requirement_filter_result=None):
+                  candidate_pool=None, requirement_filter_result=None,
+                  intent_result=None):
         issues = []
-        intent = self.intent_parser.parse(query)
+        intent = deepcopy(intent_result) if intent_result is not None \
+            else self.intent_parser.parse(query)
         preferences = intent.get("preferences") if isinstance(intent, dict) else {}
         profiles_result = self._profiles(semantic_profiles, issues)
         profiles = profiles_result.get("profiles", [])

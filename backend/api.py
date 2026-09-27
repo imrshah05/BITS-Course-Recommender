@@ -8,6 +8,8 @@ from pathlib import Path
 from wsgiref.simple_server import make_server
 
 from backend.course_catalogue import CourseCatalogue
+from backend.course_suggestions import CourseSuggestionService
+from backend.dashboard_options import DashboardOptionsService
 from backend.dashboard_recommendations import DashboardRecommendationService
 from backend.gemini import configured_intent_parser, gemini_configuration
 from backend.student_profile import normalize_student_profile
@@ -27,6 +29,31 @@ def application(environ, start_response):
     """Serve foundational API endpoints and explicit dashboard assets."""
     method = environ.get("REQUEST_METHOD", "GET").upper()
     path = environ.get("PATH_INFO", "/")
+    if path == "/api/options" and method == "GET":
+        return _json_response(start_response, HTTPStatus.OK, {
+            "options": _dashboard_options().options(),
+        })
+    if path == "/api/course-suggestions" and method == "POST":
+        try:
+            payload = _read_json_body(environ)
+            if not isinstance(payload, dict) or set(payload) != {
+                    "programmes", "current_academic_year", "current_semester"}:
+                raise ValueError(
+                    "Request body must contain programmes, current_academic_year, and current_semester")
+            result = _course_suggestions().suggest(
+                payload["programmes"], payload["current_academic_year"],
+                payload["current_semester"])
+        except RequestError as error:
+            return _json_response(start_response, error.status, {
+                "error": error.code, "message": error.message,
+            })
+        except ValueError as error:
+            return _json_response(start_response, HTTPStatus.BAD_REQUEST, {
+                "error": "invalid_course_suggestion_payload", "message": str(error),
+            })
+        return _json_response(start_response, HTTPStatus.OK, {
+            "course_suggestions": result,
+        })
     if path == "/api/student-profile" and method == "POST":
         try:
             payload = _read_json_body(environ)
@@ -156,6 +183,16 @@ def _read_json_body(environ):
     except (UnicodeDecodeError, json.JSONDecodeError) as error:
         raise RequestError(HTTPStatus.BAD_REQUEST, "invalid_json",
                            "Request body must be valid UTF-8 JSON.") from error
+
+
+@lru_cache(maxsize=1)
+def _course_suggestions():
+    return CourseSuggestionService()
+
+
+@lru_cache(maxsize=1)
+def _dashboard_options():
+    return DashboardOptionsService()
 
 
 @lru_cache(maxsize=1)

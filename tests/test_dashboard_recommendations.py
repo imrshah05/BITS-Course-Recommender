@@ -67,6 +67,14 @@ class FakeCatalogue:
         return ["CS F211", "CS F212", "CS F213"]
 
 
+class FakeSourceCatalogue:
+    def __init__(self, codes):
+        self.codes = codes
+
+    def course_codes(self):
+        return list(self.codes)
+
+
 class FakePolicyService:
     def __init__(self, result):
         self.result = result
@@ -132,11 +140,12 @@ class DashboardRecommendationTests(unittest.TestCase):
 
     def test_unconfirmed_policy_course_cannot_be_promoted(self):
         unsafe = candidate("CS F212", safe=False)
-        result = self.service(policy_result(verification=[unsafe]), []).recommend(
+        result = self.service(policy_result(verification=[unsafe]), [
+            semantic("CS F212", "Machine Learning Systems")]).recommend(
             profile_input(), "I want to study machine learning.")
         self.assertEqual(result["confirmed_recommendations"], [])
         self.assertEqual(result["verification_required"][0]["course_code"], "CS F212")
-        self.assertIn("phase4_recommendation_safety_not_confirmed",
+        self.assertIn("policy_safety_not_confirmed",
                       result["verification_required"][0]["reasons"])
 
     def test_excluded_course_stays_excluded(self):
@@ -148,7 +157,7 @@ class DashboardRecommendationTests(unittest.TestCase):
         self.assertEqual(result["excluded_courses"][0]["normalized_course_code"],
                          "CS F213")
 
-    def test_only_safe_courses_receive_semantic_matching(self):
+    def test_safe_and_unresolved_courses_receive_semantic_matching(self):
         safe = candidate()
         unsafe = candidate("CS F212", safe=False)
         builder = FakeSemanticBuilder([semantic(), semantic("CS F212")])
@@ -160,7 +169,39 @@ class DashboardRecommendationTests(unittest.TestCase):
             recommendation_engine=RecommendationEngine(),
         )
         service.recommend(profile_input(), "I like machine learning.")
-        self.assertEqual(builder.calls, ["CS F211"])
+        self.assertEqual(builder.calls, ["CS F211", "CS F212", "CS F213"])
+
+    def test_irrelevant_policy_backlog_is_not_displayed_as_recommendations(self):
+        unsafe = candidate("CS F212", safe=False)
+        result = self.service(policy_result(verification=[unsafe]), [
+            semantic("CS F212", "Biological Sciences")]).recommend(
+            profile_input(), "I am interested in artificial intelligence.")
+        self.assertEqual(result["verification_required"], [])
+        self.assertEqual(result["academic_verification_backlog"][0]["course_code"],
+                         "CS F212")
+
+    def test_bulletin_only_semantic_match_requires_verification(self):
+        builder = FakeSemanticBuilder([
+            semantic("CS F437", "Generative Artificial Intelligence"),
+            semantic("BIO F101", "Introduction to Biological Sciences"),
+        ])
+        service = DashboardRecommendationService(
+            course_catalogue=FakeCatalogue(),
+            source_catalogue=FakeSourceCatalogue(["CS F437", "BIO F101"]),
+            policy_service=FakePolicyService(policy_result()),
+            semantic_builder=builder,
+            recommendation_engine=RecommendationEngine(),
+        )
+        result = service.recommend(
+            profile_input(), "I am interested in artificial intelligence.")
+        self.assertEqual(result["confirmed_recommendations"], [])
+        self.assertEqual([item["course_code"] for item in
+                          result["verification_required"]], ["CS F437"])
+        self.assertEqual(result["verification_required"][0]["eligibility_state"],
+                         "unknown")
+        self.assertEqual({item["course_code"] for item in
+                          result["academic_verification_backlog"]},
+                         {"BIO F101", "CS F437"})
 
     def test_invalid_profile_stops_before_policy(self):
         policy = FakePolicyService(policy_result())
@@ -196,10 +237,12 @@ class DashboardRecommendationTests(unittest.TestCase):
         excluded = candidate("CS F213", safe=False, pool_state="excluded")
         result = self.service(policy_result(
             safe=[safe], verification=[unsafe], excluded=[excluded]),
-            [semantic()]).recommend(profile_input(), "I like machine learning.")
+            [semantic(), semantic("CS F212", "Machine Learning Systems")]).recommend(
+                profile_input(), "I like machine learning.")
         self.assertEqual(result["summary"], {
             "confirmed_recommendation_count": 1,
             "verification_required_count": 1,
+            "academic_verification_backlog_count": 1,
             "excluded_course_count": 1,
         })
 
@@ -275,8 +318,9 @@ class DashboardRecommendationApiTests(unittest.TestCase):
             {"PATH_INFO": "/assets/app.js", "REQUEST_METHOD": "GET"},
             start_response)).decode()
         self.assertIn("item.explanation?.text", script)
-        self.assertIn("Preference match:", script)
+        self.assertIn("Matched preference:", script)
         self.assertIn("remaining_requirement_count", script)
+        self.assertIn("query-relevant to verify", script)
 
 
 if __name__ == "__main__":

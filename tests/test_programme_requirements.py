@@ -124,3 +124,78 @@ class ProgrammeRequirementsTests(unittest.TestCase):
         self.assertIn('Minor in Aeronautics', [p['name'] for p in result['programmes']])
         self.assertTrue(any(r['course_code'] == 'AN F311' and r['units'] == 3 for r in result['requirements']))
         self.assertTrue(all(r['sources'][0]['page_number'] == 338 for r in result['requirements']))
+
+
+class RealSemesterChartRegressionTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        source = Path(__file__).resolve().parents[1] / 'data/raw/bulletin.pdf'
+        numbers = [217, 233, 292]
+        with source.open('rb') as stream:
+            reader = PdfReader(stream)
+            cls.pages = [{
+                'source_file': 'bulletin.pdf', 'page_number': number,
+                'text': reader.pages[number - 1].extract_text() or '',
+            } for number in numbers]
+        from preprocessing.pdf_extractor import extract_pdf_layout_pages
+        from preprocessing.programme_requirements import _load_catalogue_codes
+        cls.layout_pages = extract_pdf_layout_pages(source, numbers)
+        cls.known_codes = _load_catalogue_codes(
+            source.parents[1] / 'processed/course_catalogue.json')
+        cls.result = extract_programme_requirements(
+            cls.pages, cls.layout_pages, cls.known_codes)
+
+    def rows(self, programme):
+        programme_id = next(item['id'] for item in self.result['programmes']
+                            if item['name'] == programme)
+        return {item['course_code']: item for item in self.result['requirements']
+                if item.get('programme_id') == programme_id and item.get('course_code')}
+
+    def test_be_computer_science_year_and_semester(self):
+        rows = self.rows('B. E. Computer Science')
+        self.assertEqual((rows['BITS F103']['year'], rows['BITS F103']['semester']),
+                         (1, 1))
+        self.assertEqual((rows['CS F211']['year'], rows['CS F211']['semester']),
+                         (2, 2))
+        self.assertEqual((rows['CS F351']['year'], rows['CS F351']['semester']),
+                         (3, 1))
+        self.assertTrue(rows['ECON F211']['needs_verification'])
+        self.assertTrue(rows['MGTS F211']['needs_verification'])
+
+    def test_msc_physics_year_and_semester(self):
+        rows = self.rows('M. Sc. Physics')
+        self.assertEqual((rows['PHY F211']['year'], rows['PHY F211']['semester']),
+                         (2, 1))
+        self.assertEqual((rows['PHY F241']['year'], rows['PHY F241']['semester']),
+                         (2, 2))
+        self.assertEqual((rows['PHY F341']['year'], rows['PHY F341']['semester']),
+                         (3, 2))
+
+    def test_composite_dual_degree_chart(self):
+        rows = self.rows('M.Sc. Physics with B.E. Computer Science')
+        self.assertEqual((rows['PHY F211']['year'], rows['PHY F211']['semester']),
+                         (2, 1))
+        self.assertEqual((rows['CS F211']['year'], rows['CS F211']['semester']),
+                         (3, 2))
+        self.assertEqual((rows['CS F351']['year'], rows['CS F351']['semester']),
+                         (4, 1))
+        self.assertFalse(any(item['year'] == 1 for item in rows.values()))
+        self.assertTrue(rows['BITS F423T']['needs_verification'])
+        reference = next(item for item in self.result['requirements']
+                         if item['programme_name'] ==
+                         'M.Sc. Physics with B.E. Computer Science'
+                         and item['kind'] == 'curriculum_reference')
+        self.assertEqual(reference['referenced_programme_name'], 'M. Sc. Physics')
+        self.assertEqual(reference['covered_periods'], [
+            {'year': 1, 'semester': 1}, {'year': 1, 'semester': 2}])
+        self.assertFalse(reference['needs_verification'])
+        self.assertEqual(reference['sources'][0]['page_number'], 292)
+
+    def test_catalogue_validation_and_traceability(self):
+        rows = self.rows('B. E. Computer Science')
+        self.assertEqual(rows['BITS F103']['catalogue_status'], 'matched')
+        self.assertFalse(rows['BITS F103']['needs_verification'])
+        self.assertEqual(rows['BITS F103']['sources'][0]['page_number'], 217)
+        self.assertIn('BITS', rows['BITS F103']['sources'][0]['text'])
+        self.assertEqual(rows['BITS F101']['catalogue_status'], 'matched')
+        self.assertFalse(rows['BITS F101']['needs_verification'])

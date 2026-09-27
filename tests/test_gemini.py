@@ -1,12 +1,14 @@
 from io import BytesIO
 import json
 import os
+import socket
 import unittest
 from unittest.mock import patch
 
 from backend.api import application
 from backend.gemini import (
     GeminiClient,
+    GeminiError,
     GeminiIntentExtractor,
     GeminiSemanticMatchingStrategy,
     configured_intent_parser,
@@ -110,6 +112,14 @@ class GeminiClientTests(unittest.TestCase):
         self.assertEqual(configuration, {"configured": True, "model": "chosen-model"})
         self.assertNotIn("top-secret", json.dumps(configuration))
 
+    def test_socket_timeout_becomes_fallback_error(self):
+        def transport(request, timeout):
+            raise socket.timeout("read timed out")
+
+        client = GeminiClient(api_key="secret", transport=transport)
+        with self.assertRaisesRegex(GeminiError, "unusable response"):
+            client.generate_structured("prompt", {"type": "object"})
+
 
 class GeminiIntentTests(unittest.TestCase):
     def test_structured_intent_is_validated_and_normalized(self):
@@ -205,6 +215,16 @@ class GeminiMatchingTests(unittest.TestCase):
             {"interests": ["AI"]}, semantic_profile())
         self.assertEqual(result["match_state"], "no_match")
 
+    def test_one_provider_failure_uses_fallback_for_rest_of_batch(self):
+        client = FakeClient(error=GeminiError("timeout"))
+        matcher = CoursePreferenceMatcher(GeminiSemanticMatchingStrategy(client))
+        result = matcher.match_all(
+            {"interests": ["machine learning"]},
+            [semantic_profile(), {**semantic_profile(), "course_code": "CS F402"}])
+        self.assertEqual(len(client.calls), 1)
+        self.assertEqual(len(result["matches"]), 2)
+        self.assertTrue(result["validation"]["is_valid"])
+
 
 class GeminiDashboardTests(unittest.TestCase):
     def test_intent_endpoint_returns_validated_preferences(self):
@@ -229,7 +249,7 @@ class GeminiDashboardTests(unittest.TestCase):
 
         body = b"".join(application({"PATH_INFO": "/", "REQUEST_METHOD": "GET"},
                                     start_response)).decode()
-        self.assertIn('id="preference-query-form"', body)
+        self.assertIn('id="recommendation-form"', body)
         self.assertIn('name="preference_query"', body)
         self.assertIn('id="recommendation-results"', body)
 

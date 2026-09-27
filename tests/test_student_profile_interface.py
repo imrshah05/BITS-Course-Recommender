@@ -119,11 +119,12 @@ class StudentProfileInterfaceTests(unittest.TestCase):
                                     start_response)).decode()
         self.assertEqual(captured["status"], "200 OK")
         for field in ("programme", "second_programme", "current_academic_year",
-                      "current_semester", "completed_courses", "ongoing_courses"):
+                      "current_semester"):
             self.assertIn(f'name="{field}"', body)
-        self.assertNotIn("recommendation-query", body)
+        self.assertIn('id="completed-course-search"', body)
+        self.assertIn('id="ongoing-course-search"', body)
 
-    def test_frontend_posts_backend_compatible_profile(self):
+    def test_frontend_posts_backend_compatible_profile_with_recommendation(self):
         captured = {}
 
         def start_response(status, headers):
@@ -131,10 +132,10 @@ class StudentProfileInterfaceTests(unittest.TestCase):
 
         script = b"".join(application({"PATH_INFO": "/assets/app.js",
                                        "REQUEST_METHOD": "GET"}, start_response)).decode()
-        self.assertIn('fetch("/api/student-profile"', script)
         self.assertIn('fetch("/api/recommendations"', script)
-        self.assertIn("completed_courses: courseEntries", script)
-        self.assertIn("ongoing_courses: courseEntries", script)
+        self.assertIn('completed_courses: courseEntries("completed")', script)
+        self.assertIn('ongoing_courses: courseEntries("ongoing")', script)
+        self.assertNotIn('fetch("/api/student-profile"', script)
 
 
 if __name__ == "__main__":

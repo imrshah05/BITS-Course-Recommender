@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass
 import json
 
 from backend.course_catalogue import CourseCatalogue
+from backend.source_course_catalogue import SourceCourseCatalogue
 
 
 SEMANTIC_FIELDS = (
@@ -45,6 +46,30 @@ class CourseSemanticProfileBuilder:
             "excluded_catalogue_records": deepcopy(self.catalogue.excluded_records),
             "catalogue_summary": deepcopy(self.catalogue.validation.get("summary") or {}),
         }
+        result["validation"] = validate_semantic_profiles(result)
+        result["summary"] = _summary(result)
+        return result
+
+
+class UnifiedCourseSemanticProfileBuilder:
+    """Build rich handout profiles and conservative Bulletin-only profiles."""
+
+    def __init__(self, source_catalogue=None, handout_builder=None):
+        self.source_catalogue = source_catalogue or SourceCourseCatalogue.load()
+        self.handout_builder = handout_builder or CourseSemanticProfileBuilder()
+
+    def build_one(self, course_code):
+        rich = self.handout_builder.build_one(course_code)
+        if rich is not None:
+            return rich
+        identity = self.source_catalogue.get(course_code)
+        return _source_profile(identity) if identity is not None else None
+
+    def build_all(self):
+        profiles = [self.build_one(code) for code in self.source_catalogue.course_codes()]
+        profiles = [profile for profile in profiles if profile is not None]
+        result = {"profiles": profiles,
+                  "catalogue_summary": deepcopy(self.source_catalogue.summary)}
         result["validation"] = validate_semantic_profiles(result)
         result["summary"] = _summary(result)
         return result
@@ -166,6 +191,86 @@ def _profile(identity):
         field for field, available in profile["data_availability"].items()
         if not available]
     return profile
+
+
+def _source_profile(identity):
+    """Represent only metadata explicitly retained by the unified catalogue."""
+    metadata = identity.get("metadata") or {}
+    title = _source_metadata_field(metadata.get("course_title"))
+    department = _source_metadata_field(metadata.get("department_division"))
+    units = _source_metadata_field(metadata.get("units"))
+    identity_sources = _unified_identity_sources(identity)
+    uncertainty = deepcopy(identity.get("uncertainty") or {})
+    profile = {
+        "course_code": identity["course_code"],
+        "catalogue_identity": {
+            "source_record_count": sum(len(value) for value in
+                                       (identity.get("provenance") or {}).values()),
+            "has_multiple_source_records": False,
+            "has_shared_source_record": False,
+            "handout_available": bool((identity.get("availability") or {}).get("handout")),
+            "bulletin_available": bool((identity.get("availability") or {}).get("bulletin")),
+        },
+        "title": title,
+        "department_or_division": department,
+        "content": [], "topics": [], "instructors": [], "evaluation": [],
+        "exam_information": {"midsemester": [], "comprehensive": []},
+        "attendance_or_makeup": {"attendance": [], "makeup": []},
+        "units": units,
+        "searchable_text": _searchable_text(identity["course_code"], title, [], []),
+        "source_evidence": {
+            "course_identity": identity_sources,
+            "title": deepcopy(title["sources"]),
+            "department_or_division": deepcopy(department["sources"]),
+            "units": deepcopy(units["sources"]),
+            "content": [], "topics": [], "instructors": [], "evaluation": [],
+            "exam_information": [], "attendance_or_makeup": [],
+        },
+        "uncertainty": {
+            "has_multiple_source_records": False,
+            "has_shared_source_record": False,
+            "needs_verification": bool(
+                (identity.get("identity") or {}).get("needs_verification") or
+                uncertainty.get("metadata_conflicts")),
+            "conflicts": {name: deepcopy((metadata.get(name) or {}).get("values") or [])
+                          for name in uncertainty.get("metadata_conflicts") or []},
+            "missing_fields": [],
+            "bulletin_relationships_need_verification": bool(
+                uncertainty.get("bulletin_relationships_need_verification")),
+        },
+        "validation": {"is_valid": True, "issues": [],
+                       "error_count": 0, "warning_count": 0},
+    }
+    profile["data_availability"] = _availability(profile)
+    profile["uncertainty"]["missing_fields"] = [
+        field for field, available in profile["data_availability"].items()
+        if not available]
+    return profile
+
+
+def _source_metadata_field(field):
+    field = field if isinstance(field, dict) else {}
+    sources = []
+    for provenance in field.get("provenance") or []:
+        sources = _merge_sources(sources, provenance.get("sources") or [])
+    return {"display_value": deepcopy(field.get("value")),
+            "values": deepcopy(field.get("values") or []),
+            "sources": sources}
+
+
+def _unified_identity_sources(identity):
+    sources = []
+    provenance = identity.get("provenance") or {}
+    for record in provenance.get("bulletin_records") or []:
+        sources = _merge_sources(sources, record.get("sources") or [])
+    for record in provenance.get("handout_records") or []:
+        source_file = record.get("source_file")
+        for page in record.get("page_numbers") or []:
+            sources = _merge_sources(sources, [{
+                "source_file": source_file, "page_number": page,
+                "text": identity.get("course_code"),
+            }])
+    return sources
 
 
 def _metadata_field(records, field, conflicting):
