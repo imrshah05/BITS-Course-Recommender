@@ -103,24 +103,29 @@ preferenceForm.addEventListener("submit", async (event) => {
   preferenceResult.hidden = true;
   try {
     const query = document.querySelector("#preference-query").value;
-    const response = await fetch("/api/intent", {
+    if (!profileForm.checkValidity()) {
+      profileForm.reportValidity();
+      throw new Error("Complete the student profile before requesting recommendations.");
+    }
+    const response = await fetch("/api/recommendations", {
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ profile: profilePayload(), query }),
     });
     const result = await response.json();
-    if (!result.intent) throw new Error(result.message || "Preference parsing failed");
-    const preferences = result.intent.preferences;
-    const labels = ["interests", "preferred_topics", "avoided_topics", "career_goals"];
-    const items = labels.flatMap((label) => (preferences[label] || [])
-      .map((item) => `${label.replaceAll("_", " ")}: ${item.original_value}`));
-    preferenceResult.textContent = items.length
-      ? items.join(" · ")
-      : "No supported preference could be identified reliably.";
+    if (!result.recommendations) {
+      throw new Error(result.message || "Recommendation pipeline failed");
+    }
+    const summary = result.recommendations.summary;
+    preferenceResult.textContent = [
+      `${summary.confirmed_recommendation_count} confirmed`,
+      `${summary.verification_required_count} requiring verification`,
+      `${summary.excluded_course_count} excluded`,
+    ].join(" · ");
     preferenceResult.hidden = false;
     preferenceStatus.textContent = response.ok
-      ? "Preferences are structured and ready for the recommendation pipeline."
-      : "Some preferences need review.";
+      ? "Recommendation analysis is complete."
+      : "The recommendation pipeline needs review.";
   } catch (error) {
     preferenceStatus.textContent = "Preferences could not be interpreted. Try again.";
     preferenceResult.textContent = error.message;

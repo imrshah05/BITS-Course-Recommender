@@ -32,7 +32,7 @@ class DashboardFoundationTests(unittest.TestCase):
         self.assertEqual(payload["api_base_path"], "/api")
         self.assertTrue(payload["features"]["student_profile"])
         self.assertTrue(payload["features"]["preference_query"])
-        self.assertFalse(payload["features"]["recommendations"])
+        self.assertTrue(payload["features"]["recommendations"])
         self.assertFalse(payload["features"]["timetable"])
 
     def test_dashboard_shell_is_served(self):

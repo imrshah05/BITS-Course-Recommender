@@ -132,6 +132,7 @@ class StudentProfileInterfaceTests(unittest.TestCase):
         script = b"".join(application({"PATH_INFO": "/assets/app.js",
                                        "REQUEST_METHOD": "GET"}, start_response)).decode()
         self.assertIn('fetch("/api/student-profile"', script)
+        self.assertIn('fetch("/api/recommendations"', script)
         self.assertIn("completed_courses: courseEntries", script)
         self.assertIn("ongoing_courses: courseEntries", script)
 
