@@ -33,7 +33,7 @@
             <p>Describe topics, course style, workload, or assessment preferences in your own words.</p>
           </div>
           <label class="query-field">
-            Course preferences <span aria-hidden="true">*</span>
+            <span class="field-label">Course preferences <span class="required-marker" aria-hidden="true">*</span></span>
             <textarea id="preference-query" name="preference_query" rows="4" required
               placeholder="I am interested in artificial intelligence, robotics and autonomous systems."></textarea>
           </label>
@@ -49,7 +49,7 @@
           <div id="form-summary" class="form-summary" role="alert" tabindex="-1" hidden></div>
           <div class="field-grid">
             <div class="programme-picker" data-programme-picker="programme">
-              <label for="programme">Primary programme <span aria-hidden="true">*</span></label>
+              <label for="programme"><span class="field-label">Primary programme <span class="required-marker" aria-hidden="true">*</span></span></label>
               <input id="programme" name="programme" required autocomplete="off"
                      placeholder="Search B.E., M.Sc., B.Pharm. or another programme"
                      aria-controls="programme-suggestions">
@@ -57,7 +57,7 @@
                    role="listbox" hidden></div>
             </div>
             <div class="programme-picker" data-programme-picker="second-programme">
-              <label for="second-programme">Second programme</label>
+              <label for="second-programme"><span class="field-label">Second programme</span></label>
               <input id="second-programme" name="second_programme" autocomplete="off"
                      placeholder="Search for a dual-degree programme"
                      aria-controls="second-programme-suggestions">
@@ -65,13 +65,13 @@
                    role="listbox" hidden></div>
             </div>
             <label>
-              Current academic year <span aria-hidden="true">*</span>
+              <span class="field-label">Current academic year <span class="required-marker" aria-hidden="true">*</span></span>
               <select id="academic-year" name="current_academic_year" required>
                 <option value="">Select year</option>
               </select>
             </label>
             <label>
-              Current semester <span aria-hidden="true">*</span>
+              <span class="field-label">Current semester <span class="required-marker" aria-hidden="true">*</span></span>
               <select id="semester" name="current_semester" required>
                 <option value="">Select semester</option>
               </select>
@@ -101,17 +101,6 @@
                      placeholder="Search CS F211 or Data Structures" aria-controls="completed-suggestions">
               <div id="completed-suggestions" class="suggestions" role="listbox" hidden></div>
               <div id="completed-selected" class="selected-courses" aria-live="polite"></div>
-            </div>
-            <div class="course-picker" data-picker="ongoing">
-              <div class="picker-heading">
-                <label for="ongoing-course-search">Ongoing courses</label>
-                <span id="ongoing-count" class="selection-count">0 selected</span>
-              </div>
-              <p class="field-help">Courses selected as completed cannot also be ongoing.</p>
-              <input id="ongoing-course-search" type="search" autocomplete="off"
-                     placeholder="Search current courses" aria-controls="ongoing-suggestions">
-              <div id="ongoing-suggestions" class="suggestions" role="listbox" hidden></div>
-              <div id="ongoing-selected" class="selected-courses" aria-live="polite"></div>
             </div>
           </div>
         </section>

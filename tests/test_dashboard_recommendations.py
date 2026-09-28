@@ -406,7 +406,7 @@ class DashboardRecommendationApiTests(unittest.TestCase):
         self.assertNotIn("Academically confirmed", body)
         self.assertIn("Academic eligibility is reported separately", body)
 
-    def test_frontend_renders_explanations_and_preference_evidence(self):
+    def test_frontend_renders_compact_eligibility_status(self):
         captured = {}
 
         def start_response(status, headers):
@@ -415,8 +415,8 @@ class DashboardRecommendationApiTests(unittest.TestCase):
         script = b"".join(application(
             {"PATH_INFO": "/assets/app.js", "REQUEST_METHOD": "GET"},
             start_response)).decode()
-        self.assertIn("item.explanation?.text", script)
-        self.assertIn("Matched preference:", script)
+        self.assertNotIn("item.explanation?.text", script)
+        self.assertNotIn("Matched preference:", script)
         self.assertIn("recommended_courses", script)
         self.assertIn("Eligibility verification required", script)
         self.assertIn("with eligibility verified", script)

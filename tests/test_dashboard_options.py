@@ -111,7 +111,8 @@ class DashboardPolishStaticTests(unittest.TestCase):
         self.assertIn('id="recommendation-form"', html)
         self.assertIn('id="programme-suggestions"', html)
         self.assertIn('id="completed-course-search"', html)
-        self.assertIn('id="ongoing-course-search"', html)
+        self.assertNotIn('id="ongoing-course-search"', html)
+        self.assertNotIn("Ongoing courses", html)
         self.assertIn('id="suggested-courses-panel"', html)
         self.assertIn('id="confirm-all-suggestions"', html)
         self.assertNotIn("Validate profile", html)
@@ -120,15 +121,15 @@ class DashboardPolishStaticTests(unittest.TestCase):
         self.assertNotIn('name="completed_courses"', html)
         self.assertNotIn('name="ongoing_courses"', html)
 
-    def test_frontend_loads_catalogue_and_prevents_cross_status_duplicates(self):
+    def test_frontend_loads_catalogue_and_sends_empty_ongoing_courses(self):
         script = self._asset("/assets/app.js")
         self.assertIn('fetch("/api/options"', script)
         self.assertIn('fetch("/api/recommendations"', script)
         self.assertIn('fetch("/api/course-suggestions"', script)
         self.assertIn("normalizeProgrammeSearch", script)
-        self.assertIn("opposite.has(course.course_code)", script)
         self.assertIn('courseEntries("completed")', script)
-        self.assertIn('courseEntries("ongoing")', script)
+        self.assertIn('ongoing_courses: []', script)
+        self.assertNotIn('courseEntries("ongoing")', script)
         self.assertNotIn('fetch("/api/student-profile"', script)
         profile_function = script.split("function profilePayload()", 1)[1].split("function localValidationIssues", 1)[0]
         self.assertNotIn("suggested", profile_function)
@@ -149,9 +150,21 @@ class DashboardPolishStaticTests(unittest.TestCase):
         self.assertIn("RELATED_DISPLAY_LIMIT = 8", script)
         self.assertIn("gemini_unavailable_or_invalid", script)
         self.assertIn("No matching courses yet.", script)
-        self.assertIn("positive_evidence", script)
-        self.assertIn("matched_text", script)
+        self.assertNotIn("Matched preference:", script)
+        self.assertNotIn("Course evidence:", script)
+        self.assertNotIn("Requirement fit:", script)
         self.assertIn("result.validation?.is_valid !== true", script)
+
+    def test_required_markers_and_result_cards_are_compact(self):
+        html = self._asset("/")
+        styles = self._asset("/assets/styles.css")
+        script = self._asset("/assets/app.js")
+        self.assertIn('class="required-marker"', html)
+        self.assertIn(".field-label", styles)
+        self.assertIn("grid-auto-rows: 1fr", styles)
+        self.assertIn("Eligibility verification required", script)
+        self.assertNotIn("course-explanation", script)
+        self.assertNotIn("course-evidence", script)
 
 
 if __name__ == "__main__":

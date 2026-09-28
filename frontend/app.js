@@ -17,7 +17,6 @@ const dashboardState = {
   programmes: new Set(),
   courses: [],
   completed: new Map(),
-  ongoing: new Map(),
   suggested: new Map(),
   dismissedSuggestions: new Set(),
   suggestionRequestId: 0,
@@ -43,7 +42,6 @@ async function loadDashboardOptions() {
     configureProgrammePicker("programme");
     configureProgrammePicker("second-programme");
     configureCoursePicker("completed");
-    configureCoursePicker("ongoing");
     recommendButton.disabled = false;
     recommendationStatus.textContent = "Ready when you are.";
     setServiceState("Planner ready", "connected");
@@ -144,7 +142,6 @@ function renderSuggestions(kind) {
     return;
   }
   const current = dashboardState[kind];
-  const opposite = dashboardState[kind === "completed" ? "ongoing" : "completed"];
   const matches = dashboardState.courses.filter((course) =>
     course.label.toLocaleLowerCase().includes(query) && !current.has(course.course_code)
   ).slice(0, SEARCH_DISPLAY_LIMIT);
@@ -159,10 +156,7 @@ function renderSuggestions(kind) {
     button.type = "button";
     button.className = "suggestion-option";
     button.setAttribute("role", "option");
-    button.disabled = opposite.has(course.course_code);
-    button.textContent = opposite.has(course.course_code)
-      ? `${course.label} · already ${kind === "completed" ? "ongoing" : "completed"}`
-      : course.label;
+    button.textContent = course.label;
     button.addEventListener("click", () => addCourse(kind, course));
     suggestions.append(button);
   });
@@ -170,11 +164,6 @@ function renderSuggestions(kind) {
 }
 
 function addCourse(kind, course) {
-  const opposite = dashboardState[kind === "completed" ? "ongoing" : "completed"];
-  if (opposite.has(course.course_code)) {
-    showIssues([{ message: `${course.course_code} is already selected as ${kind === "completed" ? "ongoing" : "completed"}.` }]);
-    return;
-  }
   dashboardState[kind].set(course.course_code, course);
   document.querySelector(`#${kind}-course-search`).value = "";
   document.querySelector(`#${kind}-suggestions`).hidden = true;
@@ -299,10 +288,6 @@ function renderCourseSuggestions() {
 }
 
 function confirmSuggestion(item) {
-  if (dashboardState.ongoing.has(item.course_code)) {
-    showIssues([{ message: `${item.course_code} is selected as ongoing. Remove it there before confirming completion.` }]);
-    return;
-  }
   dashboardState.completed.set(item.course_code, {
     course_code: item.course_code,
     course_title: item.course_title,
@@ -314,8 +299,7 @@ function confirmSuggestion(item) {
 
 function confirmAllSuggestions() {
   [...dashboardState.suggested.values()].forEach((item) => {
-    if (!dashboardState.dismissedSuggestions.has(item.course_code) &&
-        !dashboardState.ongoing.has(item.course_code)) {
+    if (!dashboardState.dismissedSuggestions.has(item.course_code)) {
       dashboardState.completed.set(item.course_code, {
         course_code: item.course_code,
         course_title: item.course_title,
@@ -342,7 +326,7 @@ function profilePayload() {
     current_academic_year: Number(document.querySelector("#academic-year").value),
     current_semester: Number(document.querySelector("#semester").value),
     completed_courses: courseEntries("completed"),
-    ongoing_courses: courseEntries("ongoing"),
+    ongoing_courses: [],
   };
 }
 
@@ -359,8 +343,6 @@ function localValidationIssues() {
   if (primary && second && primary === second) {
     issues.push({ message: "Primary and second programme must be different." });
   }
-  const overlap = [...dashboardState.completed.keys()].filter((code) => dashboardState.ongoing.has(code));
-  if (overlap.length) issues.push({ message: `${overlap.join(", ")} cannot be both completed and ongoing.` });
   return issues;
 }
 
@@ -383,10 +365,6 @@ function showIssues(issues, headingText = "Please review these details:") {
   formSummary.focus();
 }
 
-function reasonLabel(reason) {
-  return String(reason || "verification required").replaceAll("_", " ");
-}
-
 function eligibilityVerified(item) {
   return item.academic_confidence?.state === "eligibility_verified";
 }
@@ -395,8 +373,7 @@ function confidenceBadge(item) {
   const verified = eligibilityVerified(item);
   const badge = document.createElement("span");
   badge.className = `course-status ${verified ? "verified" : "unverified"}`;
-  badge.textContent = item.academic_confidence?.label
-    || (verified ? "Eligibility verified" : "Eligibility verification required");
+  badge.textContent = verified ? "Eligibility verified" : "Eligibility verification required";
   return badge;
 }
 
@@ -409,40 +386,7 @@ function resultCard(item, weakMatch = false) {
   const heading = document.createElement("h4");
   heading.textContent = [item.course_code, item.course_title].filter(Boolean).join(" — ") || "Course identity unavailable";
   top.append(heading, confidenceBadge(item));
-  const explanation = document.createElement("p");
-  explanation.className = "course-explanation";
-  explanation.textContent = item.explanation?.text || "The available structured evidence does not include an explanation.";
-  card.append(top, explanation);
-
-  const details = [];
-  if (item.eligibility_state) details.push(`Eligibility: ${reasonLabel(item.eligibility_state)}`);
-  if (item.requirement_filter_state) details.push(`Requirement fit: ${reasonLabel(item.requirement_filter_state)}`);
-  if (!eligibilityVerified(item)) {
-    (item.academic_confidence?.unresolved || []).slice(0, 3)
-      .forEach((reason) => details.push(`Unresolved: ${reasonLabel(reason)}`));
-  }
-  const evidence = item.preference_match?.matched_preferences || [];
-  evidence.slice(0, 3).forEach((match) => {
-    const value = match.original_value || match.value;
-    if (value) details.push(`Matched preference: ${value}`);
-  });
-  const sourceEvidence = [
-    ...(item.preference_match?.positive_evidence || []),
-    ...evidence.flatMap((match) => match.evidence || []),
-  ];
-  sourceEvidence.slice(0, 2).forEach((entry) => {
-    if (entry?.matched_text) details.push(`Course evidence: ${entry.matched_text}`);
-  });
-  if (details.length) {
-    const list = document.createElement("ul");
-    list.className = "course-evidence";
-    details.forEach((detail) => {
-      const entry = document.createElement("li");
-      entry.textContent = detail;
-      list.append(entry);
-    });
-    card.append(list);
-  }
+  card.append(top);
   return card;
 }
 

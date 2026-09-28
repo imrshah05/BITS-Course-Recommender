@@ -122,7 +122,7 @@ class StudentProfileInterfaceTests(unittest.TestCase):
                       "current_semester"):
             self.assertIn(f'name="{field}"', body)
         self.assertIn('id="completed-course-search"', body)
-        self.assertIn('id="ongoing-course-search"', body)
+        self.assertNotIn('id="ongoing-course-search"', body)
 
     def test_frontend_posts_backend_compatible_profile_with_recommendation(self):
         captured = {}
@@ -134,7 +134,7 @@ class StudentProfileInterfaceTests(unittest.TestCase):
                                        "REQUEST_METHOD": "GET"}, start_response)).decode()
         self.assertIn('fetch("/api/recommendations"', script)
         self.assertIn('completed_courses: courseEntries("completed")', script)
-        self.assertIn('ongoing_courses: courseEntries("ongoing")', script)
+        self.assertIn('ongoing_courses: []', script)
         self.assertNotIn('fetch("/api/student-profile"', script)
 
 
