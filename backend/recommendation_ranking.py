@@ -65,7 +65,9 @@ class RecommendationRanker:
         confirmed.sort(key=lambda item: (-item["ranking"]["score"],
                                          -item["ranking"]["matched_priority_weight"],
                                          item["course_code"]))
-        verification.sort(key=lambda item: item["course_code"])
+        verification.sort(key=lambda item: (-item["ranking"]["grounded_relevance_weight"],
+                                            -item["ranking"]["score"],
+                                            item["course_code"]))
         result = {
             "confirmed_recommendations": confirmed,
             "verification_required": verification,
@@ -214,6 +216,11 @@ def _combine(code, candidate, match, issues, matches_valid=True, policy_valid=Tr
                          for item in preference["matched_preferences"])
     conflict_weight = sum(_priority_weight(item.get("priority"))
                           for item in preference["conflicting_preferences"])
+    evidence_weight = _grounded_evidence_weight(preference)
+    programme_weight = 4 if (
+        policy.get("requirement_filter_state") == "matches_remaining_requirement" and
+        policy.get("requirement_matches")) else 0
+    grounded_weight = evidence_weight + programme_weight
     score = matched_weight - conflict_weight
     return {
         "course_code": code,
@@ -222,9 +229,12 @@ def _combine(code, candidate, match, issues, matches_valid=True, policy_valid=Tr
             "score": score,
             "matched_priority_weight": matched_weight,
             "conflict_priority_weight": conflict_weight,
+            "grounded_relevance_weight": grounded_weight,
             "components": [
                 {"component": "matched_preference_evidence", "weight": matched_weight},
                 {"component": "preference_conflicts", "weight": -conflict_weight},
+                {"component": "source_field_relevance", "weight": evidence_weight},
+                {"component": "programme_requirement_relevance", "weight": programme_weight},
             ],
         },
         "preference_match": preference,
@@ -366,6 +376,25 @@ def _source_references(candidate, preference):
 
 def _priority_weight(value):
     return {"low": 1, "medium": 2, "high": 3}.get(value, 0)
+
+
+def _grounded_evidence_weight(preference):
+    """Prefer explicit title/topic evidence over incidental body-text mentions."""
+    weights = []
+    for evidence in preference.get("positive_evidence") or []:
+        field = evidence.get("course_field") if isinstance(evidence, dict) else None
+        if not isinstance(field, str):
+            continue
+        key = field.casefold()
+        if key.startswith("title"):
+            weights.append(6)
+        elif key.startswith("topics"):
+            weights.append(4)
+        elif key.startswith("content"):
+            weights.append(2)
+        else:
+            weights.append(1)
+    return max(weights, default=0)
 
 
 def _issue(issues, code, severity, path, message):

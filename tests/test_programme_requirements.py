@@ -5,7 +5,10 @@ from pathlib import Path
 from pypdf import PdfReader, PdfWriter
 
 from preprocessing.pdf_extractor import extract_pdf_text
-from preprocessing.programme_requirements import extract_programme_requirements, validate_requirement
+from preprocessing.programme_requirements import (
+    connect_discipline_elective_lists, extract_programme_requirements,
+    validate_requirement,
+)
 
 
 def page(text, number=1):
@@ -17,6 +20,41 @@ def catalogue(rows='CS F211 Data Structures & Algorithms 3 1 4'):
 
 
 class ProgrammeRequirementsTests(unittest.TestCase):
+    def test_complete_core_set_connects_chart_to_elective_membership(self):
+        source = {"source_file": "bulletin.pdf", "page_number": 1, "text": "evidence"}
+        dataset = {
+            "programmes": [
+                {"id": "chart", "name": "B. E. Computer Science",
+                 "context": "semester-wise chart", "sources": [source]},
+                {"id": "list", "name": "COMPUTER SCIENCE",
+                 "context": "discipline course list", "sources": [source]},
+            ],
+            "requirements": [
+                {"id": "total", "kind": "category_total", "programme_id": "chart",
+                 "programme_name": "B. E. Computer Science", "category": "Discipline Core",
+                 "course_count": 2, "sources": [source]},
+                *[{"id": f"chart-{code}", "kind": "required_course",
+                   "programme_id": "chart", "programme_name": "B. E. Computer Science",
+                   "course_code": code, "needs_verification": False, "sources": [source]}
+                  for code in ("CS F211", "CS F212")],
+                *[{"id": f"core-{code}", "kind": "required_course",
+                   "programme_id": "list", "programme_name": "COMPUTER SCIENCE",
+                   "category": "CORE COURSES", "course_code": code, "sources": [source]}
+                  for code in ("CS F211", "CS F212")],
+                {"id": "elective", "kind": "elective_option", "programme_id": "list",
+                 "programme_name": "COMPUTER SCIENCE", "category": "DISCIPLINE ELECTIVE COURSES",
+                 "course_code": "CS F437", "course_title": "Generative Artificial Intelligence",
+                 "units": 4, "sources": [source]},
+            ],
+        }
+        result = connect_discipline_elective_lists(dataset)
+        membership = [item for item in result["requirements"]
+                      if item.get("kind") == "elective_membership"]
+        self.assertEqual([(item["programme_name"], item["course_code"])
+                          for item in membership],
+                         [("B. E. Computer Science", "CS F437")])
+        self.assertFalse(membership[0]["needs_verification"])
+
     def test_heading_name_and_scope(self):
         result = extract_programme_requirements(catalogue())
         self.assertEqual(result['programmes'][0]['name'], 'COMPUTER SCIENCE')

@@ -2108,7 +2108,7 @@
       "errors": 0,
       "missing_source_traceability": 0,
       "needs_verification": 2323,
-      "records": 5774,
+      "records": 5956,
       "warnings": 3285
     },
     "courses": {
@@ -2161,7 +2161,7 @@
   "status": "invalid",
   "supporting_source_counts": {
     "academic_regulations": 13,
-    "programme_requirements": 5504,
+    "programme_requirements": 5686,
     "programme_unresolved_sections": 257,
     "source_course_catalogue": {
       "bulletin_backed_count": 1053,

@@ -105,6 +105,27 @@ def service(records, summary):
 
 
 class CoursePolicyTests(unittest.TestCase):
+    def test_elective_membership_uses_remaining_category_total(self):
+        summary = academic_summary(requirements=[
+            (None, "total", "remaining", "B. E. Computer Science",
+             "discipline_elective")])
+        summary["requirement_progress"]["programme_progress"][0]["categories"][0][
+            "remaining_requirements"][0]["rule_type"] = "category_total"
+        summary["descriptive_information"] = [{
+            "rule_id": "membership", "rule_type": "elective_membership",
+            "course_code": "CS F437", "normalized_category": "discipline_elective",
+            "scope": {"programme": "B. E. Computer Science"},
+            "sources": [{"source_file": "bulletin.pdf", "page_number": 318}],
+        }]
+        result = service([record("CS F437", None)], summary)[0].evaluate({})
+        course = result["verification_required_candidates"][0]
+        self.assertEqual(course["requirement_filter_state"],
+                         "matches_remaining_requirement")
+        self.assertEqual(course["requirement_matches"][0]["membership_rule_id"],
+                         "membership")
+        self.assertEqual(course["eligibility_state"], "unknown")
+        self.assertFalse(course["recommendation_safe"])
+
     def test_normal_successful_orchestration(self):
         evaluator, academic = service([record("CS F211")], academic_summary())
         result = evaluator.evaluate({"programme": "COMPUTER SCIENCE"})

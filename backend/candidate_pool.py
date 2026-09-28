@@ -224,6 +224,7 @@ def _requirement_relevance_index(summary):
     programmes = progress.get("programme_progress") or []
     if not isinstance(programmes, list):
         return index
+    category_requirements = {}
     for programme in programmes:
         if not isinstance(programme, dict):
             continue
@@ -239,6 +240,12 @@ def _requirement_relevance_index(summary):
                 for record in records if isinstance(records, list) else []:
                     _index_requirement(index, record, scope, role,
                                        normalized_category, collection)
+                    if (record.get("rule_type") == "category_total" and
+                            collection in ("remaining_requirements",
+                                           "partially_satisfied_requirements")):
+                        category_requirements.setdefault(
+                            (scope, normalized_category), []).append(
+                                (record, role, collection))
         unresolved = programme.get("uncategorized_requirements") or []
         for record in unresolved if isinstance(unresolved, list) else []:
             _index_requirement(index, record, scope, role, None,
@@ -251,6 +258,32 @@ def _requirement_relevance_index(summary):
                                record.get("requested_programme_role"),
                                record.get("normalized_category"),
                                "unresolved_requirements", force_ambiguous=True)
+    descriptive = summary.get("descriptive_information") or []
+    for membership in descriptive if isinstance(descriptive, list) else []:
+        if not isinstance(membership, dict) or membership.get("rule_type") != "elective_membership":
+            continue
+        scope = (membership.get("scope") or {}).get("programme")
+        category = membership.get("normalized_category")
+        targets = category_requirements.get((scope, category), [])
+        if len(targets) != 1:
+            continue
+        requirement, role, collection = targets[0]
+        code = normalize_course_code(membership.get("course_code"))
+        if not code:
+            continue
+        relationship = {
+            "rule_id": requirement.get("rule_id"),
+            "programme_scope": scope,
+            "requested_programme_role": role,
+            "normalized_category": category,
+            "completion_status": requirement.get("completion_status"),
+            "relationship_source": collection,
+            "sources": deepcopy(requirement.get("sources") or []),
+            "membership_rule_id": membership.get("rule_id"),
+            "membership_sources": deepcopy(membership.get("sources") or []),
+            "membership_basis": "source_backed_discipline_elective_list",
+        }
+        index["explicit"].setdefault(code, []).append(relationship)
     return index
 
 
@@ -296,7 +329,8 @@ def _source_references(source_records, relationships, unresolved):
         if reference not in references:
             references.append(reference)
     for relationship in relationships + unresolved:
-        for source in relationship.get("sources") or []:
+        for source in ((relationship.get("sources") or []) +
+                       (relationship.get("membership_sources") or [])):
             reference = deepcopy(source)
             if reference not in references:
                 references.append(reference)

@@ -96,6 +96,77 @@ def recover_scoped_course_pools(dataset):
     return dataset
 
 
+def connect_discipline_elective_lists(dataset):
+    """Link a chart to one discipline list only when its complete core set proves it."""
+    programmes = {item['id']: item for item in dataset.get('programmes', [])}
+    requirements = dataset.get('requirements', [])
+    by_programme = {}
+    for record in requirements:
+        by_programme.setdefault(record.get('programme_id'), []).append(record)
+
+    course_lists = []
+    for programme in programmes.values():
+        if programme.get('context') != 'discipline course list':
+            continue
+        records = by_programme.get(programme['id'], [])
+        core = {record.get('course_code') for record in records
+                if (record.get('category') or '').casefold() == 'core courses'
+                and record.get('kind') == 'required_course' and record.get('course_code')}
+        electives = [record for record in records
+                     if record.get('kind') == 'elective_option'
+                     and record.get('course_code')]
+        if core and electives:
+            course_lists.append((programme, core, electives))
+
+    additions = []
+    for chart in programmes.values():
+        if chart.get('context') != 'semester-wise chart':
+            continue
+        records = by_programme.get(chart['id'], [])
+        chart_codes = {record.get('course_code') for record in records
+                       if record.get('kind') == 'required_course'
+                       and not record.get('needs_verification')
+                       and record.get('course_code')}
+        core_totals = [record for record in records
+                       if record.get('kind') == 'category_total'
+                       and (record.get('category') or '').casefold() == 'discipline core'
+                       and type(record.get('course_count')) is int]
+        if len(core_totals) != 1:
+            continue
+        expected = core_totals[0]['course_count']
+        matches = [(programme, core, electives) for programme, core, electives in course_lists
+                   if len(core) == expected and core <= chart_codes]
+        if len(matches) != 1:
+            continue
+        course_list, core, electives = matches[0]
+        relationship_sources = (deepcopy(core_totals[0].get('sources') or []) +
+                                deepcopy(chart.get('sources') or []) +
+                                deepcopy(course_list.get('sources') or []))
+        for elective in electives:
+            sources = deepcopy(elective.get('sources') or []) + relationship_sources
+            unique_sources = []
+            for source_record in sources:
+                if source_record not in unique_sources:
+                    unique_sources.append(source_record)
+            record = dict(
+                id=f'requirement-{len(requirements)+len(additions)+1:05}',
+                kind='elective_membership', programme_id=chart['id'],
+                programme_name=chart['name'], category='Discipline Electives',
+                course_code=elective['course_code'],
+                course_title=elective.get('course_title'), units=elective.get('units'),
+                course_count=None, year=None, semester=None,
+                membership_source_programme_id=course_list['id'],
+                membership_source_programme_name=course_list['name'],
+                membership_basis='complete_discipline_core_set_matches_semester_chart',
+                matched_core_course_codes=sorted(core),
+                needs_verification=False, sources=unique_sources)
+            record['validation'] = validate_requirement(record)
+            additions.append(record)
+    requirements.extend(additions)
+    dataset['discipline_elective_membership_count'] = len(additions)
+    return dataset
+
+
 def _chart_name(text):
     chart = re.search(
         r'Semester\s*-?wise\s+Pattern for Students Admitted to\s+(.+?)\s+Programme\b',
@@ -301,12 +372,14 @@ def revalidate_programme_requirement_identities(dataset, known_course_codes):
     result = deepcopy(dataset)
     known = set(known_course_codes)
     for record in result.get('requirements', []):
-        if (record.get('kind') != 'required_course' or
-                record.get('category') != 'Semester-wise curriculum' or
-                not record.get('course_code')):
+        if not record.get('course_code'):
             continue
         matched = record['course_code'] in known
         record['catalogue_status'] = 'matched' if matched else 'unknown'
+        if not (record.get('kind') == 'required_course' and
+                record.get('category') == 'Semester-wise curriculum'):
+            record['validation'] = validate_requirement(record)
+            continue
         reasons = [reason for reason in record.get('chart_uncertainty_reasons', [])
                    if reason != 'catalogue_identity_unknown']
         if not matched:
@@ -484,7 +557,7 @@ def extract_programme_requirements(pages, layout_pages=None, known_course_codes=
                                'Unparsed tables, footnotes and scope conditions remain in programme evidence.',
                                'Only chart rows with explicit layout-supported year and semester columns are structured; ambiguous rows remain for review.',
                                'Elective options are not mandatory course requirements.'])
-    return recover_scoped_course_pools(result)
+    return connect_discipline_elective_lists(recover_scoped_course_pools(result))
 
 
 def build_programme_requirements(source_path, output_path, catalogue_path=None):

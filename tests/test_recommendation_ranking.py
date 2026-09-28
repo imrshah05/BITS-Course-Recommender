@@ -65,6 +65,24 @@ def match(code, state="strong_match", matched=None, conflicts=None,
 
 
 class RecommendationRankingTests(unittest.TestCase):
+    def test_verification_ranking_prefers_title_and_programme_evidence(self):
+        relevant = candidate("CS F437", safe=False, eligibility="unknown",
+                             pool="verification_required")
+        incidental = candidate("BIOT F424", safe=False, eligibility="unknown",
+                               pool="verification_required",
+                               filter_state="relationship_not_established")
+        relevant_match = match("CS F437")
+        relevant_match["positive_evidence"][0]["course_field"] = "title.display_value"
+        incidental_match = match("BIOT F424")
+        incidental_match["positive_evidence"][0]["course_field"] = "content[0].text"
+        result = rank_recommendations([incidental_match, relevant_match], {
+            "candidates": [incidental, relevant]})
+        self.assertEqual([item["course_code"] for item in result["verification_required"]],
+                         ["CS F437", "BIOT F424"])
+        self.assertGreater(
+            result["verification_required"][0]["ranking"]["grounded_relevance_weight"],
+            result["verification_required"][1]["ranking"]["grounded_relevance_weight"])
+
     def test_only_safe_eligible_remaining_candidates_are_confirmed(self):
         result = rank_recommendations([match("CS F211")],
                                       {"candidates": [candidate("CS F211")]})
