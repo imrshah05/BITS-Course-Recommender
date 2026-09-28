@@ -144,11 +144,11 @@ class DashboardPolishStaticTests(unittest.TestCase):
                 "function confirmSuggestion(item)", 1)[0]
         self.assertNotIn("dashboardState.completed.set", before_confirmation)
 
-    def test_frontend_limits_verification_display_and_handles_fallback(self):
+    def test_frontend_limits_related_display_and_handles_fallback(self):
         script = self._asset("/assets/app.js")
-        self.assertIn("VERIFICATION_DISPLAY_LIMIT = 8", script)
+        self.assertIn("RELATED_DISPLAY_LIMIT = 8", script)
         self.assertIn("gemini_unavailable_or_invalid", script)
-        self.assertIn("No confirmed courses yet.", script)
+        self.assertIn("No matching courses yet.", script)
         self.assertIn("positive_evidence", script)
         self.assertIn("matched_text", script)
         self.assertIn("result.validation?.is_valid !== true", script)

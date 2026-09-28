@@ -108,19 +108,6 @@ input:focus, select:focus, textarea:focus { outline: 3px solid rgb(13 107 69 / 1
 .results-panel { margin-top: 2rem; }
 .results-heading > p { color: var(--muted); font-weight: 700; }
 .result-notice { margin-top: 1rem; padding: 0.85rem 1rem; border-radius: 0.65rem; color: #68420e; background: var(--warning-soft); font-size: 0.87rem; line-height: 1.5; }
-.progress-section { margin-top: 1.5rem; }
-.progress-section h3 { margin-bottom: 0.8rem; }
-.progress-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; }
-.progress-card { display: grid; gap: 0.2rem; padding: 0.9rem; border: 1px solid var(--line); border-radius: 0.7rem; background: var(--surface); }
-.progress-card.positive { background: var(--accent-soft); }
-.progress-card.caution { background: var(--warning-soft); }
-.progress-card strong { font-size: 1.55rem; }
-.progress-card span { color: var(--muted); font-size: 0.78rem; }
-.category-progress { display: grid; gap: 0.75rem; margin-top: 0.75rem; }
-.category-group { padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: 0.7rem; }
-.category-group h4 { margin: 0 0 0.45rem; }
-.category-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-top: 1px solid #edf0eb; color: var(--muted); font-size: 0.8rem; }
-.category-row span:first-child { color: var(--ink); font-weight: 650; }
 
 .result-group { margin-top: 2rem; padding-top: 1.4rem; border-top: 1px solid var(--line); }
 .group-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
@@ -132,11 +119,11 @@ input:focus, select:focus, textarea:focus { outline: 3px solid rgb(13 107 69 / 1
 .group-copy { max-width: 720px; color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
 .result-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin-top: 0.85rem; }
 .course-card { min-width: 0; padding: 1rem; border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 0.75rem; background: white; }
-.course-card.needs-verification { border-left-color: var(--warning); }
+.course-card.weak-match { border-left-color: var(--warning); }
 .course-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
 .course-card h4 { margin: 0; font-size: 0.95rem; line-height: 1.4; }
 .course-status { flex: none; padding: 0.25rem 0.45rem; border-radius: 999px; color: var(--accent-dark); background: var(--accent-soft); font-size: 0.62rem; font-weight: 850; letter-spacing: 0.04em; text-transform: uppercase; }
-.needs-verification .course-status { color: #784005; background: var(--warning-soft); }
+.course-status.unverified { color: #784005; background: var(--warning-soft); }
 .course-explanation { margin: 0.7rem 0; line-height: 1.5; }
 .course-evidence { margin: 0; padding-left: 1.15rem; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
 .empty-state { grid-column: 1 / -1; padding: 1.2rem; border: 1px dashed #b9c5bb; border-radius: 0.75rem; background: var(--surface); }
@@ -146,7 +133,6 @@ input:focus, select:focus, textarea:focus { outline: 3px solid rgb(13 107 69 / 1
 @media (max-width: 760px) {
   .query-heading, .results-heading { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
   .field-grid, .course-grid, .result-list { grid-template-columns: 1fr; }
-  .progress-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .recommend-action { align-items: stretch; flex-direction: column; }
   .recommend-action button { width: 100%; }
 }
@@ -155,6 +141,4 @@ input:focus, select:focus, textarea:focus { outline: 3px solid rgb(13 107 69 / 1
   .brand > span:last-child { max-width: 12rem; }
   .dashboard-shell { width: min(100% - 1rem, 1080px); padding-top: 2rem; }
   .profile-panel, .results-panel { padding: 1rem; border-radius: 0.8rem; }
-  .progress-grid { grid-template-columns: 1fr 1fr; }
-  .category-row { align-items: flex-start; flex-direction: column; gap: 0.2rem; }
 }

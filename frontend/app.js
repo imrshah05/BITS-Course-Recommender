@@ -6,13 +6,11 @@ const recommendButton = document.querySelector("#recommend-button");
 const resultsPanel = document.querySelector("#recommendation-results");
 const resultsSummary = document.querySelector("#results-summary");
 const resultNotice = document.querySelector("#result-notice");
-const academicProgress = document.querySelector("#academic-progress");
-const categoryProgress = document.querySelector("#category-progress");
-const confirmedResults = document.querySelector("#confirmed-results");
-const verificationResults = document.querySelector("#verification-results");
-const confirmedCount = document.querySelector("#confirmed-count");
-const verificationCount = document.querySelector("#verification-count");
-const VERIFICATION_DISPLAY_LIMIT = 8;
+const recommendedResults = document.querySelector("#recommended-results");
+const relatedResults = document.querySelector("#related-results");
+const recommendedCount = document.querySelector("#recommended-count");
+const relatedCount = document.querySelector("#related-count");
+const RELATED_DISPLAY_LIMIT = 8;
 const SEARCH_DISPLAY_LIMIT = 8;
 
 const dashboardState = {
@@ -385,61 +383,32 @@ function showIssues(issues, headingText = "Please review these details:") {
   formSummary.focus();
 }
 
-function addProgressMetric(label, value, tone = "") {
-  const card = document.createElement("div");
-  card.className = `progress-card ${tone}`.trim();
-  const number = document.createElement("strong");
-  number.textContent = String(value ?? 0);
-  const caption = document.createElement("span");
-  caption.textContent = label;
-  card.append(number, caption);
-  academicProgress.append(card);
-}
-
-function renderCategoryProgress(requirements) {
-  categoryProgress.replaceChildren();
-  const programmes = requirements?.requirement_progress?.programme_progress || [];
-  programmes.forEach((programme) => {
-    const categories = programme.categories || [];
-    if (!categories.length) return;
-    const group = document.createElement("div");
-    group.className = "category-group";
-    const title = document.createElement("h4");
-    title.textContent = programme.programme || programme.requested_programme || "Programme requirements";
-    group.append(title);
-    categories.slice(0, 8).forEach((category) => {
-      const satisfied = (category.satisfied_requirements || []).length;
-      const partial = (category.partially_satisfied_requirements || []).length;
-      const remaining = (category.remaining_requirements || []).length;
-      const unknown = (category.unevaluable_requirements || []).length;
-      const row = document.createElement("div");
-      row.className = "category-row";
-      const name = document.createElement("span");
-      name.textContent = category.category || category.normalized_category || "Other requirements";
-      const value = document.createElement("span");
-      value.textContent = `${satisfied} met · ${partial + remaining} remaining${unknown ? ` · ${unknown} unclear` : ""}`;
-      row.append(name, value);
-      group.append(row);
-    });
-    categoryProgress.append(group);
-  });
-}
-
 function reasonLabel(reason) {
   return String(reason || "verification required").replaceAll("_", " ");
 }
 
-function resultCard(item, verification = false) {
+function eligibilityVerified(item) {
+  return item.academic_confidence?.state === "eligibility_verified";
+}
+
+function confidenceBadge(item) {
+  const verified = eligibilityVerified(item);
+  const badge = document.createElement("span");
+  badge.className = `course-status ${verified ? "verified" : "unverified"}`;
+  badge.textContent = item.academic_confidence?.label
+    || (verified ? "Eligibility verified" : "Eligibility verification required");
+  return badge;
+}
+
+function resultCard(item, weakMatch = false) {
   const card = document.createElement("article");
-  card.className = `course-card ${verification ? "needs-verification" : "confirmed"}`;
+  card.className = `course-card ${weakMatch ? "weak-match" : "strong-match"}`
+    + (eligibilityVerified(item) ? " eligibility-verified" : " eligibility-unverified");
   const top = document.createElement("div");
   top.className = "course-card-top";
   const heading = document.createElement("h4");
   heading.textContent = [item.course_code, item.course_title].filter(Boolean).join(" — ") || "Course identity unavailable";
-  const status = document.createElement("span");
-  status.className = "course-status";
-  status.textContent = verification ? "Verify first" : "Confirmed";
-  top.append(heading, status);
+  top.append(heading, confidenceBadge(item));
   const explanation = document.createElement("p");
   explanation.className = "course-explanation";
   explanation.textContent = item.explanation?.text || "The available structured evidence does not include an explanation.";
@@ -448,7 +417,10 @@ function resultCard(item, verification = false) {
   const details = [];
   if (item.eligibility_state) details.push(`Eligibility: ${reasonLabel(item.eligibility_state)}`);
   if (item.requirement_filter_state) details.push(`Requirement fit: ${reasonLabel(item.requirement_filter_state)}`);
-  if (verification) (item.reasons || []).slice(0, 4).forEach((reason) => details.push(`Why: ${reasonLabel(reason)}`));
+  if (!eligibilityVerified(item)) {
+    (item.academic_confidence?.unresolved || []).slice(0, 3)
+      .forEach((reason) => details.push(`Unresolved: ${reasonLabel(reason)}`));
+  }
   const evidence = item.preference_match?.matched_preferences || [];
   evidence.slice(0, 3).forEach((match) => {
     const value = match.original_value || match.value;
@@ -474,28 +446,28 @@ function resultCard(item, verification = false) {
   return card;
 }
 
-function renderCourseGroup(container, items, verification = false) {
+function renderCourseGroup(container, items, weakMatch = false) {
   container.replaceChildren();
-  const limit = verification ? VERIFICATION_DISPLAY_LIMIT : items.length;
+  const limit = weakMatch ? RELATED_DISPLAY_LIMIT : items.length;
   const visible = items.slice(0, limit);
   if (!visible.length) {
     const empty = document.createElement("div");
     empty.className = "empty-state";
     const title = document.createElement("strong");
-    title.textContent = verification ? "No courses need verification." : "No confirmed courses yet.";
+    title.textContent = weakMatch ? "No weaker matches to show." : "No matching courses yet.";
     const copy = document.createElement("p");
-    copy.textContent = verification
-      ? "Every displayed result has sufficient academic evidence."
-      : "The recommender kept its academic safety checks in place. Try broadening your interests or review the courses requiring verification.";
+    copy.textContent = weakMatch
+      ? "Every course we found matches your interests directly."
+      : "No course description matched your interests closely enough. Try describing what you want to study in different words.";
     empty.append(title, copy);
     container.append(empty);
     return;
   }
-  visible.forEach((item) => container.append(resultCard(item, verification)));
+  visible.forEach((item) => container.append(resultCard(item, weakMatch)));
   if (items.length > limit) {
     const remaining = document.createElement("p");
     remaining.className = "result-note";
-    remaining.textContent = `Showing ${limit} of ${items.length} courses that need verification. The full set remains available in the API result.`;
+    remaining.textContent = `Showing ${limit} of ${items.length} weaker matches. The full set remains available in the API result.`;
     container.append(remaining);
   }
 }
@@ -503,26 +475,23 @@ function renderCourseGroup(container, items, verification = false) {
 function usedFallback(result) {
   const uninterpreted = result.intent?.uninterpreted || [];
   const deterministicExplanations = [
-    ...(result.confirmed_recommendations || []),
-    ...(result.verification_required || []),
+    ...(result.recommended_courses || []),
+    ...(result.related_courses || []),
   ].some((item) => item.explanation?.method === "deterministic");
   return uninterpreted.some((item) => item?.reason === "gemini_unavailable_or_invalid") || deterministicExplanations;
 }
 
 function renderRecommendations(result) {
   const summary = result.summary || {};
-  const academic = result.academic_requirements?.summary || {};
-  resultsSummary.textContent = `${summary.confirmed_recommendation_count || 0} confirmed · ${summary.verification_required_count || 0} query-relevant to verify`;
-  confirmedCount.textContent = `${summary.confirmed_recommendation_count || 0}`;
-  verificationCount.textContent = `${summary.verification_required_count || 0}`;
-  academicProgress.replaceChildren();
-  addProgressMetric("Courses completed", academic.completed_course_count);
-  addProgressMetric("Requirements met", academic.satisfied_requirement_count, "positive");
-  addProgressMetric("Requirements remaining", academic.remaining_requirement_count);
-  addProgressMetric("Requirements unclear", academic.unevaluable_requirement_count, academic.unevaluable_requirement_count ? "caution" : "");
-  renderCategoryProgress(result.academic_requirements);
-  renderCourseGroup(confirmedResults, result.confirmed_recommendations || []);
-  renderCourseGroup(verificationResults, result.verification_required || [], true);
+  const recommended = result.recommended_courses || [];
+  const related = result.related_courses || [];
+  const verified = summary.eligibility_verified_count || 0;
+  resultsSummary.textContent =
+    `${recommended.length} recommended · ${verified} with eligibility verified · ${related.length} weaker matches`;
+  recommendedCount.textContent = `${recommended.length}`;
+  relatedCount.textContent = `${related.length}`;
+  renderCourseGroup(recommendedResults, recommended);
+  renderCourseGroup(relatedResults, related, true);
   if (usedFallback(result)) {
     resultNotice.textContent = "AI assistance was unavailable for part of this result, so deterministic matching or grounded explanations were used. Academic safety checks were unchanged.";
     resultNotice.hidden = false;

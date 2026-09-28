@@ -83,6 +83,85 @@ class RecommendationRankingTests(unittest.TestCase):
             result["verification_required"][0]["ranking"]["grounded_relevance_weight"],
             result["verification_required"][1]["ranking"]["grounded_relevance_weight"])
 
+    def test_unknown_eligibility_never_reports_verified_confidence(self):
+        result = rank_recommendations(
+            [match("CS F407")],
+            {"candidates": [candidate("CS F407", safe=False, eligibility="unknown",
+                                      pool="verification_required")]})
+        item = result["verification_required"][0]
+        self.assertEqual(item["academic_confidence"]["state"],
+                         "eligibility_verification_required")
+        self.assertIn("eligibility_state_unknown",
+                      item["academic_confidence"]["unresolved"])
+        self.assertEqual(item["eligibility_state"], "unknown")
+
+    def test_confirmed_eligibility_reports_verified_confidence(self):
+        result = rank_recommendations([match("CS F211")],
+                                      {"candidates": [candidate("CS F211")]})
+        item = result["confirmed_recommendations"][0]
+        self.assertEqual(item["academic_confidence"]["state"], "eligibility_verified")
+
+    def test_title_match_is_presentable_despite_unknown_eligibility(self):
+        titled = match("CS F407")
+        titled["matched_preferences"][0]["evidence"][0]["course_field"] = "title"
+        titled["positive_evidence"][0]["course_field"] = "title"
+        result = rank_recommendations(
+            [titled], {"candidates": [candidate("CS F407", safe=False,
+                                                eligibility="unknown",
+                                                pool="verification_required")]})
+        item = result["verification_required"][0]
+        self.assertEqual(item["presentation_group"], "recommended")
+        self.assertEqual(item["relevance"]["tier"], "strong")
+        self.assertEqual(item["ranking_group"], "verification_required")
+
+    def test_incidental_body_mention_is_not_presentable(self):
+        incidental = match("HSS F324")
+        buried = "literary theory. " * 40 + "machine learning is mentioned once."
+        for evidence in (incidental["matched_preferences"][0]["evidence"][0],
+                         incidental["positive_evidence"][0]):
+            evidence["course_field"] = "content[0].text"
+            evidence["source_references"] = [
+                {"source_file": "HSS F324.pdf", "text": buried}]
+        result = rank_recommendations(
+            [incidental], {"candidates": [candidate("HSS F324", safe=False,
+                                                    eligibility="unknown",
+                                                    pool="verification_required")]})
+        item = result["verification_required"][0]
+        self.assertEqual(item["presentation_group"], "related")
+        self.assertEqual(item["relevance"]["tier"], "weak")
+        self.assertEqual(item["relevance"]["evidence_prominence"], "incidental")
+
+    def test_source_backed_programme_membership_adds_ranking_evidence(self):
+        with_membership = rank_recommendations(
+            [match("CS F211")], {"candidates": [candidate("CS F211")]})
+        without = candidate("CS F211")
+        without["requirement_filter_state"] = "relationship_not_established"
+        without["requirement_matches"] = []
+        without_membership = rank_recommendations(
+            [match("CS F211")], {"candidates": [without]})
+        programme_weight = {
+            item["component"]: item["weight"]
+            for item in with_membership["confirmed_recommendations"][0]
+            ["ranking"]["components"]}["programme_requirement_relevance"]
+        self.assertEqual(programme_weight, 4)
+        self.assertGreater(
+            with_membership["confirmed_recommendations"][0]["ranking"]
+            ["grounded_relevance_weight"],
+            without_membership["verification_required"][0]["ranking"]
+            ["grounded_relevance_weight"])
+
+    def test_unsourced_requirement_match_adds_no_programme_evidence(self):
+        unsourced = candidate("CS F211")
+        for requirement in unsourced["requirement_matches"]:
+            requirement["sources"] = []
+        result = rank_recommendations([match("CS F211")],
+                                      {"candidates": [unsourced]})
+        item = (result["confirmed_recommendations"] +
+                result["verification_required"])[0]
+        weights = {entry["component"]: entry["weight"]
+                   for entry in item["ranking"]["components"]}
+        self.assertEqual(weights["programme_requirement_relevance"], 0)
+
     def test_only_safe_eligible_remaining_candidates_are_confirmed(self):
         result = rank_recommendations([match("CS F211")],
                                       {"candidates": [candidate("CS F211")]})

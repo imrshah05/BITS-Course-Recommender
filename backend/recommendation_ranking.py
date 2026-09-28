@@ -2,10 +2,15 @@
 
 from copy import deepcopy
 from dataclasses import asdict, dataclass
+import re
 
 
 RANKABLE_STATES = ("strong_match", "partial_match")
 UNSAFE_STATES = {"unknown", "ambiguous", "ineligible"}
+FIELD_EVIDENCE_WEIGHTS = (("title", 6), ("topics", 4), ("content", 2))
+PRESENTABLE_RELEVANCE_TIERS = ("strong", "moderate")
+LEADING_TEXT_FRACTION = 0.2
+PROMINENT_OCCURRENCE_COUNT = 2
 
 
 @dataclass(frozen=True)
@@ -216,15 +221,28 @@ def _combine(code, candidate, match, issues, matches_valid=True, policy_valid=Tr
                          for item in preference["matched_preferences"])
     conflict_weight = sum(_priority_weight(item.get("priority"))
                           for item in preference["conflicting_preferences"])
-    evidence_weight = _grounded_evidence_weight(preference)
-    programme_weight = 4 if (
-        policy.get("requirement_filter_state") == "matches_remaining_requirement" and
-        policy.get("requirement_matches")) else 0
-    grounded_weight = evidence_weight + programme_weight
+    relevance = _relevance_assessment(preference)
+    evidence_weight = relevance["evidence_weight"]
+    programme_weight = _programme_relevance_weight(policy)
+    focus_weight = relevance["title_focus"]
+    grounded_weight = evidence_weight + programme_weight + focus_weight
     score = matched_weight - conflict_weight
+    presentable = (
+        relevance["tier"] in PRESENTABLE_RELEVANCE_TIERS and
+        has_positive and not has_conflict and preference_valid and
+        _sources_valid(_source_references(candidate, preference))
+    )
     return {
         "course_code": code,
         "ranking_group": group,
+        "presentation_group": "recommended" if presentable else "related",
+        "academic_confidence": _academic_confidence(policy, policy_valid),
+        "relevance": {
+            "tier": relevance["tier"],
+            "best_evidence_field": relevance["best_field"],
+            "evidence_prominence": relevance["prominence"],
+            "evidence_occurrences": relevance["occurrences"],
+        },
         "ranking": {
             "score": score,
             "matched_priority_weight": matched_weight,
@@ -234,6 +252,7 @@ def _combine(code, candidate, match, issues, matches_valid=True, policy_valid=Tr
                 {"component": "matched_preference_evidence", "weight": matched_weight},
                 {"component": "preference_conflicts", "weight": -conflict_weight},
                 {"component": "source_field_relevance", "weight": evidence_weight},
+                {"component": "title_topic_focus", "weight": focus_weight},
                 {"component": "programme_requirement_relevance", "weight": programme_weight},
             ],
         },
@@ -380,21 +399,165 @@ def _priority_weight(value):
 
 def _grounded_evidence_weight(preference):
     """Prefer explicit title/topic evidence over incidental body-text mentions."""
-    weights = []
-    for evidence in preference.get("positive_evidence") or []:
-        field = evidence.get("course_field") if isinstance(evidence, dict) else None
-        if not isinstance(field, str):
+    return _relevance_assessment(preference)["evidence_weight"]
+
+
+def _field_weight(field):
+    key = field.casefold() if isinstance(field, str) else ""
+    for prefix, weight in FIELD_EVIDENCE_WEIGHTS:
+        if key.startswith(prefix):
+            return weight
+    return 1 if key else 0
+
+
+def _relevance_assessment(preference):
+    """Grade how directly the course is about the matched preference.
+
+    Every signal is read back out of the recorded source evidence: which course
+    field matched, how often the phrase occurs in that source text, and how
+    early it appears. Nothing here inspects or alters academic eligibility.
+    """
+    best = {
+        "tier": "none", "evidence_weight": 0, "best_field": None,
+        "title_focus": 0, "prominence": "none", "occurrences": 0,
+    }
+    for phrase, evidence in _phrase_evidence(preference):
+        field = evidence.get("course_field")
+        weight = _field_weight(field)
+        if not weight:
             continue
-        key = field.casefold()
-        if key.startswith("title"):
-            weights.append(6)
-        elif key.startswith("topics"):
-            weights.append(4)
-        elif key.startswith("content"):
-            weights.append(2)
+        text = _evidence_text(evidence)
+        occurrences, position = _phrase_position(phrase, text)
+        is_title = isinstance(field, str) and field.casefold().startswith("title")
+        prominence = _prominence(occurrences, position, len(text))
+        if is_title:
+            tier = "strong"
+        elif prominence == "prominent":
+            tier = "moderate"
         else:
-            weights.append(1)
+            tier = "weak"
+        title_focus = _title_focus(phrase, evidence) if is_title else 0
+        assessment = {
+            "tier": tier, "evidence_weight": weight, "best_field": field,
+            "title_focus": title_focus, "prominence": prominence,
+            "occurrences": occurrences,
+        }
+        if _relevance_order(assessment) > _relevance_order(best):
+            best = assessment
+    return best
+
+
+def _relevance_order(assessment):
+    tiers = {"none": 0, "weak": 1, "moderate": 2, "strong": 3}
+    return (tiers.get(assessment.get("tier"), 0),
+            assessment.get("evidence_weight", 0),
+            assessment.get("title_focus", 0),
+            assessment.get("occurrences", 0))
+
+
+def _phrase_evidence(preference):
+    """Pair every matched preference phrase with the evidence recorded for it."""
+    pairs = []
+    phrases = []
+    for matched in preference.get("matched_preferences") or []:
+        if not isinstance(matched, dict):
+            continue
+        phrase = matched.get("original_value") or matched.get("value")
+        if phrase not in phrases:
+            phrases.append(phrase)
+        for evidence in matched.get("evidence") or []:
+            if isinstance(evidence, dict):
+                pairs.append((phrase, evidence))
+    for evidence in preference.get("positive_evidence") or []:
+        if not isinstance(evidence, dict):
+            continue
+        for phrase in phrases or [None]:
+            if (phrase, evidence) not in pairs:
+                pairs.append((phrase, evidence))
+    return pairs
+
+
+def _evidence_text(evidence):
+    texts = []
+    for reference in evidence.get("source_references") or []:
+        text = reference.get("text") if isinstance(reference, dict) else None
+        if isinstance(text, str) and text not in texts:
+            texts.append(text)
+    if not texts and isinstance(evidence.get("matched_text"), str):
+        texts.append(evidence["matched_text"])
+    return "\n".join(texts)
+
+
+def _phrase_position(phrase, text):
+    """Return how often the phrase occurs in the source text and where first."""
+    if not isinstance(text, str) or not text:
+        return 0, -1
+    needle = _normalized(phrase) or _normalized(text)
+    haystack = _normalized(text)
+    if not needle or needle not in haystack:
+        return 0, -1
+    return haystack.count(needle), haystack.find(needle)
+
+
+def _prominence(occurrences, position, length):
+    if occurrences >= PROMINENT_OCCURRENCE_COUNT:
+        return "prominent"
+    if occurrences and length and position >= 0 and \
+            position <= max(1, int(length * LEADING_TEXT_FRACTION)):
+        return "prominent"
+    return "incidental" if occurrences else "none"
+
+
+def _title_focus(phrase, evidence):
+    """Score how much of the course title the matched phrase accounts for."""
+    title = evidence.get("matched_text")
+    needle, haystack = _normalized(phrase), _normalized(title)
+    if not needle or not haystack or needle not in haystack:
+        return 0
+    return round(4 * len(needle) / len(haystack))
+
+
+def _normalized(value):
+    return re.sub(r"\s+", " ", value.casefold()).strip() if isinstance(value, str) else ""
+
+
+def _programme_relevance_weight(policy):
+    """Reward source-backed programme or elective membership as positive evidence."""
+    state = policy.get("requirement_filter_state")
+    if state == "relationship_not_established":
+        return 0
+    weights = []
+    for match in policy.get("requirement_matches") or []:
+        if not isinstance(match, dict) or not _sources_valid(match.get("sources")):
+            continue
+        weights.append(4 if match.get("requirement_state") in
+                       ("remaining", "partially_satisfied") else 2)
     return max(weights, default=0)
+
+
+def _academic_confidence(policy, upstream_valid):
+    """Report deterministic eligibility as-is; absent evidence never reads eligible."""
+    eligibility = policy.get("eligibility_result") or {}
+    validation = policy.get("validation") or {}
+    verified = (
+        upstream_valid and
+        policy.get("eligibility_state") == "eligible" and
+        eligibility.get("eligibility_state") == "eligible" and
+        not eligibility.get("already_completed") and
+        not eligibility.get("already_ongoing") and
+        validation.get("is_valid") is True
+    )
+    if verified:
+        return {"state": "eligibility_verified", "label": "Eligibility verified",
+                "unresolved": []}
+    unresolved = [code for code in policy.get("reason_codes") or []
+                  if isinstance(code, str)]
+    state = policy.get("eligibility_state")
+    if isinstance(state, str) and state not in ("eligible",):
+        unresolved.insert(0, f"eligibility_state_{state}")
+    return {"state": "eligibility_verification_required",
+            "label": "Eligibility verification required",
+            "unresolved": unresolved}
 
 
 def _issue(issues, code, severity, path, message):

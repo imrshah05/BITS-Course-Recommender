@@ -135,33 +135,28 @@
         </div>
         <div id="result-notice" class="result-notice" hidden></div>
 
-        <section class="progress-section" aria-labelledby="progress-title">
-          <h3 id="progress-title">Academic progress</h3>
-          <div id="academic-progress" class="progress-grid" aria-label="Academic progress summary"></div>
-          <div id="category-progress" class="category-progress"></div>
-        </section>
-
-        <section class="result-group confirmed-group" aria-labelledby="confirmed-title">
+        <section class="result-group recommended-group" aria-labelledby="recommended-title">
           <div class="group-heading">
             <div>
-              <span class="group-kicker safe">Academically confirmed</span>
-              <h3 id="confirmed-title">Courses you can consider</h3>
+              <span class="group-kicker safe">Matched to your interests</span>
+              <h3 id="recommended-title">Recommended courses</h3>
             </div>
-            <span id="confirmed-count" class="group-count"></span>
+            <span id="recommended-count" class="group-count"></span>
           </div>
-          <div id="confirmed-results" class="result-list"></div>
+          <p class="group-copy">Ranked by how directly each course matches what you asked for. Academic eligibility is reported separately on every card and is never assumed.</p>
+          <div id="recommended-results" class="result-list"></div>
         </section>
 
-        <section class="result-group verification-group" aria-labelledby="verification-title">
+        <section class="result-group related-group" aria-labelledby="related-title">
           <div class="group-heading">
             <div>
-              <span class="group-kicker caution">Needs a closer look</span>
-              <h3 id="verification-title">Courses requiring verification</h3>
+              <span class="group-kicker caution">Weaker match</span>
+              <h3 id="related-title">Related courses</h3>
             </div>
-            <span id="verification-count" class="group-count"></span>
+            <span id="related-count" class="group-count"></span>
           </div>
-          <p class="group-copy">These are never treated as confirmed recommendations. We show a concise sample and preserve the complete set in the result.</p>
-          <div id="verification-results" class="result-list"></div>
+          <p class="group-copy">These mention your interest only in passing, so they rank below the courses above. We show a concise sample and preserve the complete set in the result.</p>
+          <div id="related-results" class="result-list"></div>
         </section>
       </section>
     </main>

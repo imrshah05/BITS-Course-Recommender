@@ -23,15 +23,19 @@ def profile_input(**updates):
     return result
 
 
-def semantic(code="CS F211", title="Machine Learning"):
+def semantic(code="CS F211", title="Machine Learning", content=None):
+    entries = [{"heading": "Course Description", "text": content,
+                "sources": [{"source_file": f"{code}.pdf", "page_number": 1,
+                             "text": content}]}] if content else []
     return {
         "course_code": code,
         "title": {"values": [title], "display_value": title,
                   "sources": source(code)},
-        "content": [], "topics": [], "evaluation": [],
+        "content": entries, "topics": [], "evaluation": [],
         "exam_information": {"midsemester": [], "comprehensive": []},
         "attendance_or_makeup": {"attendance": [], "makeup": []},
-        "data_availability": {"title": True, "content": False, "topics": False},
+        "data_availability": {"title": True, "content": bool(entries),
+                              "topics": False},
         "source_evidence": {"course_identity": source(code)},
         "uncertainty": {"needs_verification": False},
     }
@@ -203,6 +207,86 @@ class DashboardRecommendationTests(unittest.TestCase):
                           result["academic_verification_backlog"]},
                          {"BIO F101", "CS F437"})
 
+    def test_unverifiable_course_is_recommended_with_explicit_confidence(self):
+        """A strong title match is shown even though eligibility stays unknown."""
+        service = DashboardRecommendationService(
+            course_catalogue=FakeCatalogue(),
+            source_catalogue=FakeSourceCatalogue(["CS F437", "BIO F101"]),
+            policy_service=FakePolicyService(policy_result()),
+            semantic_builder=FakeSemanticBuilder([
+                semantic("CS F437", "Generative Artificial Intelligence"),
+                semantic("BIO F101", "Introduction to Biological Sciences"),
+            ]),
+            recommendation_engine=RecommendationEngine(),
+        )
+        result = service.recommend(
+            profile_input(), "I am interested in artificial intelligence.")
+        self.assertEqual([item["course_code"] for item in
+                          result["recommended_courses"]], ["CS F437"])
+        recommended = result["recommended_courses"][0]
+        self.assertEqual(recommended["academic_confidence"]["state"],
+                         "eligibility_verification_required")
+        self.assertEqual(recommended["academic_confidence"]["label"],
+                         "Eligibility verification required")
+        self.assertEqual(result["summary"]["eligibility_verified_count"], 0)
+        self.assertEqual(
+            result["summary"]["eligibility_verification_required_count"], 1)
+
+    def test_presentation_never_weakens_deterministic_state(self):
+        """Being recommended changes no eligibility, safety, or ranking decision."""
+        service = DashboardRecommendationService(
+            course_catalogue=FakeCatalogue(),
+            source_catalogue=FakeSourceCatalogue(["CS F437"]),
+            policy_service=FakePolicyService(policy_result()),
+            semantic_builder=FakeSemanticBuilder([
+                semantic("CS F437", "Generative Artificial Intelligence")]),
+            recommendation_engine=RecommendationEngine(),
+        )
+        result = service.recommend(
+            profile_input(), "I am interested in artificial intelligence.")
+        recommended = result["recommended_courses"][0]
+        self.assertEqual(recommended["eligibility_state"], "unknown")
+        self.assertEqual(recommended["ranking_group"], "verification_required")
+        self.assertIs(recommended["policy"]["recommendation_safe"], False)
+        self.assertEqual(result["confirmed_recommendations"], [])
+        self.assertEqual(result["summary"]["confirmed_recommendation_count"], 0)
+
+    def test_eligible_course_reports_verified_confidence(self):
+        service = self.service(
+            policy_result(safe=[candidate()]),
+            [semantic("CS F211", "Machine Learning Systems")])
+        result = service.recommend(profile_input(), "I like machine learning.")
+        recommended = result["recommended_courses"][0]
+        self.assertEqual(recommended["course_code"], "CS F211")
+        self.assertEqual(recommended["academic_confidence"]["state"],
+                         "eligibility_verified")
+        self.assertEqual(recommended["academic_confidence"]["unresolved"], [])
+
+    def test_incidental_mention_never_outranks_title_match(self):
+        service = DashboardRecommendationService(
+            course_catalogue=FakeCatalogue(),
+            source_catalogue=FakeSourceCatalogue(["CS F437", "HSS F324"]),
+            policy_service=FakePolicyService(policy_result()),
+            semantic_builder=FakeSemanticBuilder([
+                semantic("CS F437", "Generative Artificial Intelligence"),
+                semantic("HSS F324", "Science Fiction",
+                         content="Speculative futures; engagements with "
+                                 "artificial intelligence, posthumanism, and the "
+                                 "animal; and ecological storytelling."),
+            ]),
+            recommendation_engine=RecommendationEngine(),
+        )
+        result = service.recommend(
+            profile_input(), "I am interested in artificial intelligence.")
+        self.assertEqual([item["course_code"] for item in
+                          result["recommended_courses"]], ["CS F437"])
+        self.assertEqual([item["course_code"] for item in
+                          result["related_courses"]], ["HSS F324"])
+        self.assertEqual(result["related_courses"][0]["relevance"]["tier"], "weak")
+        self.assertGreater(
+            result["recommended_courses"][0]["ranking"]["grounded_relevance_weight"],
+            result["related_courses"][0]["ranking"]["grounded_relevance_weight"])
+
     def test_invalid_profile_stops_before_policy(self):
         policy = FakePolicyService(policy_result())
         service = DashboardRecommendationService(
@@ -244,6 +328,10 @@ class DashboardRecommendationTests(unittest.TestCase):
             "verification_required_count": 1,
             "academic_verification_backlog_count": 1,
             "excluded_course_count": 1,
+            "recommended_course_count": 2,
+            "related_course_count": 0,
+            "eligibility_verified_count": 1,
+            "eligibility_verification_required_count": 1,
         })
 
 
@@ -295,7 +383,7 @@ class DashboardRecommendationApiTests(unittest.TestCase):
                 {"profile": profile_input(), "query": "I like AI."})
         self.assertEqual(status, "422 Unprocessable Entity")
 
-    def test_dashboard_contains_progress_and_result_regions(self):
+    def test_dashboard_contains_result_regions(self):
         captured = {}
 
         def start_response(status, headers):
@@ -304,9 +392,19 @@ class DashboardRecommendationApiTests(unittest.TestCase):
         body = b"".join(application(
             {"PATH_INFO": "/", "REQUEST_METHOD": "GET"}, start_response)).decode()
         self.assertEqual(captured["status"], "200 OK")
-        for element_id in ("recommendation-results", "academic-progress",
-                           "confirmed-results", "verification-results"):
+        for element_id in ("recommendation-results", "recommended-results",
+                           "related-results"):
             self.assertIn(f'id="{element_id}"', body)
+
+    def test_dashboard_never_presents_results_as_academically_guaranteed(self):
+        def start_response(status, headers):
+            return None
+
+        body = b"".join(application(
+            {"PATH_INFO": "/", "REQUEST_METHOD": "GET"}, start_response)).decode()
+        self.assertIn("Recommended courses", body)
+        self.assertNotIn("Academically confirmed", body)
+        self.assertIn("Academic eligibility is reported separately", body)
 
     def test_frontend_renders_explanations_and_preference_evidence(self):
         captured = {}
@@ -319,8 +417,9 @@ class DashboardRecommendationApiTests(unittest.TestCase):
             start_response)).decode()
         self.assertIn("item.explanation?.text", script)
         self.assertIn("Matched preference:", script)
-        self.assertIn("remaining_requirement_count", script)
-        self.assertIn("query-relevant to verify", script)
+        self.assertIn("recommended_courses", script)
+        self.assertIn("Eligibility verification required", script)
+        self.assertIn("with eligibility verified", script)
 
 
 if __name__ == "__main__":

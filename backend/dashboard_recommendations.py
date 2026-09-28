@@ -127,12 +127,58 @@ class DashboardRecommendationService:
             },
             "validation": validation,
         }
-        return self.explanation_service.explain(result)
+        return _apply_presentation_groups(self.explanation_service.explain(result))
 
 
 def build_dashboard_recommendations(raw_profile, query, **kwargs):
     """Convenience entry point for one dashboard recommendation request."""
     return DashboardRecommendationService(**kwargs).recommend(raw_profile, query)
+
+
+def _apply_presentation_groups(result):
+    """Group the explained results by grounded relevance for the dashboard.
+
+    Eligibility that could not be resolved keeps a course out of nothing here; it
+    is reported per course as academic confidence instead. Courses whose only
+    evidence is an incidental keyword mention stay in the weaker related group.
+    The deterministic collections above are left exactly as the pipeline set them.
+    """
+    recommended, related = [], []
+    for group in ("confirmed_recommendations", "verification_required"):
+        for item in result.get(group) or []:
+            if not isinstance(item, dict):
+                continue
+            target = recommended if item.get("presentation_group") == "recommended" \
+                else related
+            target.append(deepcopy(item))
+    recommended.sort(key=_presentation_sort_key)
+    related.sort(key=_presentation_sort_key)
+    result["recommended_courses"] = recommended
+    result["related_courses"] = related
+    result["summary"].update({
+        "recommended_course_count": len(recommended),
+        "related_course_count": len(related),
+        "eligibility_verified_count": sum(
+            _confidence_state(item) == "eligibility_verified" for item in recommended),
+        "eligibility_verification_required_count": sum(
+            _confidence_state(item) == "eligibility_verification_required"
+            for item in recommended),
+    })
+    return result
+
+
+def _presentation_sort_key(item):
+    ranking = item.get("ranking") or {}
+    confidence_rank = 0 if _confidence_state(item) == "eligibility_verified" else 1
+    return (-ranking.get("grounded_relevance_weight", 0),
+            -ranking.get("score", 0),
+            confidence_rank,
+            item.get("course_code") or "")
+
+
+def _confidence_state(item):
+    confidence = item.get("academic_confidence") if isinstance(item, dict) else None
+    return confidence.get("state") if isinstance(confidence, dict) else None
 
 
 def _preference_relevant(item):
@@ -271,6 +317,8 @@ def _invalid_profile_result(profile, query):
         "student_profile": profile,
         "academic_requirements": {},
         "intent": {"original_query": deepcopy(query)},
+        "recommended_courses": [],
+        "related_courses": [],
         "confirmed_recommendations": [],
         "verification_required": [],
         "academic_verification_backlog": [],
@@ -279,7 +327,10 @@ def _invalid_profile_result(profile, query):
                      "course_policy_summary": {}, "recommendation_summary": {},
                      "academic_verification_backlog_count": 0,
                      "incomplete_data": {"has_incomplete_data": True}},
-        "summary": {"confirmed_recommendation_count": 0,
+        "summary": {"recommended_course_count": 0, "related_course_count": 0,
+                    "eligibility_verified_count": 0,
+                    "eligibility_verification_required_count": 0,
+                    "confirmed_recommendation_count": 0,
                     "verification_required_count": 0,
                     "academic_verification_backlog_count": 0,
                     "excluded_course_count": 0},
