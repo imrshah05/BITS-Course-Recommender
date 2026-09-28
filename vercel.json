@@ -2,8 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "app.py": {
-      "includeFiles": "{frontend/**,data/processed/**}",
-      "excludeFiles": "{data/raw/**,preprocessing/**,tests/**,**/__pycache__/**,**/*.pyc}",
+      "includeFiles": "{frontend/**,data/processed/**,preprocessing/**}",
+      "excludeFiles": "{data/raw/**,tests/**,**/__pycache__/**,**/*.pyc}",
       "maxDuration": 60
     }
   }
