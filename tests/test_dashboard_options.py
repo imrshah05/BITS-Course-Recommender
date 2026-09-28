@@ -40,7 +40,7 @@ class DashboardOptionsTests(unittest.TestCase):
         result = self.service.options()
         self.assertEqual(result["programmes"], [
             "B.E. Computer Science", "M.Sc. Mathematics"])
-        self.assertEqual(result["academic_years"], [1, 2, 3, 4, 5, 6])
+        self.assertEqual(result["academic_years"], [1, 2, 3, 4])
         self.assertEqual(result["semesters"], [1, 2])
         self.assertEqual(result["summary"], {
             "programme_count": 2, "course_count": 2})

@@ -31,7 +31,7 @@ class DashboardOptionsService:
             })
         return {
             "programmes": programmes,
-            "academic_years": list(range(1, 7)),
+            "academic_years": list(range(1, 5)),
             "semesters": [1, 2],
             "courses": courses,
             "summary": {
