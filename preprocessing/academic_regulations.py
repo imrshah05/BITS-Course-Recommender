@@ -119,11 +119,67 @@ def extract_academic_regulations(pages):
             for value in rule['values']:
                 value['scope_resolved'] = True
         rule['validation'] = validate_rule(rule)
+    policies = _elective_policies(pages)
     return dict(source_file=pages[0]['source_file'], pages_processed=len(pages), rules=rules,
+                structured_policies=policies,
                 representation='section_policies_with_numeric_observations',
                 limitations=['Clause labels are preserved without assigning paragraph boundaries.',
                              'Numeric observations are not independently executable constraints.',
                              'Tables and cross-references require verification against the PDF.'])
+
+
+def _elective_policies(pages):
+    """Retain only complete, explicit elective rules needed for deterministic checks."""
+    indexed = {page['page_number']: page for page in pages}
+
+    def evidence(page_number, phrases):
+        candidates = ([indexed[page_number]] if page_number in indexed else []) + [
+            page for page in pages if page.get('page_number') != page_number]
+        page = next((item for item in candidates if all(
+            phrase.casefold() in item.get('text', '').casefold() for phrase in phrases)), None)
+        if not page:
+            return None
+        text = page.get('text', '')
+        return {'source_file': page['source_file'],
+                'page_number': page['page_number'], 'text': text}
+
+    structural = [item for item in (
+        evidence(9, ['Open Electives', 'discipline requirement']),
+        evidence(10, ['Normally any elective course', 'Dual degree students'])) if item]
+    registration = [item for item in (
+        evidence(15, ['outside his/her own discipline', 'prerequisite']),
+        evidence(16, ["degree other than student's own degree(s)",
+                      'third year first semester'])) if item]
+    prerequisite = evidence(15, ['Before a student can register', 'prerequisite'])
+    definitions = [
+        dict(id='policy-open-elective-host-region',
+             rule_type='open_elective_host_region',
+             category='Open Electives', normalized_category='open_elective',
+             outside_own_disciplines=True, outside_humanities_pool=True,
+             discipline_and_humanities_precedence=True,
+             specialized_courses_excluded=True, sources=structural + registration),
+        dict(id='policy-cross-discipline-prior-preparation',
+             rule_type='cross_discipline_prior_preparation',
+             applies_to=['discipline_core', 'discipline_elective'],
+             outside_students_own_degrees=True,
+             required_through={'year': 3, 'semester': 1}, sources=registration),
+        dict(id='policy-course-prerequisite-independent',
+             rule_type='course_prerequisite_independent',
+             prerequisite_required_for_registration=True,
+             sources=[prerequisite] if prerequisite else []),
+        dict(id='policy-dual-degree-del-to-opel',
+             rule_type='dual_degree_del_to_opel',
+             source_category='discipline_elective',
+             target_category='open_elective',
+             between_students_own_degrees=True, sources=structural),
+    ]
+    for policy in definitions:
+        policy['needs_verification'] = False
+        policy['validation'] = {
+            'is_valid': bool(policy['sources']), 'issues': [] if policy['sources'] else [
+                {'code': 'missing_source', 'severity': 'error'}],
+        }
+    return definitions
 
 
 def build_academic_regulations(source_path, output_path):

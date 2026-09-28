@@ -4,6 +4,7 @@ from copy import deepcopy
 from dataclasses import asdict, dataclass
 
 from backend.course_catalogue import CourseCatalogue
+from backend.elective_policy import ElectivePolicyEngine
 from backend.eligibility import ELIGIBILITY_STATES, EligibilityEngine
 from preprocessing.course_codes import normalize_course_code
 
@@ -29,18 +30,29 @@ class CandidatePoolIssue:
 class CandidatePoolBuilder:
     """Combine a reusable catalogue, eligibility engine, and explicit requirements."""
 
-    def __init__(self, catalogue, eligibility_engine=None):
+    def __init__(self, catalogue, eligibility_engine=None, elective_policy=None):
         if not isinstance(catalogue, CourseCatalogue):
             catalogue = CourseCatalogue.from_dict(catalogue)
         self.catalogue = catalogue
         self.eligibility_engine = eligibility_engine or EligibilityEngine(catalogue)
+        self.elective_policy = elective_policy or ElectivePolicyEngine()
 
     def build(self, academic_history, academic_requirements=None,
               restrictions_by_course=None):
         """Build three disjoint pools without weakening eligibility decisions."""
-        eligibility = self.eligibility_engine.evaluate_all(
-            academic_history, restrictions_by_course)
+        policy_history = deepcopy(academic_history)
+        student = (academic_requirements or {}).get("student") \
+            if isinstance(academic_requirements, dict) else None
+        if isinstance(student, dict):
+            for field in ("programme", "second_programme",
+                          "current_academic_year", "current_semester"):
+                policy_history.setdefault(field, student.get(field))
+        automatic = self.elective_policy.cross_discipline_restrictions(policy_history)
+        restrictions = _merge_restrictions(automatic, restrictions_by_course)
+        eligibility = self.eligibility_engine.evaluate_all(academic_history, restrictions)
         relevance = _requirement_relevance_index(academic_requirements)
+        self.elective_policy.add_open_elective_relationships(
+            relevance, academic_requirements)
         pools = {state: [] for state in POOL_STATES}
 
         for eligibility_state in ELIGIBILITY_STATES:
@@ -214,6 +226,14 @@ def _pool_state(eligibility_state):
     return "verification_required"
 
 
+def _merge_restrictions(automatic, supplied):
+    result = {code: deepcopy(checks) for code, checks in (automatic or {}).items()}
+    for code, checks in (supplied or {}).items():
+        result.setdefault(code, []).extend(deepcopy(checks) if isinstance(checks, list)
+                                           else [deepcopy(checks)])
+    return result
+
+
 def _requirement_relevance_index(summary):
     index = {"explicit": {}, "ambiguous": {}}
     if summary is None:
@@ -240,9 +260,7 @@ def _requirement_relevance_index(summary):
                 for record in records if isinstance(records, list) else []:
                     _index_requirement(index, record, scope, role,
                                        normalized_category, collection)
-                    if (record.get("rule_type") == "category_total" and
-                            collection in ("remaining_requirements",
-                                           "partially_satisfied_requirements")):
+                    if record.get("rule_type") == "category_total":
                         category_requirements.setdefault(
                             (scope, normalized_category), []).append(
                                 (record, role, collection))
@@ -330,7 +348,8 @@ def _source_references(source_records, relationships, unresolved):
             references.append(reference)
     for relationship in relationships + unresolved:
         for source in ((relationship.get("sources") or []) +
-                       (relationship.get("membership_sources") or [])):
+                       (relationship.get("membership_sources") or []) +
+                       (relationship.get("policy_sources") or [])):
             reference = deepcopy(source)
             if reference not in references:
                 references.append(reference)

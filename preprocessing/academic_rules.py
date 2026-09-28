@@ -220,6 +220,9 @@ def normalize_academic_rules(regulations, bulletin):
     used_choice_groups = set()
     for i, record in enumerate(regulations.get('rules', [])):
         rules.append(normalize_record(record, 'Academic Regulations', f'/rules/{i}'))
+    for i, record in enumerate(regulations.get('structured_policies', [])):
+        rules.append(normalize_record(
+            record, 'Academic Regulations', f'/structured_policies/{i}'))
     for i, record in enumerate(bulletin.get('requirements', [])):
         programme = programmes.get(record.get('programme_id'))
         adapted = _explicit_choice(record, programme, used_choice_groups)

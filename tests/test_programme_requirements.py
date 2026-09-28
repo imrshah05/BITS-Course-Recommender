@@ -7,7 +7,8 @@ from pypdf import PdfReader, PdfWriter
 from preprocessing.pdf_extractor import extract_pdf_text
 from preprocessing.programme_requirements import (
     connect_discipline_elective_lists, extract_programme_requirements,
-    validate_requirement,
+    propagate_first_degree_open_electives,
+    recover_first_degree_open_elective_requirement, validate_requirement,
 )
 
 
@@ -20,6 +21,34 @@ def catalogue(rows='CS F211 Data Structures & Algorithms 3 1 4'):
 
 
 class ProgrammeRequirementsTests(unittest.TestCase):
+    def test_ranged_open_elective_requirement_is_recovered_and_inherited(self):
+        source = {"source_file": "bulletin.pdf", "page_number": 209,
+                  "text": "The category-wise structure of each program:\n"
+                          "Open Electives 15 to 27 5 to 9"}
+        dataset = {
+            "source_file": "bulletin.pdf",
+            "programmes": [
+                {"id": "general", "name": "INTEGRATED FIRST DEGREE PROGRAMMES",
+                 "context": "category-wise structure", "sources": [source]},
+                {"id": "cs", "name": "B. E. Computer Science",
+                 "context": "semester-wise chart", "sources": [{
+                     "source_file": "bulletin.pdf", "page_number": 217,
+                     "text": "B. E. Computer Science chart"}]},
+            ],
+            "requirements": [],
+        }
+        recover_first_degree_open_elective_requirement(dataset)
+        propagate_first_degree_open_electives(dataset)
+        rules = [item for item in dataset["requirements"]
+                 if item.get("category") == "Open Electives"]
+        self.assertEqual(len(rules), 2)
+        inherited = next(item for item in rules
+                         if item["programme_name"] == "B. E. Computer Science")
+        self.assertEqual((inherited["min_units"], inherited["max_units"]), (15, 27))
+        self.assertEqual((inherited["min_count"], inherited["max_count"]), (5, 9))
+        self.assertEqual(inherited["inherited_from_programme"],
+                         "INTEGRATED FIRST DEGREE PROGRAMMES")
+
     def test_complete_core_set_connects_chart_to_elective_membership(self):
         source = {"source_file": "bulletin.pdf", "page_number": 1, "text": "evidence"}
         dataset = {

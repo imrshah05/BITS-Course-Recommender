@@ -142,12 +142,25 @@ def connect_discipline_elective_lists(dataset):
         relationship_sources = (deepcopy(core_totals[0].get('sources') or []) +
                                 deepcopy(chart.get('sources') or []) +
                                 deepcopy(course_list.get('sources') or []))
+        for core_code in sorted(core):
+            source_record = next(record for record in by_programme[course_list['id']]
+                                 if record.get('course_code') == core_code and
+                                 (record.get('category') or '').casefold() == 'core courses')
+            sources = deepcopy(source_record.get('sources') or []) + relationship_sources
+            record = dict(
+                id=f'requirement-{len(requirements)+len(additions)+1:05}',
+                kind='discipline_membership', programme_id=chart['id'],
+                programme_name=chart['name'], category='Discipline Core',
+                course_code=core_code, course_title=source_record.get('course_title'),
+                units=source_record.get('units'), course_count=None, year=None,
+                semester=None, membership_source_programme_id=course_list['id'],
+                membership_source_programme_name=course_list['name'],
+                membership_basis='complete_discipline_core_set_matches_semester_chart',
+                needs_verification=False, sources=_unique_sources(sources))
+            record['validation'] = validate_requirement(record)
+            additions.append(record)
         for elective in electives:
             sources = deepcopy(elective.get('sources') or []) + relationship_sources
-            unique_sources = []
-            for source_record in sources:
-                if source_record not in unique_sources:
-                    unique_sources.append(source_record)
             record = dict(
                 id=f'requirement-{len(requirements)+len(additions)+1:05}',
                 kind='elective_membership', programme_id=chart['id'],
@@ -159,11 +172,90 @@ def connect_discipline_elective_lists(dataset):
                 membership_source_programme_name=course_list['name'],
                 membership_basis='complete_discipline_core_set_matches_semester_chart',
                 matched_core_course_codes=sorted(core),
-                needs_verification=False, sources=unique_sources)
+                needs_verification=False, sources=_unique_sources(sources))
             record['validation'] = validate_requirement(record)
             additions.append(record)
     requirements.extend(additions)
     dataset['discipline_elective_membership_count'] = len(additions)
+    return dataset
+
+
+def _unique_sources(sources):
+    result = []
+    for source in sources:
+        if source not in result:
+            result.append(source)
+    return result
+
+
+def propagate_first_degree_open_electives(dataset):
+    """Apply explicit common first-degree elective totals to its programme charts."""
+    programmes = {item['id']: item for item in dataset.get('programmes', [])}
+    requirements = dataset.get('requirements', [])
+    institutional = [record for record in requirements
+                     if record.get('programme_name') == 'INTEGRATED FIRST DEGREE PROGRAMMES'
+                     and record.get('kind') == 'category_total'
+                     and (record.get('category') or '').casefold() in
+                     ('open electives', 'humanities electives')]
+    if len([item for item in institutional
+            if (item.get('category') or '').casefold() == 'open electives']) != 1:
+        return dataset
+    additions = []
+    for programme in programmes.values():
+        if programme.get('context') != 'semester-wise chart':
+            continue
+        for source_rule in institutional:
+            copied = deepcopy(source_rule)
+            copied.update(
+                id=f'requirement-{len(requirements)+len(additions)+1:05}',
+                programme_id=programme['id'], programme_name=programme['name'],
+                inherited_from_programme=source_rule.get('programme_name'),
+                inheritance_basis='explicit_category_wise_structure_of_each_first_degree_programme',
+                sources=_unique_sources((source_rule.get('sources') or []) +
+                                        (programme.get('sources') or [])))
+            copied['validation'] = validate_requirement(copied)
+            additions.append(copied)
+    requirements.extend(additions)
+    dataset['inherited_open_elective_requirement_count'] = sum(
+        (item.get('category') or '').casefold() == 'open electives'
+        for item in additions)
+    dataset['inherited_humanities_elective_requirement_count'] = sum(
+        (item.get('category') or '').casefold() == 'humanities electives'
+        for item in additions)
+    return dataset
+
+
+def recover_first_degree_open_elective_requirement(dataset):
+    """Recover the explicit ranged OPEL row from retained Bulletin page evidence."""
+    requirements = dataset.get('requirements', [])
+    existing = [record for record in requirements
+                if record.get('programme_name') == 'INTEGRATED FIRST DEGREE PROGRAMMES'
+                and (record.get('category') or '').casefold() == 'open electives']
+    if existing:
+        return dataset
+    programme = next((item for item in dataset.get('programmes', [])
+                      if item.get('name') == 'INTEGRATED FIRST DEGREE PROGRAMMES'), None)
+    if not programme:
+        return dataset
+    for source_record in programme.get('sources') or []:
+        match = re.search(
+            r'Open Electives\s+(\d+)\s+to\s+(\d+)\s+(\d+)\s+to\s+(\d+)',
+            source_record.get('text', ''), re.I)
+        if not match:
+            continue
+        evidence = deepcopy(source_record)
+        evidence['text'] = match[0]
+        record = dict(
+            id=f'requirement-{len(requirements)+1:05}', kind='category_total',
+            programme_id=programme['id'], programme_name=programme['name'],
+            category='Open Electives', course_code=None, course_title=None,
+            units=None, course_count=None, min_units=int(match[1]),
+            max_units=int(match[2]), min_count=int(match[3]),
+            max_count=int(match[4]), year=None, semester=None,
+            needs_verification=False, sources=[evidence])
+        record['validation'] = validate_requirement(record)
+        requirements.append(record)
+        break
     return dataset
 
 
@@ -458,6 +550,13 @@ def extract_programme_requirements(pages, layout_pages=None, known_course_codes=
             programme('INTEGRATED FIRST DEGREE PROGRAMMES', 'category-wise structure', whole)
             add('programme_structure', whole)
             for line in lines:
+                ranged = re.fullmatch(r'(.+?)\s+(\d+)\s+to\s+(\d+)\s+(\d+)\s+to\s+(\d+)', line, re.I)
+                if ranged and ranged[1].strip().casefold() == 'open electives':
+                    add('category_total', source(page, line), category=ranged[1],
+                        min_units=int(ranged[2]), max_units=int(ranged[3]),
+                        min_count=int(ranged[4]), max_count=int(ranged[5]),
+                        needs_verification=False)
+                    continue
                 m = re.fullmatch(r'(.+?)\s+(\d+)\s+(\d+)', line)
                 if m and not re.search(CODE, line):
                     add('category_total', source(page, line), category=m[1], units=int(m[2]),
@@ -557,7 +656,10 @@ def extract_programme_requirements(pages, layout_pages=None, known_course_codes=
                                'Unparsed tables, footnotes and scope conditions remain in programme evidence.',
                                'Only chart rows with explicit layout-supported year and semester columns are structured; ambiguous rows remain for review.',
                                'Elective options are not mandatory course requirements.'])
-    return connect_discipline_elective_lists(recover_scoped_course_pools(result))
+    result = recover_scoped_course_pools(result)
+    result = connect_discipline_elective_lists(result)
+    result = recover_first_degree_open_elective_requirement(result)
+    return propagate_first_degree_open_electives(result)
 
 
 def build_programme_requirements(source_path, output_path, catalogue_path=None):
