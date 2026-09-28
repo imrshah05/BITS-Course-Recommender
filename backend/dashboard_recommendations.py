@@ -6,6 +6,7 @@ from backend.course_catalogue import CourseCatalogue
 from backend.course_policy import CoursePolicyService
 from backend.course_semantics import CourseSemanticProfileBuilder
 from backend.gemini import configured_recommendation_engine
+from backend.recommendation_explanations import RecommendationExplanationService
 from backend.student_profile import normalize_student_profile
 
 
@@ -13,7 +14,8 @@ class DashboardRecommendationService:
     """Run one profile and query through deterministic policy and preference ranking."""
 
     def __init__(self, course_catalogue=None, policy_service=None,
-                 semantic_builder=None, recommendation_engine=None):
+                 semantic_builder=None, recommendation_engine=None,
+                 explanation_service=None):
         self.course_catalogue = course_catalogue or CourseCatalogue.load()
         self.policy_service = policy_service or CoursePolicyService(
             course_catalogue=self.course_catalogue)
@@ -21,6 +23,7 @@ class DashboardRecommendationService:
             self.course_catalogue)
         self.recommendation_engine = (
             recommendation_engine or configured_recommendation_engine())
+        self.explanation_service = explanation_service or RecommendationExplanationService()
 
     def recommend(self, raw_profile, query):
         """Return dashboard-ready recommendations without weakening policy decisions."""
@@ -63,6 +66,13 @@ class DashboardRecommendationService:
         verification = _merge_verification(ranked_verification, policy_verification)
         excluded = deepcopy(policy.get("excluded_candidates") or [])
 
+        titles = {profile["course_code"]: profile.get("title", {}).get("display_value")
+                  for profile in semantic_profiles}
+        for item in confirmed + verification:
+            if isinstance(item, dict) and not item.get("course_title"):
+                item["course_title"] = titles.get(item.get("course_code")) or _course_title(
+                    item.get("policy") or {})
+
         validation = _validation(profile, policy, recommendation)
         result = {
             "student_profile": profile,
@@ -86,7 +96,7 @@ class DashboardRecommendationService:
             },
             "validation": validation,
         }
-        return result
+        return self.explanation_service.explain(result)
 
 
 def build_dashboard_recommendations(raw_profile, query, **kwargs):
@@ -124,6 +134,16 @@ def _merge_verification(ranked, policy):
         if code and code not in merged:
             merged[code] = deepcopy(item)
     return [merged[code] for code in sorted(merged)]
+
+
+def _course_title(candidate):
+    for record in candidate.get("source_records") or []:
+        if not isinstance(record, dict):
+            continue
+        title = record.get("course_title")
+        if isinstance(title, dict) and isinstance(title.get("value"), str):
+            return title["value"]
+    return None
 
 
 def _validation(profile, policy, recommendation):

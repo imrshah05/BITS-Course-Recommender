@@ -221,7 +221,7 @@ class GeminiDashboardTests(unittest.TestCase):
         self.assertEqual(status, "400 Bad Request")
         self.assertEqual(response["error"], "invalid_intent_payload")
 
-    def test_dashboard_contains_query_form_without_recommendations(self):
+    def test_dashboard_contains_query_and_recommendation_regions(self):
         captured = {}
 
         def start_response(status, headers):
@@ -231,7 +231,7 @@ class GeminiDashboardTests(unittest.TestCase):
                                     start_response)).decode()
         self.assertIn('id="preference-query-form"', body)
         self.assertIn('name="preference_query"', body)
-        self.assertNotIn('id="recommendation-results"', body)
+        self.assertIn('id="recommendation-results"', body)
 
 
 if __name__ == "__main__":

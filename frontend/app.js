@@ -6,6 +6,12 @@ const profileStatus = document.querySelector("#profile-status");
 const preferenceForm = document.querySelector("#preference-query-form");
 const preferenceStatus = document.querySelector("#preference-status");
 const preferenceResult = document.querySelector("#preference-result");
+const resultsPanel = document.querySelector("#recommendation-results");
+const resultsSummary = document.querySelector("#results-summary");
+const academicProgress = document.querySelector("#academic-progress");
+const confirmedResults = document.querySelector("#confirmed-results");
+const verificationResults = document.querySelector("#verification-results");
+const DISPLAY_LIMIT = 12;
 
 async function checkApiConnection() {
   try {
@@ -60,6 +66,96 @@ function showIssues(issues) {
   });
   formSummary.append(heading, list);
   formSummary.hidden = false;
+}
+
+function addProgressMetric(label, value) {
+  const card = document.createElement("div");
+  card.className = "progress-card";
+  const number = document.createElement("strong");
+  number.textContent = String(value ?? 0);
+  const caption = document.createElement("span");
+  caption.textContent = label;
+  card.append(number, caption);
+  academicProgress.append(card);
+}
+
+function reasonLabel(reason) {
+  return String(reason || "verification required").replaceAll("_", " ");
+}
+
+function resultCard(item, verification = false) {
+  const card = document.createElement("article");
+  card.className = `course-card ${verification ? "needs-verification" : "confirmed"}`;
+  const heading = document.createElement("h4");
+  heading.textContent = [item.course_code, item.course_title].filter(Boolean).join(" — ");
+  const status = document.createElement("p");
+  status.className = "course-status";
+  status.textContent = verification ? "Verification required" : "Confirmed";
+  const explanation = document.createElement("p");
+  explanation.textContent = item.explanation?.text || "No explanation is available.";
+  card.append(heading, status, explanation);
+
+  const details = [
+    item.eligibility_state && `Eligibility: ${reasonLabel(item.eligibility_state)}`,
+    item.requirement_filter_state &&
+      `Requirement status: ${reasonLabel(item.requirement_filter_state)}`,
+  ].filter(Boolean);
+  if (verification) {
+    details.push(...(item.reasons || []).map((reason) => `Reason: ${reasonLabel(reason)}`));
+  }
+  const evidence = item.preference_match?.matched_preferences || [];
+  evidence.forEach((match) => details.push(`Preference match: ${match.original_value || match.value}`));
+  if (details.length) {
+    const list = document.createElement("ul");
+    list.className = "course-evidence";
+    details.forEach((detail) => {
+      const entry = document.createElement("li");
+      entry.textContent = detail;
+      list.append(entry);
+    });
+    card.append(list);
+  }
+  return card;
+}
+
+function renderCourseGroup(container, items, verification = false) {
+  container.replaceChildren();
+  const visible = items.slice(0, DISPLAY_LIMIT);
+  if (!visible.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-state";
+    empty.textContent = verification
+      ? "No courses currently require verification."
+      : "No courses are confirmed under the available academic evidence.";
+    container.append(empty);
+    return;
+  }
+  visible.forEach((item) => container.append(resultCard(item, verification)));
+  if (items.length > DISPLAY_LIMIT) {
+    const remaining = document.createElement("p");
+    remaining.className = "result-note";
+    remaining.textContent = `${items.length - DISPLAY_LIMIT} additional courses are retained in the API response.`;
+    container.append(remaining);
+  }
+}
+
+function renderRecommendations(result) {
+  const summary = result.summary;
+  const academic = result.academic_requirements?.summary || {};
+  resultsSummary.textContent = [
+    `${summary.confirmed_recommendation_count} confirmed`,
+    `${summary.verification_required_count} requiring verification`,
+    `${summary.excluded_course_count} excluded`,
+  ].join(" · ");
+  academicProgress.replaceChildren();
+  addProgressMetric("Completed courses", academic.completed_course_count);
+  addProgressMetric("Remaining requirements", academic.remaining_requirement_count);
+  addProgressMetric("Satisfied requirements", academic.satisfied_requirement_count);
+  addProgressMetric("Unevaluable requirements", academic.unevaluable_requirement_count);
+  renderCourseGroup(confirmedResults, result.confirmed_recommendations || []);
+  renderCourseGroup(verificationResults, result.verification_required || [], true);
+  resultsPanel.hidden = false;
+  resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 profileForm.addEventListener("submit", async (event) => {
@@ -123,6 +219,7 @@ preferenceForm.addEventListener("submit", async (event) => {
       `${summary.excluded_course_count} excluded`,
     ].join(" · ");
     preferenceResult.hidden = false;
+    renderRecommendations(result.recommendations);
     preferenceStatus.textContent = response.ok
       ? "Recommendation analysis is complete."
       : "The recommendation pipeline needs review.";

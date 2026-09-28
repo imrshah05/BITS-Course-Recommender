@@ -162,6 +162,50 @@ input:focus, select:focus, textarea:focus {
   color: #183153;
 }
 
+.results-panel {
+  margin-top: 2rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--card);
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 0.8rem;
+  margin: 1.5rem 0 2rem;
+}
+
+.progress-card {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.progress-card strong { font-size: 1.65rem; }
+.progress-card span { color: var(--muted); font-size: 0.85rem; }
+.result-group + .result-group { margin-top: 2rem; }
+.result-list { display: grid; gap: 0.8rem; }
+
+.course-card {
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 0.75rem;
+  background: white;
+}
+
+.course-card.needs-verification { border-left-color: #b66a16; }
+.course-card h4 { margin: 0; }
+.course-card p { line-height: 1.55; }
+.course-status { color: var(--accent); font-size: 0.8rem; font-weight: 800; text-transform: uppercase; }
+.needs-verification .course-status { color: #8a4a09; }
+.course-evidence { margin-bottom: 0; color: var(--muted); }
+.empty-state, .result-note { color: var(--muted); }
+
 button {
   border: 0;
   border-radius: 0.65rem;

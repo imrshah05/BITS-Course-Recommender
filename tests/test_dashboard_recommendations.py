@@ -252,6 +252,32 @@ class DashboardRecommendationApiTests(unittest.TestCase):
                 {"profile": profile_input(), "query": "I like AI."})
         self.assertEqual(status, "422 Unprocessable Entity")
 
+    def test_dashboard_contains_progress_and_result_regions(self):
+        captured = {}
+
+        def start_response(status, headers):
+            captured["status"] = status
+
+        body = b"".join(application(
+            {"PATH_INFO": "/", "REQUEST_METHOD": "GET"}, start_response)).decode()
+        self.assertEqual(captured["status"], "200 OK")
+        for element_id in ("recommendation-results", "academic-progress",
+                           "confirmed-results", "verification-results"):
+            self.assertIn(f'id="{element_id}"', body)
+
+    def test_frontend_renders_explanations_and_preference_evidence(self):
+        captured = {}
+
+        def start_response(status, headers):
+            captured["status"] = status
+
+        script = b"".join(application(
+            {"PATH_INFO": "/assets/app.js", "REQUEST_METHOD": "GET"},
+            start_response)).decode()
+        self.assertIn("item.explanation?.text", script)
+        self.assertIn("Preference match:", script)
+        self.assertIn("remaining_requirement_count", script)
+
 
 if __name__ == "__main__":
     unittest.main()

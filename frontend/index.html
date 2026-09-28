@@ -111,6 +111,25 @@
           <div id="preference-result" class="preference-result" aria-live="polite" hidden></div>
         </form>
       </section>
+
+      <section id="recommendation-results" class="results-panel" aria-labelledby="results-title"
+               hidden>
+        <div class="section-heading">
+          <p class="eyebrow">Academic plan</p>
+          <h2 id="results-title">Recommendation results</h2>
+          <p id="results-summary"></p>
+        </div>
+        <div id="academic-progress" class="progress-grid" aria-label="Academic progress"></div>
+        <div class="result-group" aria-labelledby="confirmed-title">
+          <h3 id="confirmed-title">Confirmed recommendations</h3>
+          <div id="confirmed-results" class="result-list"></div>
+        </div>
+        <div class="result-group" aria-labelledby="verification-title">
+          <h3 id="verification-title">Requires verification</h3>
+          <p>These courses are not confirmed recommendations. Review the stated uncertainty first.</p>
+          <div id="verification-results" class="result-list"></div>
+        </div>
+      </section>
     </main>
 
     <script src="/assets/app.js" defer></script>
