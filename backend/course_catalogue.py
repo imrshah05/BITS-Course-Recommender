@@ -148,6 +148,12 @@ class CourseCatalogue:
         with Path(path).open(encoding="utf-8") as stream:
             return cls.from_dict(json.load(stream))
 
+    @classmethod
+    def load_source_backed(cls):
+        """Load handout records plus deterministic Bulletin-only identities."""
+        from backend.source_course_catalogue import source_backed_legacy_records
+        return cls(source_backed_legacy_records())
+
     def get(self, course_code):
         code = normalize_course_code(course_code)
         course = self._courses.get(code) if code else None

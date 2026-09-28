@@ -21,7 +21,7 @@ class DashboardRecommendationService:
                  recommendation_engine=None,
                  explanation_service=None):
         injected_handout_catalogue = course_catalogue is not None
-        self.course_catalogue = course_catalogue or CourseCatalogue.load()
+        self.course_catalogue = course_catalogue or CourseCatalogue.load_source_backed()
         self.source_catalogue = source_catalogue or (
             _CourseCodeSourceCatalogue(self.course_catalogue)
             if injected_handout_catalogue else SourceCourseCatalogue.load())

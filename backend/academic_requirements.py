@@ -96,7 +96,7 @@ def build_academic_requirement_summary(raw_profile, course_catalogue=None,
 
 def _course_catalogue(value):
     if value is None:
-        return CourseCatalogue.load()
+        return CourseCatalogue.load_source_backed()
     if isinstance(value, CourseCatalogue):
         return value
     return CourseCatalogue.from_dict(value)

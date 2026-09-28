@@ -54,6 +54,12 @@ class CourseCatalogue:
         with Path(path).open(encoding="utf-8") as stream:
             return cls.from_dict(json.load(stream))
 
+    @classmethod
+    def load_source_backed(cls):
+        """Load deterministic identities from both handouts and the Bulletin."""
+        from backend.source_course_catalogue import source_backed_legacy_records
+        return cls(source_backed_legacy_records())
+
     def matches(self, course_code):
         return list(self._index.get(course_code, ()))
 

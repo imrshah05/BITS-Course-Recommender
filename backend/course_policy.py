@@ -27,7 +27,7 @@ class CoursePolicyService:
     def __init__(self, course_catalogue=None, academic_requirement_service=None,
                  candidate_pool_builder=None, requirement_filter=None):
         if course_catalogue is None:
-            course_catalogue = CourseCatalogue.load()
+            course_catalogue = CourseCatalogue.load_source_backed()
         elif not isinstance(course_catalogue, CourseCatalogue):
             course_catalogue = CourseCatalogue.from_dict(course_catalogue)
         self.course_catalogue = course_catalogue
